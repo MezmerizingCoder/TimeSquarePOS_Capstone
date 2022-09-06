@@ -48,4 +48,30 @@ public class UserService {
             return null;
         }
     }
+    
+    public User getUserById(int id){
+        Connection conn = getConnection();
+        User user = new User();
+        
+        try {
+            System.out.println("Getting data");
+            pst = conn.prepareStatement("SELECT id, username, password FROM User WHERE id ==" + id);
+            rs = pst.executeQuery();
+            
+            
+            while(rs.next()){
+                user.setId(Integer.parseInt(rs.getString("id")));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                
+            }
+            return user;
+            
+        } catch (SQLException ex) {
+            return null;
+        }
+        
+    }
+    
+    
 }
