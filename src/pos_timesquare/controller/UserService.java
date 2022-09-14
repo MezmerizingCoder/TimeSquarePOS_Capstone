@@ -115,7 +115,8 @@ public class UserService {
                 user.setId(Integer.parseInt(rs.getString("id")));
                 user.setUsername(rs.getString("username"));
                 user.setPassword(rs.getString("password"));
-                
+                user.setName("name");
+                user.setRole("role");
             }
             return user;
             

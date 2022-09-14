@@ -251,7 +251,7 @@
           <Font name="Tahoma" size="24" style="1"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value="LOGO"/>
+        <Property name="text" type="java.lang.String" value="TIME SQUARE"/>
       </Properties>
     </Component>
   </SubComponents>

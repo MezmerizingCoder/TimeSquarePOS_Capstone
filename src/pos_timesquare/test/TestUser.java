@@ -3,25 +3,31 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package pos_timesquare.controller.test;
+package pos_timesquare.test;
 
+import java.util.List;
 import pos_timesquare.controller.UserService;
+import pos_timesquare.controller.VariantService;
+import pos_timesquare.model.User;
 
 /**
  *
  * @author Acer
  */
-public class User {
+public class TestUser {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         UserService user = new UserService();
+        List<User> list = user.getAllUserDetails();
         
-        user.getUserById(1);
+        System.out.println(list);
+        System.out.println(user.getUserById(1).getUsername());
         
-        System.out.println(user.getUserById(1).getName());
+        VariantService var = new VariantService();
+        
     }
     
 }
