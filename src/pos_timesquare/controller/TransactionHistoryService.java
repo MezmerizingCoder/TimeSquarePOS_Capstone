@@ -40,7 +40,7 @@ public class TransactionHistoryService {
                 }
                 if(!dbmd.getColumns(null, null, "TransactionHistory", "transactionDate").next()){
                     Statement stmt = conn.createStatement();
-                    String sql = "ALTER TABLE TransactionHistory ADD transactionDate VARCHAR"; 
+                    String sql = "ALTER TABLE TransactionHistory ADD transactionDate TEXT"; 
                     stmt.executeUpdate(sql);
                 }
                 if(!dbmd.getColumns(null, null, "TransactionHistory", "orders").next()){
@@ -60,7 +60,7 @@ public class TransactionHistoryService {
                 String sql = "CREATE TABLE TransactionHistory(" +
                    "id INTEGER NOT NULL UNIQUE," +
                    " productId INTEGER, " + 
-                   " transactionDate VARCHAR, " + 
+                   " transactionDate TEXT, " + 
                    " orders INTEGER, " +
                    " totalPrice FLOAT, " +
                    "PRIMARY KEY(id AUTOINCREMENT))"; 
