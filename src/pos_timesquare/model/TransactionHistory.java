@@ -12,7 +12,7 @@ package pos_timesquare.model;
 public class TransactionHistory {
     
     private int id;
-    private int prodcutid;
+    private int productId;
     private String transactionDate;
     private int orders;
     private float totalPrice;
@@ -26,11 +26,11 @@ public class TransactionHistory {
     }
 
     public int getProdcutid() {
-        return prodcutid;
+        return productId;
     }
 
     public void setProdcutid(int prodcutid) {
-        this.prodcutid = prodcutid;
+        this.productId = prodcutid;
     }
 
     public String getTransactionDate() {
