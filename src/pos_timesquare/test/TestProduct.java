@@ -20,7 +20,7 @@ public class TestProduct {
         List<Product> list = user.getAllProductDetails();
         
         System.out.println(list);
-         System.out.println(user.getProductById(2).getName());
+         System.out.println(user.getProductById(2).getBarcode());
      
       
     }
