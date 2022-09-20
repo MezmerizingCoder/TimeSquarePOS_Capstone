@@ -16,10 +16,11 @@ import pos_timesquare.model.Product;
 public class TestProduct {
     
     public static void main(String[] args) {
-        ProductService user = new ProductService();
-        List<Product> list = user.getAllProductDetails();
+        ProductService product = new ProductService();
+        List<Product> list = product.getAllProductDetails();
         
         System.out.println(list);
+        
     }
     
 }
