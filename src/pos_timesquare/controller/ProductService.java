@@ -110,7 +110,7 @@ public List<Product> getAllProductDetails(){
                 product.setSize(rs.getString("size"));
                 product.setColor(rs.getString("color"));
                 product.setStocks(Integer.parseInt(rs.getString("stocks")));
-                product.setPrice(Float.parseFloat(rs.getString("[price")));
+                product.setPrice(Float.parseFloat(rs.getString("price")));
                 
                 products.add(product);
             }
@@ -139,7 +139,7 @@ public Product getProductById(int id){
                 product.setSize("size");
                 product.setColor("color");
                 product.setStocks(Integer.parseInt(rs.getString("stocks")));
-                product.setPrice(Float.parseFloat(rs.getString("[price")));
+                product.setPrice(Float.parseFloat(rs.getString("price")));
             }
             
             return product;  
