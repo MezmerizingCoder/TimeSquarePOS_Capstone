@@ -107,8 +107,8 @@ public List<Product> getAllProductDetails(){
                 product.setId(Integer.parseInt(rs.getString("id")));
                 product.setBarcode(Integer.parseInt(rs.getString("barcode")));
                 product.setName(rs.getString("name"));
-                product.setSize("size");
-                product.setColor("color");
+                product.setSize(rs.getString("size"));
+                product.setColor(rs.getString("color"));
                 product.setStocks(Integer.parseInt(rs.getString("stocks")));
                 product.setPrice(Float.parseFloat(rs.getString("[price")));
                 
@@ -145,7 +145,7 @@ public Product getProductById(int id){
             return product;  
             
             }catch (SQLException ex) {
-            return null;
+              return null;
             }
     }
 }
