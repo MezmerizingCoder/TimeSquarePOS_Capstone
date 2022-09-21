@@ -13,7 +13,7 @@ public class Product {
     
     private int id;
     private int barcode;
-    private int stock;
+    private int stocks;
     private float price;
     private String name;
     private String size;
@@ -35,12 +35,12 @@ public class Product {
         this.barcode = barcode;
     }
 
-    public int getStock() {
-        return stock;
+    public int getStocks() {
+        return stocks;
     }
 
-    public void setStock(int stock) {
-        this.stock = stock;
+    public void setStocks(int stocks) {
+        this.stocks = stocks;
     }
 
     public float getPrice() {
