@@ -5,8 +5,13 @@
  */
 package pos_timesquare.view;
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -19,7 +24,21 @@ import javax.swing.JSpinner;
 public class CheckoutProductThumbPanel extends JPanel{
     
     JPanel checkoutProductThumbPanel = new JPanel();
-    private JLabel jLabel21 = new JLabel();
+    private JLabel jLabel21 = new javax.swing.JLabel(){
+
+        public void paintComponent(Graphics g){
+            super.paintComponent(g);
+            Graphics2D g2 = (Graphics2D) g.create();
+
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setColor(new Color(232,232,232));
+            g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 25, 25);
+
+            g2.setColor(Color.GRAY);
+            g2.setStroke(new BasicStroke(1));
+            g2.drawRoundRect(0, 0, this.getWidth()-1, this.getHeight()-1, 25, 25);
+        }
+    };
     private JPanel jPanel25 = new JPanel();
     private JLabel jLabel20 = new JLabel();
     private JLabel jLabel22 = new JLabel();
@@ -42,7 +61,7 @@ public class CheckoutProductThumbPanel extends JPanel{
     
     CheckoutProductThumbPanel(){
         
-        jLabel21.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        //jLabel21.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
         jLabel20.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel20.setText("Product Name");

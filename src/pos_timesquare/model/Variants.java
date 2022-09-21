@@ -14,6 +14,15 @@ public class Variants {
     private int id;
     private int product_id;
     private String type;
+    private String value;
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 
     public int getId() {
         return id;

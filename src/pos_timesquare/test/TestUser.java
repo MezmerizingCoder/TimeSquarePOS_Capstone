@@ -21,12 +21,22 @@ public class TestUser {
      */
     public static void main(String[] args) {
         UserService user = new UserService();
-        List<User> list = user.getAllUserDetails();
+
+        User adduser = new User();
         
-        System.out.println(list);
-        System.out.println(user.getUserById(1).getUsername());
+        adduser.setUsername("addedUsername");
+        adduser.setPassword("addedPassword");
+        adduser.setName("addedName");
+        adduser.setRole("addedRole");
+
+//        user.addUser(adduser);
+//        user.deleteUserById(4);
         
-        VariantService var = new VariantService();
+//        List<User> list = user.getAllUserDetails();
+//        
+//        System.out.println(list);
+//        System.out.println(user.getUserById(3).getUsername());
+        
         
     }
     

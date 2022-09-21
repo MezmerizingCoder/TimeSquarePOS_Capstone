@@ -46,6 +46,11 @@ public class VariantService {
                     String sql = "ALTER TABLE Variants ADD type TEXT"; 
                     stmt.executeUpdate(sql);
                 }
+                if(!dbmd.getColumns(null, null, "Variants", "name").next()){
+                    Statement stmt = conn.createStatement();
+                    String sql = "ALTER TABLE Variants ADD name TEXT"; 
+                    stmt.executeUpdate(sql);
+                }
             }
             else {
                 System.out.println("Not exist");
@@ -54,6 +59,7 @@ public class VariantService {
                    "id INTEGER NOT NULL UNIQUE," +
                    " product_id INTEGER, " + 
                    " type TEXT, " + 
+                   " name TEXT, " +
                    "PRIMARY KEY(id AUTOINCREMENT))"; 
 
                 stmt.executeUpdate(sql);

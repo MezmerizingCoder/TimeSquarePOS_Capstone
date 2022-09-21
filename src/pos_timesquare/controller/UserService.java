@@ -68,6 +68,7 @@ public class UserService {
                 stmt.executeUpdate(sql);
                 System.out.println("Created table in given database...");  
             }
+            conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -123,8 +124,47 @@ public class UserService {
         } catch (SQLException ex) {
             return null;
         }
+    }
+    
+    public void addUser(User user){
+        try {
+            Connection conn = getConnection();
+            
+            pst = conn.prepareStatement("INSERT INTO User VALUES(?, ?, ?, ?, ?)");
+            
+            pst.setString(1, null);
+            pst.setString(2, user.getUsername());
+            pst.setString(3, user.getPassword());
+            pst.setString(4, user.getName());
+            pst.setString(5, user.getRole());
+            
+            pst.executeUpdate();
+            
+            System.out.println("Add Success");
+            
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
     
+    public void deleteUserById(int id){
+        try {
+            Connection conn = getConnection();
+            
+            pst = conn.prepareStatement("DELETE FROM User WHERE id = ?");
+            
+            pst.setInt(1, id);
+            
+            pst.executeUpdate();
+            
+            System.out.println("Delete Success");
+            
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
 }
