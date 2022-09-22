@@ -11,15 +11,24 @@ package pos_timesquare.model;
  */
 public class Notification {
     private int id;
+    private int productid;
     private String date;
     private String time;
     
-      public int getId() {
-            return id;
+    
+     public int getId() {
+        return id;
+    }
+    
+     public void setId(int id) {
+        this.id = id;
+    }
+      public int getProductId() {
+            return productid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setProductId(int id) {
+        this.productid = id;
     }
 
         public String getDate() {
