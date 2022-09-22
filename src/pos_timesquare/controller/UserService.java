@@ -67,6 +67,7 @@ public class UserService {
 
                 stmt.executeUpdate(sql);
                 System.out.println("Created table in given database...");  
+                conn.close();
             }
             conn.close();
         } catch (SQLException ex) {

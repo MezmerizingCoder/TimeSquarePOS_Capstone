@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package airlinereservationgreen;
+package pos_timesquare.utils;
 import java.awt.*;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;

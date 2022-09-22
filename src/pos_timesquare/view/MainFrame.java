@@ -5,7 +5,6 @@
  */
 package pos_timesquare.view;
 
-import airlinereservationgreen.WrapLayout;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatAtomOneDarkContrastIJTheme;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMaterialLighterIJTheme;
@@ -44,6 +43,7 @@ import pos_timesquare.controller.ProductService;
 import pos_timesquare.controller.UserService;
 import pos_timesquare.model.Product;
 import pos_timesquare.model.User;
+import pos_timesquare.utils.WrapLayout;
 
 /**
  *
@@ -141,8 +141,8 @@ public class MainFrame extends javax.swing.JFrame {
         
         //Test PopUp
         
-        popupContentPanel.add(viewProductPanel);
-//        popupContentPanel.add(editProductPanel);
+//        popupContentPanel.add(viewProductPanel);
+        popupContentPanel.add(editProductPanel);
 //        popupContentPanel.add(checkoutProductPanel);
 
 //        ProductService productService = new ProductService();

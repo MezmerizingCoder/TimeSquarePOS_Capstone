@@ -63,7 +63,7 @@ public ProductService(){
                 }
                 if(!dbmd.getColumns(null, null, "Product", "price").next()){
                     Statement stmt = conn.createStatement();
-                    String sql = "ALTER TABLE Product ADD price INTEGER"; 
+                    String sql = "ALTER TABLE Product ADD price REAL"; 
                     stmt.executeUpdate(sql);
                 }
                 
@@ -78,7 +78,7 @@ public ProductService(){
                    " size TEXT, " +
                    " color TEXT, " +
                    " stocks INTEGER, " +
-                   " price INTEGER," +
+                   " price REAL," +
                    "PRIMARY KEY(id AUTOINCREMENT))"; 
 
                 stmt.executeUpdate(sql);
