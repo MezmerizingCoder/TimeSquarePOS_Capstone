@@ -30,7 +30,7 @@ public class TestUser {
 //        adduser.setRole("addedRole");
 
 //        user.addUser(adduser);
-        user.deleteUserById(2);
+//        user.deleteUserById(2);
         
 //        List<User> list = user.getAllUserDetails();
 //        
