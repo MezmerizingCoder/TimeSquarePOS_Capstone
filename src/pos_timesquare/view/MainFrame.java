@@ -177,8 +177,9 @@ public class MainFrame extends javax.swing.JFrame {
         
         products.forEach(e -> {
             ProductThumb productThumb = new ProductThumb();
-            productThumb.setProductName(e.getName());
-            productThumb.setProductStocks(e.getStocks());
+            productThumb.setProductDetails(e);
+//            productThumb.setProductName(e.getName());
+//            productThumb.setProductStocks(e.getStocks());
             jPanel30.add(productThumb);
         });
 
@@ -2339,6 +2340,10 @@ public class MainFrame extends javax.swing.JFrame {
         blurBGPanel.setVisible(true);
         popupPanel.setVisible(true);
         
+        popupContentPanel.removeAll();
+        popupContentPanel.add(checkoutProductPanel);
+        
+        
         popupPanel.setBounds(getWidth(), 0, getWidth(), getHeight());
         Thread t = new Thread(new Runnable() {
             public void run() {
@@ -2444,13 +2449,13 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel accountProfilePicture;
-    private javax.swing.JPanel blurBGPanel;
+    public static javax.swing.JPanel blurBGPanel;
     private javax.swing.JPanel categorySectionPanel;
     private javax.swing.JPanel checkoutProductPanel;
     private javax.swing.JPanel checkoutProductThumbPanel;
     private javax.swing.JPanel closePopupIcon;
     private javax.swing.JPanel contentPanel;
-    private javax.swing.JRadioButtonMenuItem darkRB;
+    public static javax.swing.JRadioButtonMenuItem darkRB;
     private javax.swing.JPanel editProductPanel;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
@@ -2592,8 +2597,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel mainHeaderPanel;
     private javax.swing.JPanel menuPanel;
     private javax.swing.JPanel popupClosePanel;
-    private javax.swing.JPanel popupContentPanel;
-    private javax.swing.JPanel popupPanel;
+    public static javax.swing.JPanel popupContentPanel;
+    public static javax.swing.JPanel popupPanel;
     private javax.swing.JPanel productCategoryPanel;
     private javax.swing.JLabel productImage;
     private javax.swing.JLabel productImage1;
@@ -2603,7 +2608,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.ButtonGroup themesButtonGroup;
     private javax.swing.JPanel ticketMainPanel;
     private javax.swing.JButton viewCheckoutButton;
-    private javax.swing.JLabel viewProductName;
-    private javax.swing.JPanel viewProductPanel;
+    public static javax.swing.JLabel viewProductName;
+    public static javax.swing.JPanel viewProductPanel;
     // End of variables declaration//GEN-END:variables
 }

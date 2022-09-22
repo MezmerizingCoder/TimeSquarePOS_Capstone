@@ -11,8 +11,19 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import pos_timesquare.model.Product;
+import static pos_timesquare.view.MainFrame.blurBGPanel;
+import static pos_timesquare.view.MainFrame.darkRB;
+import static pos_timesquare.view.MainFrame.popupContentPanel;
+import static pos_timesquare.view.MainFrame.popupPanel;
+import static pos_timesquare.view.MainFrame.viewProductName;
+import static pos_timesquare.view.MainFrame.viewProductPanel;
 
 /**
  *
@@ -41,7 +52,12 @@ public class ProductThumb extends JPanel {
             Graphics2D g2 = (Graphics2D) g.create();
 
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setColor(new Color(235,235,235));
+            
+            if(darkRB.isSelected()){
+                g2.setColor(new Color(33, 37, 43));
+            }else{
+                g2.setColor(new Color(235,235,235));
+            }
             g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 15, 15);
         }
 
@@ -56,6 +72,18 @@ public class ProductThumb extends JPanel {
 
     private String productName;
     private int productStocks;
+    
+    private Product productDetails;
+
+    public Product getProductDetails() {
+        return productDetails;
+    }
+
+    public void setProductDetails(Product productDetails) {
+        this.productDetails = productDetails;
+        jLabel47.setText(productDetails.getName());
+        jLabel50.setText(String.valueOf(productDetails.getStocks()));
+    }
 
     public String getProductName() {
         return productName;
@@ -151,7 +179,37 @@ public class ProductThumb extends JPanel {
                     .addComponent(jLabel55, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15))
         );
-        
+        jPanel40.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                blurBGPanel.setVisible(true);
+                popupPanel.setVisible(true);
+                popupContentPanel.removeAll();
+                popupContentPanel.add(viewProductPanel);
+                viewProductName.setText(productDetails.getName());
+                
+                JFrame frame = (JFrame)getTopLevelAncestor();
+
+                popupPanel.setBounds(frame.getWidth(), 0, frame.getWidth(), frame.getHeight());
+                
+                Thread t = new Thread(new Runnable() {
+                    public void run() {
+                        while(popupPanel.getX() > 0){
+                            popupPanel.setBounds(popupPanel.getX() - 15, 0, frame.getWidth(), frame.getHeight());
+                            try {
+                                Thread.sleep((long) 1);
+                            } catch (InterruptedException ex) {
+                                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                        if(popupPanel.getX() < 0){
+                            popupPanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
+                        }
+                    }
+                });
+                t.start();
+                if(popupPanel.getX() <= 0) t.stop();
+            }
+        });
         
         setLayout(new BorderLayout());
         add(jPanel40);
