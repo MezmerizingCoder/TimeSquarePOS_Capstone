@@ -22,15 +22,15 @@ public class TestUser {
     public static void main(String[] args) {
         UserService user = new UserService();
 
-        User adduser = new User();
+//        User adduser = new User();
         
-        adduser.setUsername("addedUsername");
-        adduser.setPassword("addedPassword");
-        adduser.setName("addedName");
-        adduser.setRole("addedRole");
+//        adduser.setUsername("addedUsername");
+//        adduser.setPassword("addedPassword");
+//        adduser.setName("addedName");
+//        adduser.setRole("addedRole");
 
 //        user.addUser(adduser);
-//        user.deleteUserById(4);
+        user.deleteUserById(2);
         
 //        List<User> list = user.getAllUserDetails();
 //        

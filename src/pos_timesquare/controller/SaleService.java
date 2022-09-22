@@ -5,6 +5,8 @@
  */
 package pos_timesquare.controller;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.sql.*;
 import java.util.List;
 import java.sql.SQLException;
@@ -44,5 +46,63 @@ Connection conn = null;
             return null;
         }
     }
+    
+     public void addSale(Sale sale){
+        try {
+            Connection conn = getConnection();
+            
+            pst = conn.prepareStatement("INSERT INTO Sales VALUES(?, ?, ?)");
+            
+            pst.setString(1, null);
+            pst.setInt(2, sale.getProductId());
+            pst.setInt(3, sale.getStocks());
 
+            pst.executeUpdate();
+            
+            System.out.println("Add Success");
+            
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(SaleService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+     
+     public void deleteSaleById(int id){
+        try {
+            Connection conn = getConnection();
+            
+            pst = conn.prepareStatement("DELETE FROM Sales WHERE id = ?");
+            
+            pst.setInt(1, id);
+            
+            pst.executeUpdate();
+            
+            System.out.println("Delete Success");
+            
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(SaleService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+     
+     public void UpdateSale(int id, int productid, int stocks){
+        try {
+            Connection conn = getConnection();
+            Sale sale = new Sale();
+            pst = conn.prepareStatement("UPDATE Sales SET productid = ? , " + "stocks = ? " + " WHERE id = ?");
+            
+            pst.setInt(1, productid);
+            pst.setInt(2, stocks);
+            pst.setInt(3, id);
+            
+            pst.executeUpdate();
+            
+            System.out.println("Update Success");
+            
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(SaleService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+     
 }
