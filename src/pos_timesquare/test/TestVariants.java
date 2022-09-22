@@ -7,6 +7,7 @@ package pos_timesquare.test;
 
 import java.util.List;
 import pos_timesquare.controller.VariantService;
+import pos_timesquare.model.Variants;
 
 /**
  *
@@ -14,6 +15,13 @@ import pos_timesquare.controller.VariantService;
  */
 public class TestVariants {
     public static void main(String[] args) {
-        VariantService user = new VariantService();
+        VariantService variantService = new VariantService();
+        
+        List<Variants> productVariant = variantService.getProductVariants(1);
+        
+        productVariant.forEach(e -> {
+            System.out.println(e.getName());
+        });
+        
     }
 }
