@@ -10,8 +10,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -69,6 +73,7 @@ public class LoginFrame extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Login - Time Square");
 
         jPanel1.setBackground(new java.awt.Color(245, 245, 245));
         jPanel1.setOpaque(false);
@@ -263,8 +268,15 @@ public class LoginFrame extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(LoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        
+        try {
+            //                            FlatMaterialLighterIJTheme.install();
+            UIManager.setLookAndFeel(new FlatMaterialLighterIJTheme());
+            FlatMaterialLighterIJTheme.updateUI();
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
         //</editor-fold>
-        FlatMaterialLighterIJTheme.install();
         
         JFrame.setDefaultLookAndFeelDecorated( true );
         JDialog.setDefaultLookAndFeelDecorated( true );

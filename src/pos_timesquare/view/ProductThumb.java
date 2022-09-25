@@ -5,23 +5,30 @@
  */
 package pos_timesquare.view;
 
+import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatAtomOneDarkContrastIJTheme;
+import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMaterialLighterIJTheme;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import static java.time.zone.ZoneRulesProvider.refresh;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import pos_timesquare.model.Product;
 import static pos_timesquare.view.MainFrame.blurBGPanel;
 import static pos_timesquare.view.MainFrame.darkRB;
 import static pos_timesquare.view.MainFrame.popupContentPanel;
 import static pos_timesquare.view.MainFrame.popupPanel;
+import static pos_timesquare.view.MainFrame.tabPanel;
+import static pos_timesquare.view.MainFrame.ticketMainPanelHeader;
 import static pos_timesquare.view.MainFrame.viewProductName;
 import static pos_timesquare.view.MainFrame.viewProductPanel;
 
@@ -181,6 +188,10 @@ public class ProductThumb extends JPanel {
         );
         jPanel40.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
+                
+                
+                tabPanel.add(ticketMainPanelHeader);
+                
                 blurBGPanel.setVisible(true);
                 popupPanel.setVisible(true);
                 popupContentPanel.removeAll();
@@ -208,11 +219,36 @@ public class ProductThumb extends JPanel {
                 });
                 t.start();
                 if(popupPanel.getX() <= 0) t.stop();
+                
+                if(darkRB.isSelected()){
+                    try {
+                        System.out.println("Dark");
+//                        FlatAtomOneDarkContrastIJTheme.install();
+                        UIManager.setLookAndFeel(new FlatAtomOneDarkContrastIJTheme());
+                        FlatAtomOneDarkContrastIJTheme.updateUI();
+                    } catch (UnsupportedLookAndFeelException ex) {
+                        Logger.getLogger(ProductThumb.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                }else {
+                    try {
+                        //                        FlatMaterialLighterIJTheme.install();
+                        UIManager.setLookAndFeel(new FlatMaterialLighterIJTheme());
+                        FlatMaterialLighterIJTheme.updateUI();
+                    } catch (UnsupportedLookAndFeelException ex) {
+                        Logger.getLogger(ProductThumb.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                refresh();
+                repaint();
+                revalidate();
             }
         });
         
         setLayout(new BorderLayout());
         add(jPanel40);
+        
+        
     }
     
 }
