@@ -18,7 +18,7 @@ public class TestSearchController {
     
     SearchController sc = new SearchController();
     
-    sc.searchSalesById(2);
+    sc.searchSalesByProductId(13444);
     }
     
 }
