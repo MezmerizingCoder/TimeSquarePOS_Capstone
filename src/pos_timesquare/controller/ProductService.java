@@ -147,6 +147,73 @@ public Product getProductById(int id){
             
             }catch (SQLException ex) {
               return null;
+              
             }
     }
+
+    public void addProduct(Product product){
+        try {
+            Connection conn = getConnection();
+            
+            pst = conn.prepareStatement("INSERT INTO Product VALUES(?, ?, ?, ?, ?, ?, ?)");
+            
+            pst.setString(1, null);
+            pst.setInt(2, product.getBarcode());
+            pst.setString(3, product.getName());
+            pst.setString(4, product.getSize());
+            pst.setString(5, product.getColor());
+            pst.setInt(6, product.getStocks());
+            pst.setFloat(7, product.getPrice());
+            
+            pst.executeUpdate();
+            
+            System.out.println("Add Success");
+            
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    public void deleteProductById(int id){
+        try {
+            Connection conn = getConnection();
+            
+            pst = conn.prepareStatement("DELETE FROM Product WHERE id = ?");
+            
+            pst.setInt(1, id);
+            
+            pst.executeUpdate();
+            
+            System.out.println("Delete Success");
+            
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+      public void UpdateProduct(int id, int barcode, String name, String size, String color, int stocks, float price){
+        try {
+            Connection conn = getConnection();
+            Product product = new Product();
+            pst = conn.prepareStatement("UPDATE Product SET barcode = ? , " + "name = ? " + "size = ? " + "color = ? " + "price = ? " + "stocks = ? " + " WHERE id = ?");
+            
+            pst.setInt(1, barcode);
+            pst.setString(2, name);
+            pst.setString(3, size);
+            pst.setString(4, color);
+            pst.setInt(5, stocks);
+            pst.setFloat(6, price);
+            
+            pst.executeUpdate();
+            
+            System.out.println("Update Success");
+            
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+
 }
