@@ -19,17 +19,19 @@ public class SearchController {
     PreparedStatement pst;
     ResultSet rs; 
     
-    public void searchSalesByProductId(int productid){
+    public void searchSalesByProductName(String name){
         Connection conn = getConnection();
-        Sale sale = new Sale();
+       
         try {
          
             System.out.println("Getting data");
-            pst = conn.prepareStatement("SELECT id, productid, stocks " + " FROM Sales  WHERE productid == ? ");
+            pst = conn.prepareStatement("SELECT Sales.productid, Product.name, Sales.id, Product.id, Sales.stocks " + " FROM Sales, Product " 
+                    + "WHERE Sales.productid = Product.id AND name == ?" );
             
-            pst.setInt(1,productid);
+            pst.setString(1,name);
             
             rs = pst.executeQuery();
+ 
             while(rs.next()){    
                 System.out.println(rs.getInt("id")); 
                 System.out.println(rs.getInt("productid")); 

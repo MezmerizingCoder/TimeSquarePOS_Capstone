@@ -6,7 +6,7 @@
 package pos_timesquare.test;
 
 import pos_timesquare.controller.SearchController;
-import pos_timesquare.model.Sale;
+
 
 /**
  *
@@ -18,7 +18,7 @@ public class TestSearchController {
     
     SearchController sc = new SearchController();
     
-    sc.searchSalesByProductId(13444);
+    sc.searchSalesByProductName("watch");
     }
     
 }
