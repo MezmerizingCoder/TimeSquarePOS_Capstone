@@ -25,12 +25,12 @@ public class TransactionHistory {
         this.id = id;
     }
 
-    public int getProdcutid() {
+    public int getProductId() {
         return productId;
     }
 
-    public void setProdcutid(int prodcutid) {
-        this.productId = prodcutid;
+    public void setProductId(int productid) {
+        this.productId = productid;
     }
 
     public String getTransactionDate() {
