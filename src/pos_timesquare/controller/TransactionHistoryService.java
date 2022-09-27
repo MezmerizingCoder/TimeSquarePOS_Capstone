@@ -103,7 +103,7 @@ public class TransactionHistoryService {
         }
     }
     
-    public void addTransaction(TransactionHistory th){
+    public void addTransactionHistory(TransactionHistory th){
         try {
             Connection conn = getConnection();
             
@@ -126,7 +126,7 @@ public class TransactionHistoryService {
         
     }
     
-    public void deleteTransactionById(int id){
+    public void deleteTransactionHistoryById(int id){
         try {
            Connection conn = getConnection();
             
@@ -143,7 +143,7 @@ public class TransactionHistoryService {
             Logger.getLogger(TransactionHistoryService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public void UpdateTransaction(int id, int productid, String transactiondate, int orders, float totalprice){
+    public void UpdateTransactionHistory(int id, int productid, String transactiondate, int orders, float totalprice){
         try {
             Connection conn = getConnection();
             TransactionHistory th = new TransactionHistory();
