@@ -24,14 +24,14 @@ public class TestTransactionHistory {
    //  System.out.println(list.get(0).getOrders());
    //  System.out.println(list.get(0).getTotalPrice());
    
-       th.setProductId(13);
-       th.setTransactionDate("October-20-2022");
-       th.setOrders(3);
-       th.setTotalPrice(3200);
+       th.setProductId(16);
+       th.setTransactionDate("October-22-2022");
+       th.setOrders(1);
+       th.setTotalPrice(200);
        
-       ths.addTransaction(th);
-       ths.deleteTransactionById(2);
-       ths.UpdateTransaction(3, 10, "October-7-2022", 30, 5400);
+       ths.addTransactionHistory(th);
+       ths.deleteTransactionHistoryById(1);
+       ths.UpdateTransactionHistory(3, 10, "October-9-2022", 30, 5300);
       //  
    
     }
