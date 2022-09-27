@@ -16,11 +16,23 @@ import pos_timesquare.model.TransactionHistory;
 public class TestTransactionHistory {
     public static void main(String[] args) {
      TransactionHistoryService ths = new TransactionHistoryService();
-     List<TransactionHistory> list = ths.getAllTransactionHistoryDetails();
+     TransactionHistory th = new TransactionHistory();
+  //   List<TransactionHistory> list = ths.getAllTransactionHistoryDetails();
         
-     System.out.println(list.get(0).getProdcutid());
-     System.out.println(list.get(0).getTransactionDate());
-     System.out.println(list.get(0).getOrders());
-     System.out.println(list.get(0).getTotalPrice());
+   // System.out.println(list.get(0).getProdcutid());
+   //  System.out.println(list.get(0).getTransactionDate());
+   //  System.out.println(list.get(0).getOrders());
+   //  System.out.println(list.get(0).getTotalPrice());
+   
+       th.setProductId(13);
+       th.setTransactionDate("October-20-2022");
+       th.setOrders(3);
+       th.setTotalPrice(3200);
+       
+       ths.addTransaction(th);
+       ths.deleteTransactionById(2);
+       ths.UpdateTransaction(3, 10, "October-7-2022", 30, 5400);
+      //  
+   
     }
 }
