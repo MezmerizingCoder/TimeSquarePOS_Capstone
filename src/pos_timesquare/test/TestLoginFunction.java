@@ -23,8 +23,6 @@ public class TestLoginFunction {
      u.setRole("employee");
      
      ls.getMatchAccount(u);
-     
-  //   ls.matchAccount(u);
      ls.getUserType(u);
     }
 }
