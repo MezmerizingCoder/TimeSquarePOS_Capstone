@@ -85,7 +85,7 @@ Connection conn = null;
         }
     }
      
-     public void UpdateSale(int id, int productid, int stocks){
+     public void UpdateSaleById(int id, int productid, int stocks){
         try {
             Connection conn = getConnection();
             Sale sale = new Sale();
