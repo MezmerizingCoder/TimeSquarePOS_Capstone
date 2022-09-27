@@ -5,27 +5,29 @@
  */
 package pos_timesquare.controller;
 
-/**
- *
- * @author Administrator
- */
-
-import java.sql.*;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static pos_timesquare.controller.DatabaseConnection.getConnection;
 import pos_timesquare.model.TransactionHistory;
 
+/**
+ *
+ * @author Administrator
+ */
 public class TransactionHistoryService {
-    
     Connection conn = null;
     PreparedStatement pst;
     ResultSet rs;
-    
-    public TransactionHistoryService(){
+ 
+    /*     public TransactionHistoryService(){
         Connection conn = getConnection();
         try {
             DatabaseMetaData dbmd = conn.getMetaData();
@@ -69,36 +71,98 @@ public class TransactionHistoryService {
                 System.out.println("Created table in given database...");  
             }
         } catch (SQLException ex) {
-            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TransactionHistoryService.class.getName()).log(Level.SEVERE, null, ex);
         }     
-    }
+    } */
     
-    public List<TransactionHistory> getAllTransactionHistoryDetails(){
+    public List<TransactionHistory> getAllTransactionDetails(){
         
         Connection conn = getConnection();
-        List<TransactionHistory> transactionHistory = new ArrayList<>();
+        List<TransactionHistory> t = new ArrayList<>();
         
         try {
             System.out.println("Getting data");
-            pst = conn.prepareStatement("SELECT id, productId, transactionDate, orders, totalPrice FROM TransactionHistory");
+            pst = conn.prepareStatement("SELECT id, productid, transactiondate, orders, totalprice FROM TransactionHistory");
             rs = pst.executeQuery();
             
             
             while(rs.next()){
                 TransactionHistory th = new TransactionHistory();
                 th.setId(Integer.parseInt(rs.getString("id")));
-                th.setProdcutid(Integer.parseInt(rs.getString("productid")));
-                th.setTransactionDate(rs.getString("transactionDate"));
+                th.setProductId(Integer.parseInt(rs.getString("productid")));
+                th.setTransactionDate(rs.getString("transactiondate"));
                 th.setOrders(Integer.parseInt(rs.getString("orders")));
-                th.setTotalPrice(Float.parseFloat(rs.getString("totalPrice")));
+                th.setTotalPrice(Float.parseFloat(rs.getString("totalprice")));
                 
-                transactionHistory.add(th);
+                t.add(th);
             }
-            return transactionHistory;
+            return t;
             
         } catch (SQLException ex) {
             return null;
         }
     }
     
-}  
+    public void addTransaction(TransactionHistory th){
+        try {
+            Connection conn = getConnection();
+            
+            pst = conn.prepareStatement("INSERT INTO TransactionHistory VALUES(?, ?, ?, ?, ?)");
+            
+            pst.setString(1, null);
+            pst.setInt(2, th.getProductId());
+            pst.setString(3, th.getTransactionDate());
+            pst.setInt(4, th.getOrders());
+            pst.setFloat(5, th.getTotalPrice());
+            
+            pst.executeUpdate();
+            
+            System.out.println("Add Success");
+            
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(TransactionHistoryService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    public void deleteTransactionById(int id){
+        try {
+           Connection conn = getConnection();
+            
+            pst = conn.prepareStatement("DELETE FROM TransactionHistory WHERE id = ?");
+            
+            pst.setInt(1, id);
+            
+            pst.executeUpdate();
+            
+            System.out.println("Delete Success");
+            
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(TransactionHistoryService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void UpdateTransaction(int id, int productid, String transactiondate, int orders, float totalprice){
+        try {
+            Connection conn = getConnection();
+            TransactionHistory th = new TransactionHistory();
+            pst = conn.prepareStatement("UPDATE TransactionHistory SET productid =?, transactiondate =?, orders =?, totalprice =?  WHERE id =?");
+            
+            pst.setInt(1, productid);
+            pst.setString(2, transactiondate);
+            pst.setInt(3, orders);
+            pst.setFloat(4, totalprice);
+            pst.setInt(5, id);
+            
+            pst.executeUpdate();
+            
+            System.out.println("Update Success");
+            
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(TransactionHistoryService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+}
+
