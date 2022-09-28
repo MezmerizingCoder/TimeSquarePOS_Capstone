@@ -16,13 +16,15 @@ public class TestLoginFunction {
     public static void main(String[] args) {
 
      LoginFunctionService ls = new LoginFunctionService();
-     User u = new User();
+  //   User u = new User();
      
-     u.setUsername("pj");
-     u.setPassword("paul123");
-     u.setRole("employee");
      
-     ls.getMatchAccount(u);
-     ls.getUserType(u);
+   //  u.setUsername("pj");
+   //  u.setPassword("paul123");
+   // u.setRole("employee");
+   //  ls.getMatchAccount("ericka", "1226");
+     ls.getMatchAccount("pj", "paul123");
+   //ls.getMatchAccount(u);
+   // ls.getUserType(u);
     }
 }
