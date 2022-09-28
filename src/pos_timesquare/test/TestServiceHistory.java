@@ -28,16 +28,16 @@ public class TestServiceHistory {
      //   System.out.println(list.get(0).getEstimateFinish());
      //   System.out.println(list.get(0).getStatus());
        
-    //    sh.setCustomerName("ErickaSF");
-    //    sh.setDefects("palalalaa");
-    //    sh.setPrice(2690);
-    //    sh.setWalkInDate("September-10-2022");
-    //    sh.setEstimateFinish("September-17-2022");
-    //    sh.setStatus("Done");
+       sh.setCustomerName("ErickaSF");
+       sh.setDefects("palalalaa");
+       sh.setPrice(2690);
+       sh.setWalkInDate("September-10-2022");
+       sh.setEstimateFinish("September-17-2022");
+      sh.setStatus("Done");
         
-    //  shs.addServiceHistory(sh);
-   //   shs.deleteServiceHistoryById(5);
-   //   shs.UpdateServiceHistory(2, "PaulJustineFaustino", "sfddgdgda", 2340, "August-20-2020", "August-25-2020", "Done");
+     shs.addServiceHistory(sh);
+      shs.deleteServiceHistoryById(5);
+      shs.UpdateServiceHistory(2, "PaulJustineFaustino", "sfddgdgda", 2340, "August-20-2020", "August-25-2020", "Done");
 
         
     }
