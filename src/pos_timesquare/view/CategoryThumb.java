@@ -21,6 +21,7 @@ import pos_timesquare.controller.CategoryService;
 import pos_timesquare.controller.ProductService;
 import pos_timesquare.model.Category;
 import pos_timesquare.model.Product;
+import static pos_timesquare.view.MainFrame.darkRB;
 import static pos_timesquare.view.MainFrame.jPanel30;
 import static pos_timesquare.view.MainFrame.jProgressBar1;
 
@@ -30,6 +31,10 @@ import static pos_timesquare.view.MainFrame.jProgressBar1;
  */
 public class CategoryThumb extends JPanel {
     
+    boolean hover = false;
+    
+    
+    
     JPanel jPanel39 = new javax.swing.JPanel(){
 
         public void paintComponent(Graphics g){
@@ -37,9 +42,33 @@ public class CategoryThumb extends JPanel {
             Graphics2D g2 = (Graphics2D) g.create();
 
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setColor(Color.GRAY);
-            g2.setStroke(new BasicStroke(1));
-            g2.drawRoundRect(0, 0, this.getWidth()-1, this.getHeight()-1, 15, 15);
+            
+            
+            
+            if(darkRB.isSelected()){
+                g2.setColor(new Color(49, 52, 58));
+                g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 15, 15);
+                
+                g2.setColor(new Color(71,71,71));
+                g2.setStroke(new BasicStroke(1));
+                g2.drawRoundRect(0, 0, this.getWidth()-1, this.getHeight()-1, 15, 15);
+            }else{
+                g2.setColor(new Color(190,190,190));
+                g2.setStroke(new BasicStroke(1));
+                g2.drawRoundRect(0, 0, this.getWidth()-1, this.getHeight()-1, 15, 15);
+            }
+            if(hover){
+                
+                if(darkRB.isSelected()){
+                    g2.setColor(new Color(62, 70, 86));
+                    g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 15, 15);
+                }else{
+                    g2.setColor(new Color(225, 225, 225));
+                    g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 15, 15);
+                }
+            }
+            
+            
         }
 
     };
@@ -51,6 +80,9 @@ public class CategoryThumb extends JPanel {
     String categoryType;
     String categoryBrand;
 
+    
+        
+    
     public String getCategoryBrand() {
         return categoryBrand;
     }
@@ -160,6 +192,24 @@ public class CategoryThumb extends JPanel {
 //                    jPanel30.add(productThumb);
 //                });
             }
+        });
+        
+        jPanel39.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                hover = true;
+                repaint();
+                revalidate();
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                
+                hover = false;
+                repaint();
+                revalidate();
+            }
+            
         });
         
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));

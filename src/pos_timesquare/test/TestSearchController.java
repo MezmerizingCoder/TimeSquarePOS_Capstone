@@ -16,9 +16,9 @@ public class TestSearchController {
     
     public static void main(String[] args) {
     
-    SearchController sc = new SearchController();
-    
-    sc.searchSalesByProductName("watch");
+        SearchController sc = new SearchController();
+
+        sc.searchSalesByProductName("Casio");
     }
     
 }
