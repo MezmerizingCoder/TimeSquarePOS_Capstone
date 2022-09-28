@@ -27,7 +27,7 @@ public class LoginFunctionService {
 
 public User getMatchAccount(String username, String password){
     Connection conn = getConnection();
-    User user = new User();
+    User user = null;
     try {
             pst = conn.prepareStatement("SELECT * FROM User WHERE username =? and password=?");
             pst.setString(1, username);
@@ -35,11 +35,13 @@ public User getMatchAccount(String username, String password){
             rs = pst.executeQuery();
             
             if(rs.next()){
+                user = new User();
                 user.setId(Integer.parseInt(rs.getString("id")));
                 user.setUsername(rs.getString("username"));
                 user.setPassword(rs.getString("password"));
-                user.setName("name");
-                user.setRole("role");        
+                user.setName(rs.getString("name"));
+                user.setRole(rs.getString("role"));    
+                
                 System.out.println("Username and password are match. You logged " + rs.getString("name")+ " as an "+ rs.getString("role"));
             }
             else if(username.isEmpty() && password.isEmpty()){

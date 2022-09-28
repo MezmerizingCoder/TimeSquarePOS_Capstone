@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import static pos_timesquare.view.MainFrame.darkRB;
 
 /**
  *
@@ -30,14 +31,31 @@ public class CheckoutProductThumbPanel extends JPanel{
             super.paintComponent(g);
             Graphics2D g2 = (Graphics2D) g.create();
 
+    //        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    //        g2.setColor(new Color(232,232,232));
+    //        g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 25, 25);
+
+    //        g2.setColor(Color.GRAY);
+    //        g2.setStroke(new BasicStroke(1));
+    //        g2.drawRoundRect(0, 0, this.getWidth()-1, this.getHeight()-1, 25, 25);
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setColor(new Color(232,232,232));
+            if(darkRB.isSelected()){
+                g2.setColor(new Color(38, 42, 48));
+            }else{
+                g2.setColor(new Color(232,232,232));
+            }
             g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 25, 25);
 
-            g2.setColor(Color.GRAY);
+            if(darkRB.isSelected()){
+                g2.setColor(new Color(70, 70, 80));
+            }else{
+                g2.setColor(new Color(205,205,205));
+            }
+
             g2.setStroke(new BasicStroke(1));
             g2.drawRoundRect(0, 0, this.getWidth()-1, this.getHeight()-1, 25, 25);
         }
+
     };
     private JPanel jPanel25 = new JPanel();
     private JLabel jLabel20 = new JLabel();

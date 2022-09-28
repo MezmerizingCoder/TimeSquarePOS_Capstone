@@ -78,6 +78,8 @@ public class MainFrame extends javax.swing.JFrame {
     /**
      * Creates new form MainFrame
      */
+    User user = new User();
+    
     JPanel test;
     JToggleButton button = new JToggleButton();
     AbstractBorder circleBorder = new CircleBorder();
@@ -190,10 +192,181 @@ public class MainFrame extends javax.swing.JFrame {
       }
     }
     
+    public MainFrame(User user){
+        initComponents();
+        initStyle();
+        
+        this.user = user;
+        
+        if(this.user.getRole().equals("admin")){
+            dashboardMainMenu.setVisible(true);
+        }else{
+            dashboardMainMenu.setVisible(false);
+        }
+
+//       cartPanelPopup.setOpaque(false);
+//        cartPanelPopup.setBackground(new Color(0,0,0,125));
+        
+        jLayeredPane1.add(blurBGPanel, JLayeredPane.PALETTE_LAYER);
+        jLayeredPane1.add(popupPanel, JLayeredPane.POPUP_LAYER);
+        
+        
+        //Test PopUp
+        
+//        popupContentPanel.add(viewProductPanel);
+        popupContentPanel.add(editProductPanel);
+//        popupContentPanel.add(checkoutProductPanel);
+
+//        ProductService productService = new ProductService();
+//        viewProductName.setText(productService.getProductById(1).getName());
+        
+        
+//        test = new PopupPanel();
+//        test.setBounds(0, 0, 500, 500);
+//        jLayeredPane1.add(test, JLayeredPane.POPUP_LAYER);
+
+        contentPanel.add(ticketMainPanel);
+//        contentPanel.add(TestPanel);
+//        ticketMainMenu.putClientProperty( FlatClientProperties.STYLE, "arc: 25" );
+//        ticketMainMenu.setBorder( new FlatLineBorder( new Insets( 0, 0, 0, 0 ), new Color(203, 203, 203), 1, 25 ) );
+//        
+//        JLabel label = new JLabel("Hello");
+//        jTabbedPane1.putClientProperty("JTabbedPane.trailingComponent", new JButton("Test"));
+        
+        
+        jPanel3.add(selectedProductThumbPanel);
+        selectedProductThumbPanel.setBounds(0, 0, 300, 180);
+        
+        jPanel27.add(checkoutProductThumbPanel);
+        
+        CheckoutProductThumbPanel product = new CheckoutProductThumbPanel();
+        product.setPrice(1000);
+        
+        jPanel27.add(product);
+//        checkoutProductThumbPanel.setBounds(0, 0, 400, 180);
+        
+//        System.out.println(menuPanel.getBackground().getRed());
+//        System.out.println(jPanel1.getBackground().getBlue());
+       
+        jPanel30.setLayout(new WrapLayout());
+        
+        //Test Product Service
+        ProductService productsService = new ProductService();
+        List<Product>products = productsService.getAllProductDetails();
+        
+        products.forEach(e -> {
+            ProductThumb productThumb = new ProductThumb();
+            productThumb.setProductDetails(e);
+//            productThumb.setProductName(e.getName());
+//            productThumb.setProductStocks(e.getStocks());
+            jPanel30.add(productThumb);
+        });
+        
+        
+//        String[] columns = new String[] {"Color", "Price", "Available"};
+//        String[][] data = new String[][]{
+//            {null, "1000","In stock: 12"},
+//            {null, "2000","In stock: 2"},
+//            {null, "3000","In stock: 15"}
+//        };
+//        DefaultTableModel dataModel = new DefaultTableModel(data, columns){
+//            boolean[] canEdit = new boolean [] {
+//                true, false, false
+//            };
+//
+//            public boolean isCellEditable(int rowIndex, int columnIndex) {
+//                return canEdit [columnIndex];
+//            }
+//        };
+//        viewProductVariantTable.setModel(dataModel);
+//
+//        viewProductVariantTable.getColumn("Color").setCellRenderer(new ButtonRenderer());
+//        viewProductVariantTable.getColumn("Color").setCellEditor(new ButtonEditor(new JCheckBox()));
+        
+        
+//        button.addActionListener(
+//            new ActionListener()
+//            {
+//              public void actionPerformed(ActionEvent event)
+//              {
+//                JOptionPane.showMessageDialog(null,"Do you want to modify this line?");
+//              }
+//            }
+//        );
+
+
+        //Category test UI Database
+        CategoryService categoryService = new CategoryService();
+        
+        List<String> type = new ArrayList();
+        
+        categoryService.getAllCategory().forEach(e -> {
+            type.add(e.getType());
+            
+//            if(brands.isEmpty()){
+//                brands.put(e.getBrand(), 1);
+//            }else{
+//                for (String i : brands.keySet()) {
+//                    if(i.equals(e.getBrand())){
+//                        brands.put(i, brands.get(i) + 1);
+//                    }else{
+//                        System.out.println("Added new set");
+//                        brands.put(e.getBrand(), 1);
+//                    }
+//                }
+//            }
+        });
+        
+        List<String> sortedType = removeDuplicates(type);
+        
+        sortedType.forEach(e -> {
+            CategorySectionPanel categoryPanel = new CategorySectionPanel();
+            categoryPanel.setCategoryType(e);
+            
+            HashMap<String, Integer> brands = new HashMap();
+
+            categoryService.getAllCategory().forEach(e2->{
+                if(e2.getType().equals(e)){
+
+                    if(brands.isEmpty()){
+                        brands.put(e2.getBrand(), 1);
+                    }else{
+                        for (String i : brands.keySet()) {
+                            if(i.equals(e2.getBrand())){
+                                brands.put(i, brands.get(i) + 1);
+                            }else{
+                                System.out.println("Added new set");
+                                brands.put(e2.getBrand(), 1);
+                            }
+                        }
+                    }
+                }
+            });
+            
+            for (String i : brands.keySet()) {
+                CategoryThumb thumb = new CategoryThumb();
+                thumb.setThumbTitle(i);
+                thumb.setThumbItems(brands.get(i));
+                thumb.setCategoryType(e);
+                categoryPanel.addThumb(thumb);
+            }
+
+            jPanel19.add(categoryPanel);
+        });
+        
+//        jProgressBar1.setVisible(false);
+        
+//        for (String i : brands.keySet()) {
+//            System.out.println("key: " + i + " value: " + brands.get(i));
+//        }
+
+    }
+    
     public MainFrame() {
         initComponents();
         initStyle();
         
+
 //       cartPanelPopup.setOpaque(false);
 //        cartPanelPopup.setBackground(new Color(0,0,0,125));
         
@@ -440,12 +613,12 @@ public class MainFrame extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
         jTextField3 = new javax.swing.JTextField();
         jLabel50 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
         jLabel51 = new javax.swing.JLabel();
         jTextField6 = new javax.swing.JTextField();
         jLabel55 = new javax.swing.JLabel();
         jTextField7 = new javax.swing.JTextField();
         jLabel63 = new javax.swing.JLabel();
+        jComboBox3 = new javax.swing.JComboBox<>();
         jButton13 = new javax.swing.JButton();
         jLabel64 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
@@ -460,14 +633,29 @@ public class MainFrame extends javax.swing.JFrame {
                 super.paintComponent(g);
                 Graphics2D g2 = (Graphics2D) g.create();
 
+                //        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                //        g2.setColor(new Color(232,232,232));
+                //        g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 25, 25);
+                //
+                //        g2.setColor(Color.GRAY);
+                //        g2.setStroke(new BasicStroke(1));
+                //        g2.drawRoundRect(0, 0, this.getWidth()-1, this.getHeight()-1, 25, 25);
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.setColor(new Color(232,232,232));
+                if(darkRB.isSelected()){
+                    g2.setColor(new Color(38, 42, 48));
+                }else{
+                    g2.setColor(new Color(232,232,232));
+                }
                 g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 25, 25);
 
-                g2.setColor(Color.GRAY);
+                if(darkRB.isSelected()){
+                    g2.setColor(new Color(70, 70, 80));
+                }else{
+                    g2.setColor(new Color(205,205,205));
+                }
+
                 g2.setStroke(new BasicStroke(1));
                 g2.drawRoundRect(0, 0, this.getWidth()-1, this.getHeight()-1, 25, 25);
-
             }
 
         };
@@ -513,10 +701,19 @@ public class MainFrame extends javax.swing.JFrame {
                 Graphics2D g2 = (Graphics2D) g.create();
 
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.setColor(new Color(232,232,232));
+                if(darkRB.isSelected()){
+                    g2.setColor(new Color(38, 42, 48));
+                }else{
+                    g2.setColor(new Color(232,232,232));
+                }
                 g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 25, 25);
 
-                g2.setColor(Color.GRAY);
+                if(darkRB.isSelected()){
+                    g2.setColor(new Color(70, 70, 80));
+                }else{
+                    g2.setColor(new Color(205,205,205));
+                }
+
                 g2.setStroke(new BasicStroke(1));
                 g2.drawRoundRect(0, 0, this.getWidth()-1, this.getHeight()-1, 25, 25);
 
@@ -610,14 +807,29 @@ public class MainFrame extends javax.swing.JFrame {
                 super.paintComponent(g);
                 Graphics2D g2 = (Graphics2D) g.create();
 
+                //        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                //        g2.setColor(new Color(232,232,232));
+                //        g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 25, 25);
+
+                //        g2.setColor(Color.GRAY);
+                //        g2.setStroke(new BasicStroke(1));
+                //        g2.drawRoundRect(0, 0, this.getWidth()-1, this.getHeight()-1, 25, 25);
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.setColor(new Color(232,232,232));
+                if(darkRB.isSelected()){
+                    g2.setColor(new Color(38, 42, 48));
+                }else{
+                    g2.setColor(new Color(232,232,232));
+                }
                 g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 25, 25);
 
-                g2.setColor(Color.GRAY);
+                if(darkRB.isSelected()){
+                    g2.setColor(new Color(70, 70, 80));
+                }else{
+                    g2.setColor(new Color(205,205,205));
+                }
+
                 g2.setStroke(new BasicStroke(1));
                 g2.drawRoundRect(0, 0, this.getWidth()-1, this.getHeight()-1, 25, 25);
-
             }
 
         };
@@ -693,6 +905,12 @@ public class MainFrame extends javax.swing.JFrame {
         };
         jLabel45 = new javax.swing.JLabel();
         jLabel46 = new javax.swing.JLabel();
+        dashboardPanel = new javax.swing.JPanel();
+        dashboardTabPane = new javax.swing.JTabbedPane();
+        jPanel37 = new javax.swing.JPanel();
+        jPanel39 = new javax.swing.JPanel();
+        dashboardPanelHeader = new javax.swing.JPanel();
+        dashboardSearchBar = new javax.swing.JTextField();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         jPanel6 = new javax.swing.JPanel();
         menuPanel = new javax.swing.JPanel();
@@ -932,8 +1150,6 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel50.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel50.setText("Repair cost");
 
-        jTextField5.setPreferredSize(new java.awt.Dimension(60, 35));
-
         jLabel51.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel51.setText("Status");
 
@@ -947,6 +1163,8 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel63.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel63.setText("Estimated Finish");
 
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "On Progress", "Done" }));
+
         javax.swing.GroupLayout jPanel31Layout = new javax.swing.GroupLayout(jPanel31);
         jPanel31.setLayout(jPanel31Layout);
         jPanel31Layout.setHorizontalGroup(
@@ -954,7 +1172,6 @@ public class MainFrame extends javax.swing.JFrame {
             .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
             .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jTextField6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel31Layout.createSequentialGroup()
@@ -967,6 +1184,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jLabel55)
                     .addComponent(jLabel63))
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jComboBox3, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel31Layout.setVerticalGroup(
             jPanel31Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -988,8 +1206,8 @@ public class MainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel51)
                 .addGap(3, 3, 3)
-                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(8, 8, 8)
                 .addComponent(jLabel55)
                 .addGap(3, 3, 3)
                 .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1624,6 +1842,8 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         viewProductVariantTable.setRowHeight(30);
+        viewProductVariantTable.setShowGrid(false);
+        viewProductVariantTable.setShowVerticalLines(true);
         jScrollPane6.setViewportView(viewProductVariantTable);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -1633,11 +1853,11 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane6)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
+            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout viewProductPanelLayout = new javax.swing.GroupLayout(viewProductPanel);
@@ -1657,7 +1877,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(viewProductPanelLayout.createSequentialGroup()
                         .addComponent(productImage1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addGroup(viewProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(viewProductPanelLayout.createSequentialGroup()
                                 .addComponent(jLabel13)
@@ -1676,11 +1896,11 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(jLabel13)
                         .addGap(133, 133, 133))
                     .addGroup(viewProductPanelLayout.createSequentialGroup()
-                        .addGroup(viewProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(productImage1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(viewProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(viewProductPanelLayout.createSequentialGroup()
                                 .addGap(23, 23, 23)
-                                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(productImage1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -2288,6 +2508,68 @@ public class MainFrame extends javax.swing.JFrame {
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
 
+        javax.swing.GroupLayout jPanel37Layout = new javax.swing.GroupLayout(jPanel37);
+        jPanel37.setLayout(jPanel37Layout);
+        jPanel37Layout.setHorizontalGroup(
+            jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 705, Short.MAX_VALUE)
+        );
+        jPanel37Layout.setVerticalGroup(
+            jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 362, Short.MAX_VALUE)
+        );
+
+        dashboardTabPane.addTab("Sales Data", jPanel37);
+
+        javax.swing.GroupLayout jPanel39Layout = new javax.swing.GroupLayout(jPanel39);
+        jPanel39.setLayout(jPanel39Layout);
+        jPanel39Layout.setHorizontalGroup(
+            jPanel39Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 705, Short.MAX_VALUE)
+        );
+        jPanel39Layout.setVerticalGroup(
+            jPanel39Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 362, Short.MAX_VALUE)
+        );
+
+        dashboardTabPane.addTab("tab2", jPanel39);
+
+        javax.swing.GroupLayout dashboardPanelLayout = new javax.swing.GroupLayout(dashboardPanel);
+        dashboardPanel.setLayout(dashboardPanelLayout);
+        dashboardPanelLayout.setHorizontalGroup(
+            dashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dashboardPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(dashboardTabPane)
+                .addContainerGap())
+        );
+        dashboardPanelLayout.setVerticalGroup(
+            dashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(dashboardTabPane)
+        );
+
+        dashboardPanelHeader.setPreferredSize(new java.awt.Dimension(453, 40));
+
+        dashboardSearchBar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dashboardSearchBarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout dashboardPanelHeaderLayout = new javax.swing.GroupLayout(dashboardPanelHeader);
+        dashboardPanelHeader.setLayout(dashboardPanelHeaderLayout);
+        dashboardPanelHeaderLayout.setHorizontalGroup(
+            dashboardPanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dashboardPanelHeaderLayout.createSequentialGroup()
+                .addGap(55, 55, 55)
+                .addComponent(dashboardSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(118, Short.MAX_VALUE))
+        );
+        dashboardPanelHeaderLayout.setVerticalGroup(
+            dashboardPanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(dashboardSearchBar, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Point of Sale - TimeSquare");
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -2708,6 +2990,9 @@ public class MainFrame extends javax.swing.JFrame {
             ticketSearchBar.setBackground(new Color(40, 40, 50));
             salesHistorySearchBar.setBackground(new Color(40, 40, 50));
             
+            jSeparator1.setForeground(new Color(55, 55, 65));
+            jPanel48.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 0, 0, new java.awt.Color(55, 55, 65)));
+            
             dashboardMainMenu.setBackground(new Color(33, 37, 43));
             dashboardMainMenu.setBorder( new FlatLineBorder( new Insets( 0, 0, 0, 0 ), new Color(63, 63, 63), 1, 25 ) );
             
@@ -2760,6 +3045,9 @@ public class MainFrame extends javax.swing.JFrame {
             jPanel18.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 1, new java.awt.Color(240, 240, 240)));
 //            jPanel9.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(240, 240, 240)));
             jSeparator3.setForeground(new Color(240, 240, 240));
+            
+            jSeparator1.setForeground(new Color(240, 240, 240));
+            jPanel48.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 0, 0, new java.awt.Color(240, 240, 240)));
             
             //Search Field
             ticketSearchBar.setBackground(new Color(245,245,245));
@@ -3034,10 +3322,19 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void dashboardMainMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardMainMenuMouseClicked
         // TODO add your handling code here:
+        contentPanel.removeAll();
+        contentPanel.add(dashboardPanel);
+        
         resetMainMenu();
         jLabel27.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icon/chart-icon-white.png")));
         jLabel1.setForeground(Color.white);
+        
+        
     }//GEN-LAST:event_dashboardMainMenuMouseClicked
+
+    private void dashboardSearchBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dashboardSearchBarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dashboardSearchBarActionPerformed
 
     
     /**
@@ -3214,6 +3511,12 @@ public class MainFrame extends javax.swing.JFrame {
         salesHistorySearchBar.putClientProperty("JTextField.trailingComponent", salesSearch);
         
         
+        dashboardTabPane.putClientProperty("JTabbedPane.trailingComponent", dashboardPanelHeader);
+        dashboardTabPane.putClientProperty("JTabbedPane.tabHeight", 40);
+        dashboardSearchBar.putClientProperty("JComponent.roundRect", true);
+        dashboardSearchBar.putClientProperty("JTextField.placeholderText", "Search");
+        dashboardSearchBar.putClientProperty("JTextField.padding", new Insets(2, 9, 2, 9));
+        
 //        jButton3.putClientProperty( "JButton.buttonType", "roundRect" );
 
 
@@ -3229,6 +3532,10 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel contentPanel;
     public static javax.swing.JRadioButtonMenuItem darkRB;
     public static javax.swing.JPanel dashboardMainMenu;
+    private javax.swing.JPanel dashboardPanel;
+    private javax.swing.JPanel dashboardPanelHeader;
+    private javax.swing.JTextField dashboardSearchBar;
+    private javax.swing.JTabbedPane dashboardTabPane;
     private javax.swing.JPanel editProductPanel;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
@@ -3245,6 +3552,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton9;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -3344,7 +3652,9 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel34;
     private javax.swing.JPanel jPanel35;
     private javax.swing.JPanel jPanel36;
+    private javax.swing.JPanel jPanel37;
     private javax.swing.JPanel jPanel38;
+    private javax.swing.JPanel jPanel39;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel40;
     private javax.swing.JPanel jPanel41;
@@ -3387,7 +3697,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JToggleButton jToggleButton2;
