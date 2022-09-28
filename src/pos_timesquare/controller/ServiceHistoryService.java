@@ -85,8 +85,8 @@ public class ServiceHistoryService {
         } catch (SQLException ex) {
             Logger.getLogger(ServiceHistoryService.class.getName()).log(Level.SEVERE, null, ex);
         }     
-    } */
-    
+    } 
+   */ 
    public List<ServiceHistory> getAllServiceHistoryDetails(){
         
         Connection conn = getConnection();
