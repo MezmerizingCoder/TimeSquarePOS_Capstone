@@ -15,24 +15,32 @@ import pos_timesquare.model.Product;
  * @author Cassandra
  */
 public class TestProduct {
+    
     public static void main (String[] args){
     ProductService product = new ProductService();
-    //List<Product> list = product.getAllProductDetails();
-    Product addProduct = new Product();
+    Product p = new Product();
+   List<Product> list = product.getAllProductDetails();
+   
+    System.out.println(list.get(0).getId());
+    System.out.println(list.get(0).getBarcode());
+    System.out.println(list.get(0).getName());
+    System.out.println(list.get(0).getColor());
+    System.out.println(list.get(0).getSize());
+    System.out.println(list.get(0).getStocks());
+    System.out.println(list.get(0).getPrice());
     
-        //System.out.println(list);
-       addProduct.setName("casio");
-       addProduct.setBarcode(01234);
-       addProduct.setSize("Medium");
-       addProduct.setColor("Gold");
-       addProduct.setStocks(23);
-       addProduct.setPrice(1200);
-       
-       product.addProduct(addProduct);
-       product.deleteProductById(1);
-       
-        //System.out.println(list);
-        //System.out.println(product.getProductById(2).getBarcode());
+   
+  // p.setBarcode(2242);
+  // p.setName("Citizen");
+  // p.setColor("silver");
+  // p.setSize("small");
+   //p.setStocks(12);
+  // p.setPrice(25000);
+   
+   //product.addProduct(p);
+   product.deleteProductById(3);
+   product.UpdateProduct(2, 1111,"Rolex", "silver", "large", 23, 50000  );
+   
     }
     
 }
