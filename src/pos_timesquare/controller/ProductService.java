@@ -29,7 +29,7 @@ public class ProductService {
 
 public ProductService(){
     
-    Connection conn = getConnection();
+    /*Connection conn = getConnection();
         try {
             DatabaseMetaData dbmd = conn.getMetaData();
             ResultSet tables = dbmd.getTables(null, null, "Product", null);
@@ -63,7 +63,7 @@ public ProductService(){
                 }
                 if(!dbmd.getColumns(null, null, "Product", "price").next()){
                     Statement stmt = conn.createStatement();
-                    String sql = "ALTER TABLE Product ADD price REAL"; 
+                    String sql = "ALTER TABLE Product ADD price FLOAT"; 
                     stmt.executeUpdate(sql);
                 }
                 
@@ -87,7 +87,7 @@ public ProductService(){
         } catch (SQLException ex) {
             Logger.getLogger(ProductService.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+*/
 }
 
 public List<Product> getAllProductDetails(){
@@ -147,10 +147,8 @@ public Product getProductById(int id){
             
             }catch (SQLException ex) {
               return null;
-              
             }
     }
-
     public void addProduct(Product product){
         try {
             Connection conn = getConnection();
@@ -175,9 +173,10 @@ public Product getProductById(int id){
         }
         
     }
+    
     public void deleteProductById(int id){
         try {
-            Connection conn = getConnection();
+           Connection conn = getConnection();
             
             pst = conn.prepareStatement("DELETE FROM Product WHERE id = ?");
             
@@ -192,18 +191,19 @@ public Product getProductById(int id){
             Logger.getLogger(ProductService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-      public void UpdateProduct(int id, int barcode, String name, String size, String color, int stocks, float price){
+    public void UpdateProduct(int id, int barcode, String name, String color, String size, int stocks, float price){
         try {
             Connection conn = getConnection();
             Product product = new Product();
-            pst = conn.prepareStatement("UPDATE Product SET barcode = ? , " + "name = ? " + "size = ? " + "color = ? " + "price = ? " + "stocks = ? " + " WHERE id = ?");
+            pst = conn.prepareStatement("UPDATE Product SET barcode =?, name =?, color =?, size =?, stocks=?, price =?  WHERE id =?");
             
             pst.setInt(1, barcode);
             pst.setString(2, name);
-            pst.setString(3, size);
-            pst.setString(4, color);
+            pst.setString(3, color);
+            pst.setString(4, size);
             pst.setInt(5, stocks);
             pst.setFloat(6, price);
+            pst.setInt(7, id);
             
             pst.executeUpdate();
             
@@ -214,6 +214,4 @@ public Product getProductById(int id){
             Logger.getLogger(ProductService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-
 }
