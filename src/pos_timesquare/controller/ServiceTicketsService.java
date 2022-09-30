@@ -27,49 +27,49 @@ public class ServiceTicketsService {
     PreparedStatement pst;
     ResultSet rs;
  
-   /*      public ServiceTicketsService(){
+      /*   public ServiceTicketsService(){
         Connection conn = getConnection();
         try {
             DatabaseMetaData dbmd = conn.getMetaData();
-            ResultSet tables = dbmd.getTables(null, null, "ServiceHistory", null);
+            ResultSet tables = dbmd.getTables(null, null, "ServiceTickets", null);
             if (tables.next()) {
                 System.out.println("Exist");
                 
-                if(!dbmd.getColumns(null, null, "ServiceHistory", "CustomerName").next()){
+                if(!dbmd.getColumns(null, null, "ServiceTickets", "CustomerName").next()){
                     Statement stmt = conn.createStatement();
-                    String sql = "ALTER TABLE ServiceHistory ADD CustomerName TEXT"; 
+                    String sql = "ALTER TABLE ServiceTickets ADD CustomerName TEXT"; 
                     stmt.executeUpdate(sql);
                 }
-                if(!dbmd.getColumns(null, null, "ServiceHistory", "Defects").next()){
+                if(!dbmd.getColumns(null, null, "ServiceTickets", "Defects").next()){
                     Statement stmt = conn.createStatement();
-                    String sql = "ALTER TABLE ServiceHistory ADD Defects TEXT"; 
+                    String sql = "ALTER TABLE ServiceTickets ADD Defects TEXT"; 
                     stmt.executeUpdate(sql);
                 }
-                if(!dbmd.getColumns(null, null, "ServiceHistory", "Price").next()){
+                if(!dbmd.getColumns(null, null, "ServiceTickets", "Price").next()){
                     Statement stmt = conn.createStatement();
-                    String sql = "ALTER TABLE ServiceHistory ADD Price REAL"; 
+                    String sql = "ALTER TABLE ServiceTickets ADD Price REAL"; 
                     stmt.executeUpdate(sql);
                 }
-                if(!dbmd.getColumns(null, null, "ServiceHistory", "WalkInDate").next()){
+                if(!dbmd.getColumns(null, null, "ServiceTickets", "WalkInDate").next()){
                     Statement stmt = conn.createStatement();
-                    String sql = "ALTER TABLE ServiceHistory ADD WalkInDate TEXT"; 
+                    String sql = "ALTER TABLE ServiceTickets ADD WalkInDate TEXT"; 
                     stmt.executeUpdate(sql);
                 }
-                if(!dbmd.getColumns(null, null, "ServiceHistory", "EstimateFinish").next()){
+                if(!dbmd.getColumns(null, null, "ServiceTickets", "EstimateFinish").next()){
                     Statement stmt = conn.createStatement();
-                    String sql = "ALTER TABLE ServiceHistory ADD EstimateFinish TEXT"; 
+                    String sql = "ALTER TABLE ServiceTickets ADD EstimateFinish TEXT"; 
                     stmt.executeUpdate(sql);
                 }
-                if(!dbmd.getColumns(null, null, "ServiceHistory", "Status").next()){
+                if(!dbmd.getColumns(null, null, "ServiceTickets", "Status").next()){
                     Statement stmt = conn.createStatement();
-                    String sql = "ALTER TABLE ServiceHistory ADD Status TEXT"; 
+                    String sql = "ALTER TABLE ServiceTickets ADD Status TEXT"; 
                     stmt.executeUpdate(sql);
                 }
             }
             else {
                 System.out.println("Not exist");
                 Statement stmt = conn.createStatement();
-                String sql = "CREATE TABLE ServiceHistory(" +
+                String sql = "CREATE TABLE ServiceTickets(" +
                    "id INTEGER NOT NULL UNIQUE," +
                    " CustomerName TEXT, " + 
                    " Defects TEXT, " + 
@@ -85,30 +85,30 @@ public class ServiceTicketsService {
         } catch (SQLException ex) {
             Logger.getLogger(ServiceTicketsService.class.getName()).log(Level.SEVERE, null, ex);
         }     
-    } 
-   */
-   public List<ServiceTickets> getAllServiceHistoryDetails(){
+    } */
+   
+   public List<ServiceTickets> getAllServiceTicketsDetails(){
         
         Connection conn = getConnection();
         List<ServiceTickets> s = new ArrayList<>();
         
         try {
             System.out.println("Getting data");
-            pst = conn.prepareStatement("SELECT id, CustomerName, Defects, Price, WalkInDate, EstimateFinish, Status FROM ServiceHistory");
+            pst = conn.prepareStatement("SELECT id, CustomerName, Defects, Price, WalkInDate, EstimateFinish, Status FROM ServiceTickets");
             rs = pst.executeQuery();
             
             
             while(rs.next()){
-                ServiceTickets sh = new ServiceTickets();
-                sh.setId(Integer.parseInt(rs.getString("id")));
-                sh.setCustomerName(rs.getString("CustomerName"));
-                sh.setDefects(rs.getString("Defects"));
-                sh.setPrice(Float.parseFloat(rs.getString("Price")));
-                sh.setWalkInDate(rs.getString("WalkInDate"));
-                sh.setEstimateFinish(rs.getString("EstimateFinish"));
-                sh.setStatus(rs.getString("Status"));
+                ServiceTickets st = new ServiceTickets();
+                st.setId(Integer.parseInt(rs.getString("id")));
+                st.setCustomerName(rs.getString("CustomerName"));
+                st.setDefects(rs.getString("Defects"));
+                st.setPrice(Float.parseFloat(rs.getString("Price")));
+                st.setWalkInDate(rs.getString("WalkInDate"));
+                st.setEstimateFinish(rs.getString("EstimateFinish"));
+                st.setStatus(rs.getString("Status"));
 
-                s.add(sh);
+                s.add(st);
             }
             return s;
             
@@ -117,19 +117,19 @@ public class ServiceTicketsService {
         }
     }
          
-     public void addServiceHistory(ServiceTickets sh){
+     public void addServiceTickets(ServiceTickets st){
         try {
             Connection conn = getConnection();
             
-            pst = conn.prepareStatement("INSERT INTO ServiceHistory VALUES(?, ?, ?, ?, ?, ?, ?)");
+            pst = conn.prepareStatement("INSERT INTO ServiceTickets VALUES(?, ?, ?, ?, ?, ?, ?)");
             
             pst.setString(1, null);
-            pst.setString(2, sh.getCustomerName());
-            pst.setString(3, sh.getDefects());
-            pst.setFloat(4, sh.getPrice());
-            pst.setString(5, sh.getWalkInDate());
-            pst.setString(6, sh.getEstimateFinish());
-            pst.setString(7, sh.getStatus());
+            pst.setString(2, st.getCustomerName());
+            pst.setString(3, st.getDefects());
+            pst.setFloat(4, st.getPrice());
+            pst.setString(5, st.getWalkInDate());
+            pst.setString(6, st.getEstimateFinish());
+            pst.setString(7, st.getStatus());
             
             pst.executeUpdate();
             
@@ -142,10 +142,10 @@ public class ServiceTicketsService {
         
     }
      
-    public void deleteServiceHistoryById(int id){
+    public void deleteServiceTicketsById(int id){
         try {
            Connection conn = getConnection();   
-            pst = conn.prepareStatement("DELETE FROM ServiceHistory WHERE id = ?");    
+            pst = conn.prepareStatement("DELETE FROM ServiceTickets WHERE id = ?");    
             pst.setInt(1, id);          
             pst.executeUpdate();
             
@@ -156,12 +156,12 @@ public class ServiceTicketsService {
             Logger.getLogger(ServiceTicketsService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public void UpdateServiceHistory(int id, String customerName, String defects, float price, String walkInDate, String estimateFinish, String status){
+    public void UpdateServiceTickets(int id, String customerName, String defects, float price, String walkInDate, String estimateFinish, String status){
         try {
             Connection conn = getConnection();
-            ServiceTickets sh = new ServiceTickets();
+            ServiceTickets st = new ServiceTickets();
             
-            pst = conn.prepareStatement("UPDATE ServiceHistory SET CustomerName =?, Defects =?, Price =?, WalkInDate =?, EstimateFinish =?, Status =?  WHERE id =?");         
+            pst = conn.prepareStatement("UPDATE ServiceTickets SET CustomerName =?, Defects =?, Price =?, WalkInDate =?, EstimateFinish =?, Status =?  WHERE id =?");         
             pst.setString(1, customerName);
             pst.setString(2, defects);
             pst.setFloat(3, price);
