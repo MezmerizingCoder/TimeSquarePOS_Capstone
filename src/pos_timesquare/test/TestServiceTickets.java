@@ -15,8 +15,8 @@ import pos_timesquare.model.ServiceTickets;
  */
 public class TestServiceTickets {
     public static void main(String[] args) {
-        ServiceTicketsService shs = new ServiceTicketsService();
-        ServiceTickets sh = new ServiceTickets();
+        ServiceTicketsService sts = new ServiceTicketsService();
+        ServiceTickets st = new ServiceTickets();
         
    //   List<ServiceTickets> list = shs.getAllServiceHistoryDetails();
       
@@ -28,16 +28,16 @@ public class TestServiceTickets {
      //   System.out.println(list.get(0).getEstimateFinish());
      //   System.out.println(list.get(0).getStatus());
        
-       sh.setCustomerName("ErickaSF");
-       sh.setDefects("palalalaa");
-       sh.setPrice(2690);
-       sh.setWalkInDate("September-10-2022");
-       sh.setEstimateFinish("September-17-2022");
-      sh.setStatus("Done");
+       st.setCustomerName("EraSF");
+       st.setDefects("palalalaa");
+       st.setPrice(2690);
+       st.setWalkInDate("September-20-2022");
+       st.setEstimateFinish("September-27-2022");
+      st.setStatus("Done");
         
-     shs.addServiceHistory(sh);
-      //shs.deleteServiceHistoryById(1);
-      shs.UpdateServiceHistory(2, "PaulJustineFaustino", "sfddgdgda", 2340, "August-20-2020", "August-25-2020", "Done");
+     sts.addServiceTickets(st);
+     sts.deleteServiceTicketsById(1);
+     sts.UpdateServiceTickets(2, "PaulJustineFaustino", "sfddgdgda", 2340, "August-20-2020", "August-25-2020", "Done");
 
         
     }
