@@ -17,10 +17,22 @@ import pos_timesquare.model.Product;
 public class TestProduct {
     
     public static void main (String[] args){
-    ProductService product = new ProductService();
-    List<Product> list = product.getAllProductDetails();
+        ProductService product = new ProductService();
+//        List<Product> list = product.getAllProductDetails();
     
-        System.out.println(list);
+//        System.out.println(list);
+        
+//        Product test = new Product();
+//        test.setId(1);
+//        test.setBarcode(12345);
+//        test.setName("Test Update");
+//        test.setPrice(20000);
+//        test.setColor("red");
+//        test.setStocks(2);
+//        test.setSize("small");
+//        
+//        product.updateProduct(1, test);
+
     }
     
 }
