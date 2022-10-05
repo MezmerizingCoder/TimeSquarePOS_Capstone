@@ -27,7 +27,7 @@ public class ServiceHistoryService {
     PreparedStatement pst;
     ResultSet rs;
  
-   /*      public ServiceHistoryService(){
+         public ServiceHistoryService(){
         Connection conn = getConnection();
         try {
             DatabaseMetaData dbmd = conn.getMetaData();
@@ -80,13 +80,15 @@ public class ServiceHistoryService {
                    "PRIMARY KEY(id AUTOINCREMENT))"; 
 
                 stmt.executeUpdate(sql);
-                System.out.println("Created table in given database...");  
+                System.out.println("Created table in given database..."); 
+                conn.close();
             }
+            conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(ServiceHistoryService.class.getName()).log(Level.SEVERE, null, ex);
         }     
     } 
-   */ 
+    
    public List<ServiceHistory> getAllServiceHistoryDetails(){
         
         Connection conn = getConnection();
