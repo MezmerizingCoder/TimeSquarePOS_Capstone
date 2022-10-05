@@ -27,7 +27,7 @@ public class ServiceTicketsService {
     PreparedStatement pst;
     ResultSet rs;
  
-      /*   public ServiceTicketsService(){
+         public ServiceTicketsService(){
         Connection conn = getConnection();
         try {
             DatabaseMetaData dbmd = conn.getMetaData();
@@ -81,11 +81,13 @@ public class ServiceTicketsService {
 
                 stmt.executeUpdate(sql);
                 System.out.println("Created table in given database...");  
+                conn.close();
             }
+            conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(ServiceTicketsService.class.getName()).log(Level.SEVERE, null, ex);
         }     
-    } */
+    }
    
    public List<ServiceTickets> getAllServiceTicketsDetails(){
         
