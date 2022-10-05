@@ -27,7 +27,7 @@ public class TransactionHistoryService {
     PreparedStatement pst;
     ResultSet rs;
  
-      /*   public TransactionHistoryService(){
+         public TransactionHistoryService(){
         Connection conn = getConnection();
         try {
             DatabaseMetaData dbmd = conn.getMetaData();
@@ -69,11 +69,13 @@ public class TransactionHistoryService {
 
                 stmt.executeUpdate(sql);
                 System.out.println("Created table in given database...");  
+                conn.close();
             }
+            conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(TransactionHistoryService.class.getName()).log(Level.SEVERE, null, ex);
         }     
-    } */
+    } 
     
     public List<TransactionHistory> getAllTransactionDetails(){
         
