@@ -17,11 +17,11 @@ import pos_timesquare.model.Notification;
 public class TestNotification {
    public static void main(String[] args) {
      NotificationService nfs = new NotificationService();
-     List<Notification> list = nfs.getAllNotificationDetails();
+   //  List<Notification> list = nfs.getAllNotificationDetails();
         
-    System.out.println(list.get(1).getId());
-    System.out.println(list.get(1).getDate());
-    System.out.println(list.get(1).getTime());
+   // System.out.println(list.get(1).getId());
+   // System.out.println(list.get(1).getDate());
+  //  System.out.println(list.get(1).getTime());
     
     
     

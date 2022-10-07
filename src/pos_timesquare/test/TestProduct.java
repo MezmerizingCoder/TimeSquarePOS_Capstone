@@ -30,14 +30,14 @@ public class TestProduct {
     System.out.println(list.get(0).getPrice());
     
    
-  // p.setBarcode(2242);
-  // p.setName("Citizen");
-  // p.setColor("silver");
-  // p.setSize("small");
-   //p.setStocks(12);
-  // p.setPrice(25000);
+  p.setBarcode(2242);
+  p.setName("Citizen");
+  p.setColor("silver");
+  p.setSize("small");
+  p.setStocks(12);
+   p.setPrice(25000);
    
-   //product.addProduct(p);
+   product.addProduct(p);
    product.deleteProductById(3);
    product.UpdateProduct(2, 1111,"Rolex", "silver", "large", 23, 50000  );
    
