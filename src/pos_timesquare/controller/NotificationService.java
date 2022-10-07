@@ -61,7 +61,9 @@ public class NotificationService {
 
                 stmt.executeUpdate(sql);
                 System.out.println("Created table in given database...");  
+                conn.close();
             }
+            conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(NotificationService.class.getName()).log(Level.SEVERE, null, ex);
         }     
@@ -87,6 +89,7 @@ public class NotificationService {
                 
                 notifications.add(notification);
             }
+            conn.close();
             return notifications;
             
     }catch (SQLException ex) {
@@ -111,7 +114,7 @@ public class NotificationService {
                 notification.setTime(rs.getString("time"));
                
             }
-            
+            conn.close();
             return notification;  
             
             }catch (SQLException ex) {
