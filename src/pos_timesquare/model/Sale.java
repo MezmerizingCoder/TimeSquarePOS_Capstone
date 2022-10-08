@@ -13,6 +13,7 @@ public class Sale {
     
     private int id;
     private int productid;
+    private String date; 
     private int stocks;
     
     public int getId() {
@@ -29,6 +30,13 @@ public class Sale {
     
      public void setProductId(int productid) {
         this.productid = productid;
+    }
+     public String getDate() {
+        return date;
+    }
+    
+     public void setDate(String date) {
+        this.date = date;
     }
      
      public int getStocks() { 

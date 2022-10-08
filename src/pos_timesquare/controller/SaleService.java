@@ -41,6 +41,11 @@ Connection conn = null;
                     String sql = "ALTER TABLE Sales ADD productid INTEGER"; 
                     stmt.executeUpdate(sql);
                 }
+                if(!dbmd.getColumns(null, null, "Sales", "date").next()){
+                    Statement stmt = conn.createStatement();
+                    String sql = "ALTER TABLE Sales ADD date TEXT"; 
+                    stmt.executeUpdate(sql);
+                }
                 if(!dbmd.getColumns(null, null, "Sales", "stocks").next()){
                     Statement stmt = conn.createStatement();
                     String sql = "ALTER TABLE Sales ADD stocks INTEGER"; 
@@ -54,6 +59,7 @@ Connection conn = null;
                 String sql = "CREATE TABLE Sales(" +
                    "id INTEGER NOT NULL UNIQUE," +
                    " productid INTEGER, " + 
+                   " date TEXT, " + 
                    " stocks INTEGER, " + 
                    "PRIMARY KEY(id AUTOINCREMENT))"; 
 
@@ -73,13 +79,14 @@ Connection conn = null;
         
         try {
             System.out.println("Getting data");
-            pst = conn.prepareStatement("SELECT id, productid, stocks FROM Sales");
+            pst = conn.prepareStatement("SELECT id, productid, date, stocks FROM Sales");
             rs = pst.executeQuery();
             
             while(rs.next()){
                 Sale sale = new Sale();
                 sale.setId(Integer.parseInt(rs.getString("id")));
                 sale.setProductId(Integer.parseInt(rs.getString("productid")));
+                sale.setDate(rs.getString("date"));
                 sale.setStocks(Integer.parseInt(rs.getString("stocks")));
                 
                 sales.add(sale);
@@ -95,11 +102,12 @@ Connection conn = null;
         try {
             Connection conn = getConnection();
             
-            pst = conn.prepareStatement("INSERT INTO Sales VALUES(?, ?, ?)");
+            pst = conn.prepareStatement("INSERT INTO Sales VALUES(?, ?, ?, ?)");
             
             pst.setString(1, null);
             pst.setInt(2, sale.getProductId());
-            pst.setInt(3, sale.getStocks());
+            pst.setString(3, sale.getDate());
+            pst.setInt(4, sale.getStocks());
 
             pst.executeUpdate();
             
@@ -129,15 +137,16 @@ Connection conn = null;
         }
     }
      
-     public void UpdateSaleById(int id, int productid, int stocks){
+     public void UpdateSaleById(int id, int productid, String date, int stocks){
         try {
             Connection conn = getConnection();
             Sale sale = new Sale();
-            pst = conn.prepareStatement("UPDATE Sales SET productid = ? , " + "stocks = ? " + " WHERE id = ?");
+            pst = conn.prepareStatement("UPDATE Sales SET productid = ? , date = ? , " + "stocks = ? " + " WHERE id = ?");
             
             pst.setInt(1, productid);
-            pst.setInt(2, stocks);
-            pst.setInt(3, id);
+            pst.setString(2, date);
+            pst.setInt(3, stocks);
+            pst.setInt(4, id);
             
             pst.executeUpdate();
             
