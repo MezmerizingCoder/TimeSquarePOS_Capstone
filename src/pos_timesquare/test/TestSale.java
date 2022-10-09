@@ -6,7 +6,9 @@
 package pos_timesquare.test;
 
 
+import java.util.List;
 import pos_timesquare.controller.SaleService;
+import pos_timesquare.model.Sale;
 /**
  *
  * @author DUDA
@@ -17,20 +19,23 @@ public class TestSale {
     
      SaleService sales = new SaleService();
      
-     //List<Sale> list = sales.getAllSaleDetails();
+     List<Sale> list = sales.getAllSaleDetails();
         
-     //System.out.println(list.get(1).getProductId());
-     //System.out.println(list.get(1).getStocks());
+     System.out.println(list.get(2).getProductId());
+     System.out.println(list.get(2).getDate());
+     System.out.println(list.get(2).getStocks());
+    
      
         //Sale addsale = new Sale();
         
-        //addsale.setProductId(145555);
-        //addsale.setStocks(100);
+        //addsale.setProductId(3);
+        //addsale.setDate("9/26/22");
+        //addsale.setStocks(120);
         
         //sales.addSale(addsale);
-        //sales.deleteSaleById(1);
+       //sales.deleteSaleById(1);
         
-        sales.UpdateSaleById(2 , 10222, 100);
+       //sales.UpdateSaleById(2 , 2, "9/25/22" , 100);
            
     }
     

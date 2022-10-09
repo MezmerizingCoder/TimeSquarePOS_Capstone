@@ -17,9 +17,19 @@ import pos_timesquare.model.Product;
 public class TestProduct {
     
     public static void main (String[] args){
-        ProductService product = new ProductService();
-//        List<Product> list = product.getAllProductDetails();
+    ProductService product = new ProductService();
+    Product p = new Product();
+   List<Product> list = product.getAllProductDetails();
+   
+    System.out.println(list.get(0).getId());
+    System.out.println(list.get(0).getBarcode());
+    System.out.println(list.get(0).getName());
+    System.out.println(list.get(0).getColor());
+    System.out.println(list.get(0).getSize());
+    System.out.println(list.get(0).getStocks());
+    System.out.println(list.get(0).getPrice());
     
+//<<<<<<< HEAD (77c3a0e) - Edit Variant
 //        System.out.println(list);
         
 //        Product test = new Product();
@@ -33,6 +43,20 @@ public class TestProduct {
 //        
 //        product.updateProduct(1, test);
 
+//=======
+   
+  p.setBarcode(2242);
+  p.setName("Citizen");
+  p.setColor("silver");
+  p.setSize("small");
+  p.setStocks(12);
+   p.setPrice(25000);
+   
+   product.addProduct(p);
+   product.deleteProductById(3);
+   product.UpdateProduct(2, 1111,"Rolex", "silver", "large", 23, 50000  );
+   
+//>>>>>>> origin/master (fd87b54) - 
     }
     
 }

@@ -22,8 +22,8 @@ public class TestLoginFunction {
    //  u.setUsername("pj");
    //  u.setPassword("paul123");
    // u.setRole("employee");
-   //  ls.getMatchAccount("ericka", "1226");
-     ls.getMatchAccount("admin", "qwerty");
+     ls.getMatchAccount("ericka", "1226");
+    // ls.getMatchAccount("admin", "qwerty");
    //ls.getMatchAccount(u);
    // ls.getUserType(u);
     }

@@ -27,7 +27,7 @@ public class TransactionHistoryService {
     PreparedStatement pst;
     ResultSet rs;
  
-    /*     public TransactionHistoryService(){
+         public TransactionHistoryService(){
         Connection conn = getConnection();
         try {
             DatabaseMetaData dbmd = conn.getMetaData();
@@ -52,7 +52,7 @@ public class TransactionHistoryService {
                 }
                 if(!dbmd.getColumns(null, null, "TransactionHistory", "totalPrice").next()){
                     Statement stmt = conn.createStatement();
-                    String sql = "ALTER TABLE TransactionHistory ADD totalPrice FLOAT"; 
+                    String sql = "ALTER TABLE TransactionHistory ADD totalPrice REAL"; 
                     stmt.executeUpdate(sql);
                 }      
             }
@@ -64,16 +64,18 @@ public class TransactionHistoryService {
                    " productId INTEGER, " + 
                    " transactionDate TEXT, " + 
                    " orders INTEGER, " +
-                   " totalPrice FLOAT, " +
+                   " totalPrice REAL, " +
                    "PRIMARY KEY(id AUTOINCREMENT))"; 
 
                 stmt.executeUpdate(sql);
                 System.out.println("Created table in given database...");  
+                conn.close();
             }
+            conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(TransactionHistoryService.class.getName()).log(Level.SEVERE, null, ex);
         }     
-    } */
+    } 
     
     public List<TransactionHistory> getAllTransactionDetails(){
         
