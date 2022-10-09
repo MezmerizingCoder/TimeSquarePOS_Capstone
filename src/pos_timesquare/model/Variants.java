@@ -15,6 +15,42 @@ public class Variants {
     private int product_id;
     private String type;
     private String name;
+    private int main_variant;
+    private float price;
+    private int stocks;
+    private int barcode;
+
+    public int getMainVariant() {
+        return main_variant;
+    }
+
+    public void setMainVariant(int main_variant) {
+        this.main_variant = main_variant;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public int getStocks() {
+        return stocks;
+    }
+
+    public void setStocks(int stocks) {
+        this.stocks = stocks;
+    }
+
+    public int getBarcode() {
+        return barcode;
+    }
+
+    public void setBarcode(int barcode) {
+        this.barcode = barcode;
+    }
 
     public String getName() {
         return name;
