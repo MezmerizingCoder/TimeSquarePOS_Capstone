@@ -17,14 +17,21 @@ import pos_timesquare.model.Notification;
 public class TestNotification {
    public static void main(String[] args) {
      NotificationService nfs = new NotificationService();
-   //  List<Notification> list = nfs.getAllNotificationDetails();
+      Notification n = new Notification();
+     List<Notification> list = nfs.getAllNotificationDetails();
         
-   // System.out.println(list.get(1).getId());
-   // System.out.println(list.get(1).getDate());
-  //  System.out.println(list.get(1).getTime());
+//   System.out.println(list.get(1).getId());
+//    System.out.println(list.get(1).getDate());
+//   System.out.println(list.get(1).getTime());
     
     
-    
-    
+       
+        n.setProductId(5);
+        n.setDate("9/27/22");
+        n.setTime("06:00pm");
+        
+       nfs.addNotification(n);
+       nfs.deleteNotificationById(3);
+       nfs.UpdateNotification(2 , 2, "9/24/22" , "07:00pm");
    }
 }
