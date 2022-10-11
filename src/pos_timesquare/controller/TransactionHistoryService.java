@@ -77,7 +77,7 @@ public class TransactionHistoryService {
         }     
     } 
     
-    public List<TransactionHistory> getAllTransactionDetails(){
+    public List<TransactionHistory> getAllTransactionHistoryDetails(){
         
         Connection conn = getConnection();
         List<TransactionHistory> t = new ArrayList<>();

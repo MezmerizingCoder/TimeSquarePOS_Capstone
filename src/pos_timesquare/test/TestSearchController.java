@@ -18,7 +18,7 @@ public class TestSearchController {
     
         SearchController sc = new SearchController();
 
-        sc.searchSalesByProductName("Citizen");
+        sc.searchSalesByProductName("Rolex");
         //sc.searchProductByName("Citizen");
        
     }
