@@ -21,18 +21,18 @@ public class TestSale {
      
      List<Sale> list = sales.getAllSaleDetails();
         
-     System.out.println(list.get(2).getProductId());
-     System.out.println(list.get(2).getDate());
-     System.out.println(list.get(2).getStocks());
+//     System.out.println(list.get(2).getProductId());
+//     System.out.println(list.get(2).getDate());
+//     System.out.println(list.get(2).getStocks());
     
      
-        //Sale addsale = new Sale();
+        Sale addsale = new Sale();
         
-        //addsale.setProductId(3);
-        //addsale.setDate("9/26/22");
-        //addsale.setStocks(120);
+        addsale.setProductId(2);
+        addsale.setDate("2022-10-22");
+        addsale.setStocks(120);
+        sales.addSale(addsale);
         
-        //sales.addSale(addsale);
        //sales.deleteSaleById(1);
         
        //sales.UpdateSaleById(2 , 2, "9/25/22" , 100);

@@ -27,8 +27,8 @@ public class SearchController {
         try {
          
             System.out.println("Getting data");
-            pst = conn.prepareStatement("SELECT Sales.productid, Product.name, Sales.id, Product.id, Sales.stocks " + " FROM Sales, Product " 
-                    + "WHERE Sales.productid = Product.id AND name = ?" );
+            pst = conn.prepareStatement("SELECT Sales.productid, Product.name, Sales.id, Product.id, Sales.stocks " + " FROM Sales, Product " +
+                                        "WHERE Sales.productid = Product.id AND name = ?" );
             
             pst.setString(1,name);
             
