@@ -32,6 +32,7 @@ import pos_timesquare.model.Product;
 import pos_timesquare.model.Variants;
 import static pos_timesquare.view.MainFrame.addProductVariants;
 import static pos_timesquare.view.MainFrame.blurBGPanel;
+import static pos_timesquare.view.MainFrame.checkoutProduct;
 import static pos_timesquare.view.MainFrame.darkRB;
 import static pos_timesquare.view.MainFrame.editProductNameTextField;
 import static pos_timesquare.view.MainFrame.editProductPanel;
@@ -41,6 +42,7 @@ import static pos_timesquare.view.MainFrame.jPanel11;
 import static pos_timesquare.view.MainFrame.jPanel45;
 import static pos_timesquare.view.MainFrame.jPanel46;
 import static pos_timesquare.view.MainFrame.jPanel47;
+import static pos_timesquare.view.MainFrame.jSpinner4;
 import static pos_timesquare.view.MainFrame.popupContentPanel;
 import static pos_timesquare.view.MainFrame.popupPanel;
 import static pos_timesquare.view.MainFrame.productVariants;
@@ -50,6 +52,8 @@ import static pos_timesquare.view.MainFrame.viewProductName;
 import static pos_timesquare.view.MainFrame.viewProductPanel;
 import static pos_timesquare.view.MainFrame.viewProductVariantTable;
 import static pos_timesquare.view.MainFrame.selectedProduct;
+import static pos_timesquare.view.MainFrame.viewProductPrice;
+import static pos_timesquare.view.MainFrame.viewSelectedVariant;
 
 /**
  *
@@ -208,6 +212,8 @@ public class ProductThumb extends JPanel {
         jPanel40.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 
+                viewSelectedVariant = new HashMap<>();
+                
                 HashMap<String, List<Variants>> variants = new HashMap<>();
                 Object[][] sortedVariants;
                 
@@ -217,7 +223,17 @@ public class ProductThumb extends JPanel {
                 popupPanel.setVisible(true);
                 popupContentPanel.removeAll();
                 popupContentPanel.add(viewProductPanel);
+                
+                ///checkout thumb
                 viewProductName.setText(productDetails.getName());
+                jSpinner4.setValue(0);
+                checkoutProduct.forEach((k, e)->{
+                    if(k == productDetails.getId()){
+                        jSpinner4.setValue(e.getStocks());
+                    }
+                });
+                
+                selectedProduct = productDetails;
                 
                 jPanel11.removeAll();
                 
@@ -238,6 +254,7 @@ public class ProductThumb extends JPanel {
                         temp.add(e);
                         variants.put(e.getType(), temp);
                     }
+                    
                 });
                 
                 
@@ -246,6 +263,7 @@ public class ProductThumb extends JPanel {
                 
 //                List<String> list = new ArrayList<>();
 //                
+                ///view product table row
                 DefaultTableModel model = (DefaultTableModel) viewProductVariantTable.getModel();
                 model.setRowCount(0);
                 Object rowData[] = new Object[10]; 

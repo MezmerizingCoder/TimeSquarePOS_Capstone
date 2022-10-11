@@ -12,10 +12,13 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import static pos_timesquare.view.MainFrame.checkoutProduct;
 import static pos_timesquare.view.MainFrame.darkRB;
 
 /**
@@ -67,6 +70,36 @@ public class CheckoutProductThumbPanel extends JPanel{
     private JLabel jLabel25 = new JLabel();
     
     private float price;
+    private int items;
+    private String variants;
+    private String productName;
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+        jLabel20.setText(productName);
+    }
+
+    public String getVariants() {
+        return variants;
+    }
+
+    public void setVariants(String variants) {
+        this.variants = variants;
+        jLabel24.setText(variants);
+    }
+
+    public int getItems() {
+        return items;
+    }
+
+    public void setItems(int items) {
+        this.items = items;
+        jSpinner2.setValue(items);
+    }
 
     public float getPrice() {
         return price;
@@ -77,7 +110,7 @@ public class CheckoutProductThumbPanel extends JPanel{
         jLabel25.setText(String.valueOf(price));
     }
     
-    CheckoutProductThumbPanel(){
+    CheckoutProductThumbPanel(int key){
         
         //jLabel21.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
@@ -94,7 +127,7 @@ public class CheckoutProductThumbPanel extends JPanel{
         jLabel25.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel25.setText("P3,400");
 
-        jLabel26.setText("Small");
+//        jLabel26.setText("Small");
         
         javax.swing.GroupLayout jPanel25Layout = new javax.swing.GroupLayout(jPanel25);
         jPanel25.setLayout(jPanel25Layout);
@@ -160,7 +193,20 @@ public class CheckoutProductThumbPanel extends JPanel{
                 .addContainerGap())
         );
         
+        jButton9.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                checkoutProduct.remove(key);
+                removeThumb();
+                repaint();
+                revalidate();
+            }
+        
+        });
         setLayout(new BorderLayout());
         add(checkoutProductThumbPanel);
+    }
+    public void removeThumb(){
+        this.getParent().remove(this);
     }
 }

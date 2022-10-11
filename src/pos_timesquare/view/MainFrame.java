@@ -96,10 +96,11 @@ public class MainFrame extends javax.swing.JFrame {
     User user = new User();
     public static Product selectedProduct = new Product();
     
+    public static HashMap<String, String> viewSelectedVariant;
     public static HashMap<String, List<String>> addProductVariants = new HashMap<>();
     public static Set<List<String>> variantCombination = null;
     public static List<Variants> productVariants = new ArrayList<>(); 
-    
+    public static HashMap<Integer, Variants> checkoutProduct = new HashMap<>();
     
     JPanel test;
     JToggleButton button = new JToggleButton();
@@ -262,10 +263,10 @@ public class MainFrame extends javax.swing.JFrame {
         
         checkoutThumbScrollPane.add(checkoutProductThumbPanel);
         
-        CheckoutProductThumbPanel product = new CheckoutProductThumbPanel();
-        product.setPrice(1000);
-        
-        checkoutThumbScrollPane.add(product);
+//        CheckoutProductThumbPanel product = new CheckoutProductThumbPanel();
+//        product.setPrice(1000);
+//        
+//        checkoutThumbScrollPane.add(product);
 //        checkoutProductThumbPanel.setBounds(0, 0, 400, 180);
         
 //        System.out.println(menuPanel.getBackground().getRed());
@@ -425,15 +426,15 @@ public class MainFrame extends javax.swing.JFrame {
 //        jTabbedPane1.putClientProperty("JTabbedPane.trailingComponent", new JButton("Test"));
         
         
-        jPanel3.add(selectedProductThumbPanel);
-        selectedProductThumbPanel.setBounds(0, 0, 300, 180);
+//        jPanel3.add(selectedProductThumbPanel);
+//        selectedProductThumbPanel.setBounds(0, 0, 300, 180);
         
-        checkoutThumbScrollPane.add(checkoutProductThumbPanel);
+//        checkoutThumbScrollPane.add(checkoutProductThumbPanel);
         
-        CheckoutProductThumbPanel product = new CheckoutProductThumbPanel();
-        product.setPrice(1000);
+//        CheckoutProductThumbPanel product = new CheckoutProductThumbPanel();
+//        product.setPrice(1000);
         
-        checkoutThumbScrollPane.add(product);
+//        checkoutThumbScrollPane.add(product);
 //        checkoutProductThumbPanel.setBounds(0, 0, 400, 180);
         
 //        System.out.println(menuPanel.getBackground().getRed());
@@ -809,6 +810,40 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel13 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jPanel3 = new javax.swing.JPanel();
+        selectedProductThumbPanel1 = new javax.swing.JPanel(){
+
+            public void paintComponent(Graphics g){
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g.create();
+
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                //        g2.setColor(new Color(245,245,245));
+
+                //        if(darkRB.isSelected()){
+                    //            g2.setColor(new Color(40, 40, 50));
+                    //        }else{
+                    //            g2.setColor(new Color(245,245,245));
+                    //        }
+                //
+                //        g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 35, 35);
+
+                if(darkRB.isSelected()){
+                    g2.setColor(new Color(70, 70, 80));
+                }else{
+                    g2.setColor(new Color(205,205,205));
+                }
+
+                g2.setStroke(new BasicStroke(1));
+                g2.drawRoundRect(0, 0, this.getWidth()-1, this.getHeight()-1, 25, 25);
+            }
+
+        };
+        jLabel65 = new javax.swing.JLabel();
+        viewProductPrice = new javax.swing.JLabel();
+        jLabel83 = new javax.swing.JLabel();
+        jSpinner4 = new javax.swing.JSpinner();
+        jPanel81 = new javax.swing.JPanel();
+        viewProductSelectedVariants = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
@@ -857,6 +892,7 @@ public class MainFrame extends javax.swing.JFrame {
         jSpinner1 = new javax.swing.JSpinner();
         jButton6 = new javax.swing.JButton();
         jPanel20 = new javax.swing.JPanel();
+        jLabel54 = new javax.swing.JLabel();
         checkoutProductPanel = new javax.swing.JPanel();
         jPanel21 = new javax.swing.JPanel();
         jPanel23 = new javax.swing.JPanel();
@@ -1947,6 +1983,11 @@ public class MainFrame extends javax.swing.JFrame {
         jButton3.setBackground(new java.awt.Color(0, 144, 228));
         jButton3.setForeground(new java.awt.Color(240, 240, 240));
         jButton3.setText("Add to Checkout");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel11.setText("Total Amount:");
@@ -2000,9 +2041,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel51, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel12Layout.createSequentialGroup()
-                        .addComponent(jPanel27, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, 0))))
+                    .addComponent(jPanel27, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         jPanel12Layout.setVerticalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2079,7 +2118,7 @@ public class MainFrame extends javax.swing.JFrame {
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel14, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
+            .addComponent(jPanel14, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
         );
 
         jPanel13.setPreferredSize(new java.awt.Dimension(338, 317));
@@ -2090,16 +2129,60 @@ public class MainFrame extends javax.swing.JFrame {
         jScrollPane2.setToolTipText("");
         jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 424, Short.MAX_VALUE)
+        jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.PAGE_AXIS));
+
+        jLabel65.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel65.setText("Product Name");
+
+        viewProductPrice.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        viewProductPrice.setText("P 1.00");
+
+        jLabel83.setText("Order Amount");
+
+        jSpinner4.setValue(1);
+
+        jPanel81.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jPanel81.setPreferredSize(new java.awt.Dimension(54, 12));
+        jPanel81.setLayout(new javax.swing.BoxLayout(jPanel81, javax.swing.BoxLayout.LINE_AXIS));
+
+        viewProductSelectedVariants.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        viewProductSelectedVariants.setText("red/leather");
+        jPanel81.add(viewProductSelectedVariants);
+
+        javax.swing.GroupLayout selectedProductThumbPanel1Layout = new javax.swing.GroupLayout(selectedProductThumbPanel1);
+        selectedProductThumbPanel1.setLayout(selectedProductThumbPanel1Layout);
+        selectedProductThumbPanel1Layout.setHorizontalGroup(
+            selectedProductThumbPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(selectedProductThumbPanel1Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(selectedProductThumbPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSpinner4)
+                    .addGroup(selectedProductThumbPanel1Layout.createSequentialGroup()
+                        .addGroup(selectedProductThumbPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel65)
+                            .addComponent(viewProductPrice)
+                            .addComponent(jLabel83))
+                        .addGap(0, 200, Short.MAX_VALUE))
+                    .addComponent(jPanel81, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(15, 15, 15))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 286, Short.MAX_VALUE)
+        selectedProductThumbPanel1Layout.setVerticalGroup(
+            selectedProductThumbPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(selectedProductThumbPanel1Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jLabel65)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(viewProductPrice)
+                .addGap(10, 10, 10)
+                .addComponent(jPanel81, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(jLabel83)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSpinner4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18))
         );
+
+        jPanel3.add(selectedProductThumbPanel1);
 
         jScrollPane2.setViewportView(jPanel3);
 
@@ -2110,7 +2193,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel13.setLayout(jPanel13Layout);
         jPanel13Layout.setHorizontalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)
+            .addComponent(jScrollPane2)
             .addGroup(jPanel13Layout.createSequentialGroup()
                 .addComponent(jLabel10)
                 .addGap(0, 0, Short.MAX_VALUE))
@@ -2121,7 +2204,8 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24))
         );
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -2208,7 +2292,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(viewProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)))
+                    .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)))
         );
 
         salesHistoryPanel.setBackground(new Color(0, 0, 0, 0));
@@ -2328,15 +2412,22 @@ public class MainFrame extends javax.swing.JFrame {
 
         jButton6.setText("Cancel");
 
+        jLabel54.setText("red/leather");
+
         javax.swing.GroupLayout jPanel20Layout = new javax.swing.GroupLayout(jPanel20);
         jPanel20.setLayout(jPanel20Layout);
         jPanel20Layout.setHorizontalGroup(
             jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel20Layout.createSequentialGroup()
+                .addComponent(jLabel54)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel20Layout.setVerticalGroup(
             jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 70, Short.MAX_VALUE)
+            .addGroup(jPanel20Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel54)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout selectedProductThumbPanelLayout = new javax.swing.GroupLayout(selectedProductThumbPanel);
@@ -2382,6 +2473,11 @@ public class MainFrame extends javax.swing.JFrame {
         jScrollPane3.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         checkoutThumbScrollPane.setPreferredSize(new java.awt.Dimension(571, 354));
+        checkoutThumbScrollPane.addContainerListener(new java.awt.event.ContainerAdapter() {
+            public void componentRemoved(java.awt.event.ContainerEvent evt) {
+                checkoutThumbScrollPaneComponentRemoved(evt);
+            }
+        });
         checkoutThumbScrollPane.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEADING));
         jScrollPane3.setViewportView(checkoutThumbScrollPane);
 
@@ -2470,6 +2566,11 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         jButton8.setText("Cancel all");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         jLabel19.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel19.setText("Total Amount:");
@@ -4368,6 +4469,26 @@ public class MainFrame extends javax.swing.JFrame {
         
         popupContentPanel.removeAll();
         popupContentPanel.add(checkoutProductPanel);
+        
+        checkoutThumbScrollPane.removeAll();
+        
+        
+        
+        checkoutProduct.forEach((k, e)->{
+            ProductService productService = new ProductService();
+            Product checkoutSelectedProduct = new Product();
+            CheckoutProductThumbPanel checkout = new CheckoutProductThumbPanel(k);
+            checkout.setItems(e.getStocks());
+            checkout.setVariants(e.getName());
+            checkout.setPrice(e.getPrice() * e.getStocks());
+            
+
+            checkoutSelectedProduct = productService.getProductById(k);
+            checkout.setProductName(checkoutSelectedProduct.getName());
+            checkoutThumbScrollPane.add(checkout);
+            
+            
+        });
 
         JFrame frame = this;
         
@@ -4532,7 +4653,9 @@ public class MainFrame extends javax.swing.JFrame {
                 System.out.println(e.getName());
             });
             editProductNameTextField.putClientProperty("JComponent.outline", "");
-            updateGraphics();
+            
+            closePopup();
+            
         }else{
             editProductNameTextField.putClientProperty("JComponent.outline", "error");
         }
@@ -4618,6 +4741,44 @@ public class MainFrame extends javax.swing.JFrame {
         updateGraphics();
     }//GEN-LAST:event_jButton7ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        List<String> tempList = new ArrayList<>();
+        VariantService vService = new VariantService();
+        Variants tempVariants = new Variants();
+        
+        List<Variants> variants = vService.getProductVariants(selectedProduct.getId());
+
+
+        viewSelectedVariant.forEach((k,e2)->{
+            tempList.add(e2);
+        });
+        String str = String.join("/", tempList);
+        variants.forEach(e->{
+            if(e.getMainVariant() == 0){
+                if(e.getName().equals(str)){
+                    tempVariants.setPrice(e.getPrice());
+                }
+            }
+        });
+        
+        tempVariants.setId(selectedProduct.getId());
+        tempVariants.setName(str);
+        tempVariants.setStocks((int) jSpinner4.getValue());
+        checkoutProduct.put(selectedProduct.getId(), tempVariants);
+        System.out.println(checkoutProduct);
+        closePopup();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+        updateGraphics();
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void checkoutThumbScrollPaneComponentRemoved(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_checkoutThumbScrollPaneComponentRemoved
+        // TODO add your handling code here:
+        updateGraphics();
+    }//GEN-LAST:event_checkoutThumbScrollPaneComponentRemoved
+
     
     /**
      * @param args the command line arguments
@@ -4680,6 +4841,28 @@ public class MainFrame extends javax.swing.JFrame {
         });
     }
     
+    public void closePopup(){
+        blurBGPanel.setVisible(false);
+
+        Thread t = new Thread(new Runnable() {
+            public void run() {
+                while(popupPanel.getX() < getWidth()){
+                    popupPanel.setBounds(popupPanel.getX() + 10, 0, getWidth(), getHeight());
+//                    System.out.println(popupPanel.getX());
+                    try {
+                        Thread.sleep((long) 1);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                popupPanel.setVisible(false);
+            }
+        });
+        t.start();
+        if(!popupPanel.isVisible()) t.stop();
+
+        updateGraphics();
+    }
 
     public void showPopup(Component comp){
         this.requestFocusInWindow();    
@@ -4830,7 +5013,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel categorySectionPanel;
     private javax.swing.JPanel checkoutProductPanel;
     private javax.swing.JPanel checkoutProductThumbPanel;
-    private javax.swing.JPanel checkoutThumbScrollPane;
+    public static javax.swing.JPanel checkoutThumbScrollPane;
     private javax.swing.JPanel closePopupIcon;
     private javax.swing.JPanel contentPanel;
     private javax.swing.JPanel customTable;
@@ -4915,6 +5098,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel51;
     private javax.swing.JLabel jLabel52;
     private javax.swing.JLabel jLabel53;
+    private javax.swing.JLabel jLabel54;
     private javax.swing.JLabel jLabel55;
     private javax.swing.JLabel jLabel56;
     private javax.swing.JLabel jLabel57;
@@ -4926,6 +5110,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel62;
     private javax.swing.JLabel jLabel63;
     private javax.swing.JLabel jLabel64;
+    public static javax.swing.JLabel jLabel65;
     private javax.swing.JLabel jLabel66;
     private javax.swing.JLabel jLabel67;
     private javax.swing.JLabel jLabel68;
@@ -4944,6 +5129,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel80;
     private javax.swing.JLabel jLabel81;
+    private javax.swing.JLabel jLabel83;
     private javax.swing.JLabel jLabel85;
     private javax.swing.JLabel jLabel86;
     private javax.swing.JLabel jLabel87;
@@ -5044,6 +5230,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel79;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel80;
+    private javax.swing.JPanel jPanel81;
     private javax.swing.JPanel jPanel84;
     private javax.swing.JPanel jPanel85;
     private javax.swing.JPanel jPanel86;
@@ -5078,6 +5265,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JSpinner jSpinner2;
     private javax.swing.JSpinner jSpinner3;
+    public static javax.swing.JSpinner jSpinner4;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
@@ -5111,6 +5299,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTabbedPane salesHistoryTabPane;
     public static javax.swing.JPanel salesMainMenu;
     private javax.swing.JPanel selectedProductThumbPanel;
+    private javax.swing.JPanel selectedProductThumbPanel1;
     private javax.swing.JPanel testCategoryCont;
     private javax.swing.JTextField testSearchField;
     private javax.swing.ButtonGroup themesButtonGroup;
@@ -5121,6 +5310,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField ticketSearchBar;
     public static javax.swing.JLabel viewProductName;
     public static javax.swing.JPanel viewProductPanel;
+    public static javax.swing.JLabel viewProductPrice;
+    public static javax.swing.JLabel viewProductSelectedVariants;
     public static javax.swing.JTable viewProductVariantTable;
     // End of variables declaration//GEN-END:variables
 }

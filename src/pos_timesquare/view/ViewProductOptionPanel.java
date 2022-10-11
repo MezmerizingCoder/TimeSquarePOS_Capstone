@@ -5,13 +5,22 @@
  */
 package pos_timesquare.view;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
+import pos_timesquare.controller.VariantService;
 import pos_timesquare.model.Variants;
+import static pos_timesquare.view.MainFrame.jLabel65;
+import static pos_timesquare.view.MainFrame.selectedProduct;
+import static pos_timesquare.view.MainFrame.viewProductPrice;
+import static pos_timesquare.view.MainFrame.viewSelectedVariant;
+import static pos_timesquare.view.MainFrame.viewProductSelectedVariants;
 
 /**
  *
@@ -30,13 +39,16 @@ public class ViewProductOptionPanel extends JPanel{
     JToggleButton jToggleButton3 = new JToggleButton();
 
     ButtonGroup buttonGroup = new ButtonGroup();
+    List<String> tempVariants = new ArrayList<>();
     
-    
+    boolean firstElementSelected = false;
+
     public ViewProductOptionPanel(String type, List<Variants>value){
         
         java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout(java.awt.FlowLayout.LEFT);
         flowLayout1.setAlignOnBaseline(true);
         jPanel27.setLayout(flowLayout1);
+        jLabel65.setText(selectedProduct.getName());
 
 //        jToggleButton2.setText("Red");
 //        jToggleButton2.setMaximumSize(new java.awt.Dimension(150, 23));
@@ -56,8 +68,59 @@ public class ViewProductOptionPanel extends JPanel{
             JToggleButton jToggleButton = new JToggleButton();
             jToggleButton.setText(e.getName());
             jToggleButton.setPreferredSize(new java.awt.Dimension(80, 40));
+            jToggleButton.setActionCommand(e.getName());
+            
+            if(!firstElementSelected){
+                jToggleButton.setSelected(true);
+                firstElementSelected = true;
+            }
+            
             jPanel27.add(jToggleButton);
             buttonGroup.add(jToggleButton);
+            
+            viewSelectedVariant.put(type, buttonGroup.getSelection().getActionCommand());
+            jToggleButton.addActionListener(new ActionListener(){
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("Selected: " + buttonGroup.getSelection().getActionCommand());
+                    
+                    viewSelectedVariant.put(type, buttonGroup.getSelection().getActionCommand());
+                    System.out.println(viewSelectedVariant);
+                    
+                    List<String> tempList = new ArrayList<>();
+                    viewSelectedVariant.forEach((k,e2)->{
+                        tempList.add(e2);
+                    });
+                    String str = String.join("/", tempList);
+                    viewProductSelectedVariants.setText(str);
+                    
+                    VariantService vService = new VariantService();
+                    vService.getProductVariants(selectedProduct.getId()).forEach(e2->{
+                        if(e2.getName().equals(str)){
+                            viewProductPrice.setText(String.valueOf(e2.getPrice()));
+                        }
+                    });
+                    
+                    
+                }
+            });
+        });
+        
+        viewSelectedVariant.put(type, buttonGroup.getSelection().getActionCommand());
+        System.out.println(viewSelectedVariant);
+
+        List<String> tempList = new ArrayList<>();
+        viewSelectedVariant.forEach((k,e2)->{
+            tempList.add(e2);
+        });
+        String str = String.join("/", tempList);
+        viewProductSelectedVariants.setText(str);
+
+        VariantService vService = new VariantService();
+        vService.getProductVariants(selectedProduct.getId()).forEach(e2->{
+            if(e2.getName().equals(str)){
+                viewProductPrice.setText(String.valueOf(e2.getPrice()));
+            }
         });
 
         javax.swing.GroupLayout jPanel51Layout = new javax.swing.GroupLayout(jPanel51);
@@ -94,5 +157,8 @@ public class ViewProductOptionPanel extends JPanel{
                 .addComponent(jPanel27, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(5, 5, 5))
         );
+    }
+    public void updateData(){
+    
     }
 }
