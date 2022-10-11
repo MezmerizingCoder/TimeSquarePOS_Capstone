@@ -157,12 +157,18 @@ public class ProductOptionPanel extends JPanel{
     }
     
     public void initAddProductOption(){
-        this.removeAll();
+//        this.removeAll();
+        System.out.println(this.getParent());
+        
+        
         AddProductOptionPanel addOption = new AddProductOptionPanel();
         addOption.initVariants(type, value);
-        this.add(addOption);
-        
+        this.getParent().add(addOption);
         revalidate();
         repaint();
+        
+        this.getParent().remove(this);
+
+        
     }
 }

@@ -54,14 +54,15 @@ public class AddProductOptionPanel extends JPanel {
     JLabel jLabel52 = new JLabel();
     JLabel jLabel53 = new JLabel();
     JLabel jLabel66 = new JLabel();
-    JLabel jLabel67 = new JLabel();
+//    JLabel jLabel67 = new JLabel();
+    JButton jLabel67 = new JButton();
     
     JButton jButton10 = new JButton();
     JTextField jTextField4 = new JTextField();
     JTextField jTextField5 = new JTextField();
 
     
-    
+    String currentKey;
     
     public AddProductOptionPanel(){
         
@@ -244,6 +245,7 @@ public class AddProductOptionPanel extends JPanel {
         jPanel56.add(new NewTextField());
         
         
+        
         jButton10.addActionListener(new ActionListener(){
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 
@@ -271,13 +273,26 @@ public class AddProductOptionPanel extends JPanel {
 ////                            }
 //                        }
                         
-                        addProductVariants.put(jTextField4.getText(), inputs);
+//                        System.out.println("CURRENT KEY: " + currentKey);
+//                        if(addProductVariants.get(jTextField4.getText()).equals(currentKey)){
+//                            addProductVariants.put(jTextField4.getText(), inputs);
+//                        }else{
+//                            addProductVariants.remove(currentKey);
+                            addProductVariants.put(jTextField4.getText(), inputs);
+//                            System.out.println("removed: " + addProductVariants);
+//                        }
+//                        addProductVariants.put(jTextField4.getText(), inputs);
                         
                     }else{
+                        if(addProductVariants.containsKey(currentKey)){
+                            addProductVariants.remove(currentKey);
+                        }
                         List<String> temp = new ArrayList<>();
                         addProductVariants.put(jTextField4.getText(), inputs);
                         System.out.println("Variant Element added!");
                     }
+                }else{
+                    jTextField4.putClientProperty("JComponent.outline", "error");
                 }
                 
                 System.out.println(addProductVariants);
@@ -375,6 +390,92 @@ public class AddProductOptionPanel extends JPanel {
                 
             }
         });
+        
+        
+        jLabel67.addActionListener(new ActionListener(){
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                if(!jTextField4.getText().replaceAll("\\s+","").equals("")){
+                    if(addProductVariants.containsKey(jTextField4.getText())){
+                        addProductVariants.remove(jTextField4.getText());
+                        System.out.println(addProductVariants);
+                        
+                        List<List<String>> lists = new ArrayList<>();
+                        for (Map.Entry<String, List<String>> entry : addProductVariants.entrySet()) {
+                            if(!entry.getKey().equals("generated")){
+                                lists.add(entry.getValue());
+                            }
+                        }
+                        
+                        jPanel47.removeAll();
+                        variantCombination = getCombinations(lists);
+                        List<Variants> tempProductVariants = new ArrayList<>();
+                        for (List<String> list : variantCombination) {
+        //                    System.out.println(list.toString());
+                            boolean noMatch = true;
+                            String str = String.join("/", list);
+
+                            for(int j = 0; j < productVariants.size(); j++){
+                                Variants tempVariant = new Variants();
+                                if(str.equals(productVariants.get(j).getName())){
+                                    EditProductTableRow tableRow = new EditProductTableRow();
+                                    tableRow.setVariantName(str);
+                                    tableRow.setVariantPrice(productVariants.get(j).getPrice());
+                                    tableRow.setVariantStocks(productVariants.get(j).getStocks());
+                                    tableRow.setVariantBarcode(productVariants.get(j).getBarcode());
+                                    jPanel47.add(tableRow);
+
+                                    tempVariant.setName(str);
+                                    tempVariant.setPrice(productVariants.get(j).getPrice());
+                                    tempVariant.setStocks(productVariants.get(j).getStocks());
+                                    tempVariant.setBarcode(productVariants.get(j).getBarcode());
+                                    tempProductVariants.add(tempVariant);
+
+                                    noMatch = false;
+                                    System.out.println("Row match");
+                                    break;
+                                }else if(str.contains(productVariants.get(j).getName())){
+                                    EditProductTableRow tableRow = new EditProductTableRow();
+                                    tableRow.setVariantName(str);
+                                    tableRow.setVariantPrice(productVariants.get(j).getPrice());
+                                    tableRow.setVariantStocks(productVariants.get(j).getStocks());
+                                    tableRow.setVariantBarcode(productVariants.get(j).getBarcode());
+                                    jPanel47.add(tableRow);
+
+                                    tempVariant.setName(str);
+                                    tempVariant.setPrice(productVariants.get(j).getPrice());
+                                    tempVariant.setStocks(productVariants.get(j).getStocks());
+                                    tempVariant.setBarcode(productVariants.get(j).getBarcode());
+                                    tempProductVariants.add(tempVariant);
+
+                                    noMatch = false;
+                                    System.out.println("Row Contains");
+                                    break;
+                                }
+                            };
+
+                            if(noMatch){
+
+                                EditProductTableRow tableRow = new EditProductTableRow();
+                                tableRow.setVariantName(str);
+                                jPanel47.add(tableRow);
+
+                                Variants tempVariant = new Variants();
+                                tempVariant.setName(str);
+                                tempProductVariants.add(tempVariant);
+                            }
+
+                            revalidate();
+                            repaint();
+                        }
+
+                        productVariants.clear();
+                        productVariants = tempProductVariants;
+                        
+                        removeProductOptionThumb();
+                    }
+                }
+            }
+        });
 
         jTextField4.putClientProperty("JTextField.placeholderText", "Color");
         jTextField5.putClientProperty("JTextField.placeholderText", "Black");
@@ -385,18 +486,21 @@ public class AddProductOptionPanel extends JPanel {
     }
     
     
-    
+    public void removeProductOptionThumb(){
+        this.getParent().remove(this);
+    }
     
     public void initProductOptions(){
-        this.removeAll();
+//        this.removeAll();
         ProductOptionPanel productOption = new ProductOptionPanel();
 //        System.out.println(jTextField4.getText());
 //        System.out.println(addProductVariants.get(jTextField4.getText()));
         productOption.setType(jTextField4.getText());
         productOption.setValue(addProductVariants.get(jTextField4.getText()));
         
-        this.add(productOption);
-        
+        this.getParent().add(productOption);
+        this.getParent().remove(this);
+
         revalidate();
         repaint();
     }
@@ -411,6 +515,7 @@ public class AddProductOptionPanel extends JPanel {
         });
         this.jPanel56.add(new NewTextField());
 
+        this.currentKey = name;
     }
     
     

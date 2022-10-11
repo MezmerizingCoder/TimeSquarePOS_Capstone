@@ -37,6 +37,7 @@ import static pos_timesquare.view.MainFrame.editProductNameTextField;
 import static pos_timesquare.view.MainFrame.editProductPanel;
 import static pos_timesquare.view.MainFrame.editProductPriceField;
 import static pos_timesquare.view.MainFrame.editProductStockField;
+import static pos_timesquare.view.MainFrame.jPanel11;
 import static pos_timesquare.view.MainFrame.jPanel45;
 import static pos_timesquare.view.MainFrame.jPanel46;
 import static pos_timesquare.view.MainFrame.jPanel47;
@@ -218,6 +219,8 @@ public class ProductThumb extends JPanel {
                 popupContentPanel.add(viewProductPanel);
                 viewProductName.setText(productDetails.getName());
                 
+                jPanel11.removeAll();
+                
                 VariantService vService = new VariantService();
                 vService.getProductVariants(productDetails.getId()).forEach(e -> {
                     if(variants.containsKey(e.getType())){
@@ -263,6 +266,9 @@ public class ProductThumb extends JPanel {
                             model.addRow(rowData);
                         }
                     });
+                    if(!k.equals("generated")){
+                        jPanel11.add(new ViewProductOptionPanel(k, e));
+                    }
                 });
                 
                 
@@ -353,8 +359,11 @@ public class ProductThumb extends JPanel {
                         ProductOptionPanel option = new ProductOptionPanel();
                         option.setType(k);
                         option.setValue(e);
-
-                        jPanel46.add(option);
+                        JPanel panel = new JPanel();
+//                        panel.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(234,234,234)));
+                        panel.setLayout(new javax.swing.BoxLayout(panel, javax.swing.BoxLayout.LINE_AXIS));
+                        panel.add(option);
+                        jPanel46.add(panel);
                     }
 //                    else{
 //                        e.forEach(e2 -> {
