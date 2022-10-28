@@ -312,7 +312,7 @@ public class MainFrame extends javax.swing.JFrame {
             
             updateGraphics();
         }
-
+        
         jLayeredPane1.add(blurBGPanel, JLayeredPane.MODAL_LAYER);
         jLayeredPane1.add(popupPanel, JLayeredPane.POPUP_LAYER);
         
@@ -334,21 +334,13 @@ public class MainFrame extends javax.swing.JFrame {
 //        test.setBounds(0, 0, 500, 500);
 //        jLayeredPane1.add(test, JLayeredPane.POPUP_LAYER);
 
-//        contentPanel.add(dashboardPanel);
+        contentPanel.add(dashboardPanel);
 //        contentPanel.add(myProfilePanel);
-        contentPanel.add(TestPanel);
+//        contentPanel.add(TestPanel);
 
         
         
-//        resetMainMenu();
-//        
-        FlatSVGIcon profiledetailsicon = new FlatSVGIcon("img/icon/profile-details-icon.svg", 25, 25);
-        profiledetailsicon.setColorFilter(new FlatSVGIcon.ColorFilter(new Function<Color, Color>(){
-            public Color apply(Color t){
-                return new Color(104, 104, 104);
-            }
-        }));
-        jLabel143.setIcon(profiledetailsicon);
+        
         
         FlatSVGIcon charticon = new FlatSVGIcon("img/icon/chart-icon.svg", 32, 32);
         charticon.setColorFilter(new FlatSVGIcon.ColorFilter(new Function<Color, Color>(){
@@ -376,8 +368,8 @@ public class MainFrame extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-//        Image scaledImage = bufferedImage.getScaledInstance(220, 120, Image.SCALE_SMOOTH);
-                Image scaledImage = bufferedImage.getScaledInstance(220, -1, Image.SCALE_SMOOTH);
+        Image scaledImage = bufferedImage.getScaledInstance(220, 120, Image.SCALE_SMOOTH);
+//                Image scaledImage = bufferedImage.getScaledInstance(220, -1, Image.SCALE_SMOOTH);
 
 
         ImageIcon image = new ImageIcon(scaledImage);
@@ -410,7 +402,6 @@ public class MainFrame extends javax.swing.JFrame {
        
         jPanel30.setLayout(new WrapLayout());
         jPanel165.setLayout(new WrapLayout());
-
 //        jPanel51.setLayout(new WrapLayout());
         
         //Test Product Service
@@ -418,12 +409,15 @@ public class MainFrame extends javax.swing.JFrame {
         List<Product>products = productsService.getAllProductDetails();
         
         products.forEach(e -> {
-            ProductThumb2 productThumb = new ProductThumb2();
-            productThumb.setProductDetails(e);
+            ProductThumb testproductThumb = new ProductThumb();
+            testproductThumb.setProductDetails(e);
+            
+            ProductThumb2 productThumb2 = new ProductThumb2();
+            productThumb2.setProductDetails(e);
 //            productThumb.setProductName(e.getName());
 //            productThumb.setProductStocks(e.getStocks());
-            jPanel30.add(productThumb);
-            jPanel165.add(productThumb);
+            jPanel30.add(testproductThumb);
+            jPanel165.add(productThumb2);
         });
         
 //        String[] columns = new String[] {"Color", "Price", "Available"};
@@ -666,7 +660,7 @@ public class MainFrame extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Image scaledImage2 = bufferedImage2.getScaledInstance(-1, 220, Image.SCALE_SMOOTH);
+        Image scaledImage2 = bufferedImage2.getScaledInstance(-1, 200, Image.SCALE_SMOOTH);
 
         ImageIcon image2 = new ImageIcon(scaledImage2);
 
@@ -676,6 +670,8 @@ public class MainFrame extends javax.swing.JFrame {
         accountProfilePicture.setIcon(new ImageIcon(scaledImage3));
        
         jPanel142.add(new MultipleLinesChart());
+        
+        resetCheckoutPayment();
 
     }
     
