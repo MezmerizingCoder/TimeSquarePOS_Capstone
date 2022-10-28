@@ -8511,6 +8511,36 @@ public class MainFrame extends javax.swing.JFrame {
 //            }
 //        });
 //        timer.start();
+
+        Collection<Receipt> sales = new ArrayList<>();
+        checkoutTotalPrice = 0;
+        VariantService vs = new VariantService();
+        TransactionHistoryService ths = new TransactionHistoryService();
+        ProductService ps = new ProductService();
+        
+        checkoutProduct.forEach((k, e)->{
+            vs.getProductVariants(k).forEach(e2 -> {
+                if(e2.getMainVariant() == 0){
+                    if(e2.getName().equals(e.getName())){
+                        System.out.println(e.getName() + " Checkout Success!");
+                        TransactionHistory th = new TransactionHistory();
+                        th.setOrders(e.getStocks());
+                        th.setProductId(e.getId());
+                        th.setTotalPrice(e.getPrice() * e.getStocks());
+                        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                        Date date = new Date();
+                        th.setTransactionDate(dateFormat.format(date));
+                        ths.addTransactionHistory(th);
+                        
+                        checkoutTotalPrice += e.getPrice() * e.getStocks();
+                        
+                        Product product = ps.getProductById(k);
+                        sales.add(new Receipt(product.getName()+"("+e.getName()+")", e.getStocks(), e.getPrice() * e.getStocks()));
+                    }
+                }
+            });
+        });
+        jLabel19.setText("Total Amount: ₱" + String.valueOf(checkoutTotalPrice));
         
         updateGraphics();
     }//GEN-LAST:event_jButton11ActionPerformed
@@ -9266,7 +9296,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void jButton27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton27ActionPerformed
         // TODO add your handling code here:
         Collection<Receipt> sales = new ArrayList<>();
-        
+        checkoutTotalPrice = 0;
         VariantService vs = new VariantService();
         TransactionHistoryService ths = new TransactionHistoryService();
         ProductService ps = new ProductService();
@@ -9302,7 +9332,9 @@ public class MainFrame extends javax.swing.JFrame {
             Map<String, Object> param = new HashMap<>();
             
             System.out.println("total price: " + checkoutTotalPrice);
-            double payment = Double.parseDouble(jTextField24.getText());
+            
+            double payment = Float.parseFloat(jTextField24.getText());
+            
             param.put("totalPrice", (double) checkoutTotalPrice);
             param.put("payment", (double) payment);
             param.put("change", (double) payment - checkoutTotalPrice);
