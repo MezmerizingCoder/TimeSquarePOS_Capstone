@@ -54,7 +54,12 @@ public class TransactionHistoryService {
                     Statement stmt = conn.createStatement();
                     String sql = "ALTER TABLE TransactionHistory ADD totalPrice REAL"; 
                     stmt.executeUpdate(sql);
-                }      
+                }   
+                if(!dbmd.getColumns(null, null, "TransactionHistory", "receiptId").next()){
+                    Statement stmt = conn.createStatement();
+                    String sql = "ALTER TABLE TransactionHistory ADD receiptId Integer"; 
+                    stmt.executeUpdate(sql);
+                }   
             }
             else {
                 System.out.println("Not exist");
@@ -65,6 +70,7 @@ public class TransactionHistoryService {
                    " transactionDate TEXT, " + 
                    " orders INTEGER, " +
                    " totalPrice REAL, " +
+                   " receiptId Integer, "+
                    "PRIMARY KEY(id AUTOINCREMENT))"; 
 
                 stmt.executeUpdate(sql);
@@ -84,7 +90,7 @@ public class TransactionHistoryService {
         
         try {
             System.out.println("Getting data");
-            pst = conn.prepareStatement("SELECT id, productid, transactiondate, orders, totalprice FROM TransactionHistory");
+            pst = conn.prepareStatement("SELECT id, productid, transactiondate, orders, totalprice, receiptId FROM TransactionHistory");
             rs = pst.executeQuery();
             
             
@@ -95,7 +101,7 @@ public class TransactionHistoryService {
                 th.setTransactionDate(rs.getString("transactiondate"));
                 th.setOrders(Integer.parseInt(rs.getString("orders")));
                 th.setTotalPrice(Float.parseFloat(rs.getString("totalprice")));
-                
+                th.setReceiptId(rs.getInt("receiptId"));
                 t.add(th);
             }
             return t;
@@ -109,13 +115,14 @@ public class TransactionHistoryService {
         try {
             Connection conn = getConnection();
             
-            pst = conn.prepareStatement("INSERT INTO TransactionHistory VALUES(?, ?, ?, ?, ?)");
+            pst = conn.prepareStatement("INSERT INTO TransactionHistory VALUES(?, ?, ?, ?, ?, ?)");
             
             pst.setString(1, null);
             pst.setInt(2, th.getProductId());
             pst.setString(3, th.getTransactionDate());
             pst.setInt(4, th.getOrders());
             pst.setFloat(5, th.getTotalPrice());
+            pst.setInt(5, th.getReceiptId());
             
             pst.executeUpdate();
             
@@ -145,17 +152,18 @@ public class TransactionHistoryService {
             Logger.getLogger(TransactionHistoryService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public void UpdateTransactionHistory(int id, int productid, String transactiondate, int orders, float totalprice){
+    public void UpdateTransactionHistory(int id, int productid, String transactiondate, int orders, float totalprice, int receiptId){
         try {
             Connection conn = getConnection();
             TransactionHistory th = new TransactionHistory();
-            pst = conn.prepareStatement("UPDATE TransactionHistory SET productid =?, transactiondate =?, orders =?, totalprice =?  WHERE id =?");
+            pst = conn.prepareStatement("UPDATE TransactionHistory SET productid =?, transactiondate =?, orders =?, totalprice =?, receiptId=?  WHERE id =?");
             
             pst.setInt(1, productid);
             pst.setString(2, transactiondate);
             pst.setInt(3, orders);
             pst.setFloat(4, totalprice);
             pst.setInt(5, id);
+            pst.setInt(6, receiptId);
             
             pst.executeUpdate();
             

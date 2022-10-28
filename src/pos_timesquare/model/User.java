@@ -15,6 +15,42 @@ public class User {
     private String password;
     private String name;
     private String role;
+    private String address;
+    private String membershipDate;
+    private String image;
+    private int hourWorked; 
+
+    public int getHourWorked() {
+        return hourWorked;
+    }
+
+    public void setHourWorked(int hourWorked) {
+        this.hourWorked = hourWorked;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getMembershipDate() {
+        return membershipDate;
+    }
+
+    public void setMembershipDate(String membershipDate) {
+        this.membershipDate = membershipDate;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public String getRole() {
         return role;

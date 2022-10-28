@@ -16,6 +16,15 @@ public class TransactionHistory {
     private String transactionDate;
     private int orders;
     private float totalPrice;
+    private int receiptId;
+
+    public int getReceiptId() {
+        return receiptId;
+    }
+
+    public void setReceiptId(int receiptId) {
+        this.receiptId = receiptId;
+    }
 
     public int getId() {
         return id;

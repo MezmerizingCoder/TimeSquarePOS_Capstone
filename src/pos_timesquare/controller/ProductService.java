@@ -101,7 +101,7 @@ public List<Product> getAllProductDetails(){
     try{
      
         System.out.println("Getting data");
-        pst = conn.prepareStatement("SELECT id, barcode, name, size, color, stocks, price FROM Product");
+        pst = conn.prepareStatement("SELECT id, barcode, name, size, color, stocks, price, image FROM Product");
         rs = pst.executeQuery();
         
          while(rs.next()){
@@ -114,6 +114,7 @@ public List<Product> getAllProductDetails(){
                 product.setColor(rs.getString("color"));
                 product.setStocks(Integer.parseInt(rs.getString("stocks")));
                 product.setPrice(Float.parseFloat(rs.getString("price")));
+                product.setImage(rs.getString("image"));
                 
                 products.add(product);
             }
@@ -133,7 +134,7 @@ public List<Product> getAllProductDetails(){
     try {
 
         System.out.println("Getting data");
-        pst = conn.prepareStatement("SELECT id, barcode, name, size, color, stocks, price FROM Product WHERE id ==" + id);
+        pst = conn.prepareStatement("SELECT id, barcode, name, size, color, stocks, price, image FROM Product WHERE id ==" + id);
         rs = pst.executeQuery();
 
         while(rs.next()){
@@ -145,6 +146,7 @@ public List<Product> getAllProductDetails(){
             product.setColor("color");
             product.setStocks(Integer.parseInt(rs.getString("stocks")));
             product.setPrice(Float.parseFloat(rs.getString("price")));
+            product.setImage(rs.getString("image"));
         }
 
         conn.close();
@@ -158,7 +160,7 @@ public List<Product> getAllProductDetails(){
     public void updateProduct(int id, Product product){
         try {
             Connection conn = getConnection();
-            pst = conn.prepareStatement("UPDATE Product SET barcode = ?, name = ?, size = ?, color = ?, stocks = ?, price = ? WHERE id = " + id);
+            pst = conn.prepareStatement("UPDATE Product SET barcode = ?, name = ?, size = ?, color = ?, stocks = ?, price = ?, image = ? WHERE id = " + id);
             
             pst.setInt(1, product.getBarcode());
             pst.setString(2, product.getName());
@@ -166,6 +168,7 @@ public List<Product> getAllProductDetails(){
             pst.setString(4, product.getColor());
             pst.setInt(5, product.getStocks());
             pst.setFloat(6, product.getPrice());
+            pst.setString(7, product.getImage());
             
             pst.executeUpdate();
             
@@ -181,7 +184,7 @@ public List<Product> getAllProductDetails(){
         try {
             Connection conn = getConnection();
             
-            pst = conn.prepareStatement("INSERT INTO Product VALUES(?, ?, ?, ?, ?, ?, ?)");
+            pst = conn.prepareStatement("INSERT INTO Product VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
             
             pst.setString(1, null);
             pst.setInt(2, product.getBarcode());
@@ -190,6 +193,7 @@ public List<Product> getAllProductDetails(){
             pst.setString(5, product.getColor());
             pst.setInt(6, product.getStocks());
             pst.setFloat(7, product.getPrice());
+            pst.setString(8, product.getImage());
             
             pst.executeUpdate();
             

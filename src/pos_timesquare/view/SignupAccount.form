@@ -50,15 +50,17 @@
                       <Component id="jLabel1" alignment="0" max="32767" attributes="0"/>
                       <Component id="usernameInput" alignment="0" max="32767" attributes="0"/>
                       <Component id="passwordInput" max="32767" attributes="0"/>
+                      <Component id="confirmPasswordInput" max="32767" attributes="0"/>
+                      <Component id="addressField" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
                               <Component id="jLabel2" alignment="0" pref="232" max="32767" attributes="0"/>
                               <Component id="nameInput" alignment="0" max="32767" attributes="0"/>
                               <Component id="jButton1" alignment="0" max="32767" attributes="0"/>
+                              <Component id="errorLog" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
-                      <Component id="confirmPasswordInput" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -67,23 +69,27 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="93" max="-2" attributes="0"/>
+                  <EmptySpace pref="81" max="32767" attributes="0"/>
                   <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="nameInput" min="-2" pref="40" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="usernameInput" min="-2" pref="40" max="-2" attributes="0"/>
+                  <Component id="addressField" min="-2" pref="40" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
+                  <Component id="usernameInput" min="-2" pref="40" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="passwordInput" min="-2" pref="40" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="confirmPasswordInput" min="-2" pref="40" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="errorLog" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="jButton1" min="-2" pref="40" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jSeparator1" min="-2" pref="2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="77" max="32767" attributes="0"/>
+                  <EmptySpace pref="80" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -95,6 +101,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Create Account"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="usernameInput">
         </Component>
@@ -127,6 +136,12 @@
         </Component>
         <Component class="javax.swing.JPasswordField" name="confirmPasswordInput">
         </Component>
+        <Component class="javax.swing.JTextField" name="addressField">
+        </Component>
+        <Container class="javax.swing.JPanel" name="errorLog">
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
+        </Container>
       </SubComponents>
     </Container>
   </SubComponents>

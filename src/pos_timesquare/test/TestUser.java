@@ -24,15 +24,21 @@ public class TestUser {
 
         User adduser = new User();
         
-        adduser.setUsername("ericka");
-        adduser.setPassword("1226");
-        adduser.setName("ecka");
-        adduser.setRole("Admin");
-
-        user.addUser(adduser);
-        user.deleteUserById(3);
+        adduser.setUsername("admin");
+        adduser.setPassword("12add");
+        adduser.setName("paul justine");
+        adduser.setRole("employee");
+        adduser.setAddress("iba, wawa");
+        adduser.setMembershipDate("10/16/22");
+        adduser.setImage("src/asdfa/fsad");
+        adduser.setHourWorked(14);
         
-//        List<User> list = user.getAllUserDetails();
+        user.addUser(adduser);
+        
+        List<User> list = user.getAllUserDetails();
+        list.forEach(e -> {
+            System.out.println(e);
+        });
 //        
 //        System.out.println(list);
 //        System.out.println(user.getUserById(3).getUsername());

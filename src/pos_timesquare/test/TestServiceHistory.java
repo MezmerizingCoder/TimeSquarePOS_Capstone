@@ -33,9 +33,9 @@ public class TestServiceHistory {
        sh.setPrice(2690);
        sh.setWalkInDate("September-10-2022");
        sh.setEstimateFinish("September-17-2022");
-      sh.setStatus("Done");
+       sh.setStatus("Done");
         
-     shs.addServiceHistory(sh);
+      shs.addServiceHistory(sh);
       shs.deleteServiceHistoryById(5);
       shs.UpdateServiceHistory(2, "PaulJustineFaustino", "sfddgdgda", 2340, "August-20-2020", "August-25-2020", "Done");
 

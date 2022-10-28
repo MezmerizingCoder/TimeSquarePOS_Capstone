@@ -158,6 +158,21 @@ public class ServiceTicketsService {
             Logger.getLogger(ServiceTicketsService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public void setToDone(int id){
+        try{
+            Connection conn = getConnection();
+            
+            pst = conn.prepareStatement("UPDATE ServiceTickets SET Status = 'Done' WHERE id =?");
+            pst.setInt(1, id);
+            pst.executeUpdate();
+            
+            conn.close();
+        }catch(SQLException ex){
+            Logger.getLogger(ServiceTicketsService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public void UpdateServiceTickets(int id, String customerName, String defects, float price, String walkInDate, String estimateFinish, String status){
         try {
             Connection conn = getConnection();

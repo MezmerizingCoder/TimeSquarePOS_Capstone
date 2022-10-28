@@ -407,70 +407,82 @@ public class AddProductOptionPanel extends JPanel {
                         }
                         
                         jPanel47.removeAll();
-                        variantCombination = getCombinations(lists);
-                        List<Variants> tempProductVariants = new ArrayList<>();
-                        for (List<String> list : variantCombination) {
-        //                    System.out.println(list.toString());
-                            boolean noMatch = true;
-                            String str = String.join("/", list);
+                        if(!lists.isEmpty()){
+                            variantCombination = getCombinations(lists);
+                        
+                        
+                            List<Variants> tempProductVariants = new ArrayList<>();
+                            for (List<String> list : variantCombination) {
+                                System.out.println(list.toString());
+                                boolean noMatch = true;
+                                String str = String.join("/", list);
 
-                            for(int j = 0; j < productVariants.size(); j++){
-                                Variants tempVariant = new Variants();
-                                if(str.equals(productVariants.get(j).getName())){
+                                for(int j = 0; j < productVariants.size(); j++){
+                                    Variants tempVariant = new Variants();
+                                    if(str.equals(productVariants.get(j).getName())){
+                                        EditProductTableRow tableRow = new EditProductTableRow();
+                                        tableRow.setVariantName(str);
+                                        tableRow.setVariantPrice(productVariants.get(j).getPrice());
+                                        tableRow.setVariantStocks(productVariants.get(j).getStocks());
+                                        tableRow.setVariantBarcode(productVariants.get(j).getBarcode());
+                                        jPanel47.add(tableRow);
+
+                                        tempVariant.setName(str);
+                                        tempVariant.setPrice(productVariants.get(j).getPrice());
+                                        tempVariant.setStocks(productVariants.get(j).getStocks());
+                                        tempVariant.setBarcode(productVariants.get(j).getBarcode());
+                                        tempProductVariants.add(tempVariant);
+
+                                        noMatch = false;
+    //                                    System.out.println("Row match");
+                                        break;
+                                    }else if(str.contains(productVariants.get(j).getName())){
+                                        EditProductTableRow tableRow = new EditProductTableRow();
+                                        tableRow.setVariantName(str);
+                                        tableRow.setVariantPrice(productVariants.get(j).getPrice());
+                                        tableRow.setVariantStocks(productVariants.get(j).getStocks());
+                                        tableRow.setVariantBarcode(productVariants.get(j).getBarcode());
+                                        jPanel47.add(tableRow);
+
+                                        tempVariant.setName(str);
+                                        tempVariant.setPrice(productVariants.get(j).getPrice());
+                                        tempVariant.setStocks(productVariants.get(j).getStocks());
+                                        tempVariant.setBarcode(productVariants.get(j).getBarcode());
+                                        tempProductVariants.add(tempVariant);
+
+                                        noMatch = false;
+    //                                    System.out.println("Row Contains");
+                                        break;
+                                    }
+                                };
+
+                                if(noMatch){
+
                                     EditProductTableRow tableRow = new EditProductTableRow();
                                     tableRow.setVariantName(str);
-                                    tableRow.setVariantPrice(productVariants.get(j).getPrice());
-                                    tableRow.setVariantStocks(productVariants.get(j).getStocks());
-                                    tableRow.setVariantBarcode(productVariants.get(j).getBarcode());
                                     jPanel47.add(tableRow);
 
+                                    Variants tempVariant = new Variants();
                                     tempVariant.setName(str);
-                                    tempVariant.setPrice(productVariants.get(j).getPrice());
-                                    tempVariant.setStocks(productVariants.get(j).getStocks());
-                                    tempVariant.setBarcode(productVariants.get(j).getBarcode());
                                     tempProductVariants.add(tempVariant);
-
-                                    noMatch = false;
-                                    System.out.println("Row match");
-                                    break;
-                                }else if(str.contains(productVariants.get(j).getName())){
-                                    EditProductTableRow tableRow = new EditProductTableRow();
-                                    tableRow.setVariantName(str);
-                                    tableRow.setVariantPrice(productVariants.get(j).getPrice());
-                                    tableRow.setVariantStocks(productVariants.get(j).getStocks());
-                                    tableRow.setVariantBarcode(productVariants.get(j).getBarcode());
-                                    jPanel47.add(tableRow);
-
-                                    tempVariant.setName(str);
-                                    tempVariant.setPrice(productVariants.get(j).getPrice());
-                                    tempVariant.setStocks(productVariants.get(j).getStocks());
-                                    tempVariant.setBarcode(productVariants.get(j).getBarcode());
-                                    tempProductVariants.add(tempVariant);
-
-                                    noMatch = false;
-                                    System.out.println("Row Contains");
-                                    break;
                                 }
-                            };
 
-                            if(noMatch){
-
-                                EditProductTableRow tableRow = new EditProductTableRow();
-                                tableRow.setVariantName(str);
-                                jPanel47.add(tableRow);
-
-                                Variants tempVariant = new Variants();
-                                tempVariant.setName(str);
-                                tempProductVariants.add(tempVariant);
+                                revalidate();
+                                repaint();
                             }
 
+                            productVariants.clear();
+                            productVariants = tempProductVariants;
+                        }else{
+                            System.out.println("list is empty!");
+                            productVariants.clear();
                             revalidate();
                             repaint();
                         }
-
-                        productVariants.clear();
-                        productVariants = tempProductVariants;
                         
+                        productVariants.forEach(e->{
+                            System.out.println(e.getName());
+                        });
                         removeProductOptionThumb();
                     }
                 }

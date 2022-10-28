@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import static pos_timesquare.controller.DatabaseConnection.getConnection;
 import pos_timesquare.model.Category;
+import pos_timesquare.model.Product;
 import pos_timesquare.model.Variants;
 
 /**
@@ -103,6 +104,61 @@ public class CategoryService {
         }catch (SQLException ex) {
                 Logger.getLogger(CategoryService.class.getName()).log(Level.SEVERE, null, ex);
                 return null;
+        }
+    }
+    
+    public void updateCategory(int productId, Category category){
+        try {
+            Connection conn = getConnection();
+            
+            if(isProductIdExist(productId)){
+                pst = conn.prepareStatement("UPDATE Category SET type=?, brand=?  WHERE product_id =" + productId);
+            
+                pst.setString(1, category.getType());
+                pst.setString(2, category.getBrand());
+
+                pst.executeUpdate();
+                
+                System.out.println("Update Success");
+            }else{
+                pst = conn.prepareStatement("INSERT INTO Category VALUES(?, ?, ?, ?)");
+            
+                pst.setString(1, null);
+                pst.setInt(2, category.getProduct_id());
+                pst.setString(3, category.getType());
+                pst.setString(4, category.getBrand());
+
+                pst.executeUpdate();
+
+                System.out.println("Add Success");
+            }
+            
+            
+            
+            
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CategoryService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public boolean isProductIdExist(int productId){
+        Connection conn = getConnection();
+        
+        try {
+            System.out.println("Getting data");
+            pst = conn.prepareStatement("SELECT 1 FROM Category WHERE product_id == " + productId);
+            rs = pst.executeQuery();
+            
+            if (!rs.isBeforeFirst()) {    
+                return false;
+            } 
+            conn.close();
+            return true;
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
     }
 }

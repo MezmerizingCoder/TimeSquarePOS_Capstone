@@ -23,7 +23,11 @@ import pos_timesquare.model.Category;
 import pos_timesquare.model.Product;
 import static pos_timesquare.view.MainFrame.darkRB;
 import static pos_timesquare.view.MainFrame.jPanel30;
+import static pos_timesquare.view.MainFrame.jPanel165;
 import static pos_timesquare.view.MainFrame.jProgressBar1;
+import static pos_timesquare.view.MainFrame.selectedCategoryBrand;
+import static pos_timesquare.view.MainFrame.selectedCategoryType;
+import static pos_timesquare.view.MainFrame.updateGraphics;
 
 /**
  *
@@ -108,7 +112,7 @@ public class CategoryThumb extends JPanel {
         jLabel31.setText(Integer.toString(item) + " items");
     }
     
-    public CategoryThumb(){
+    public CategoryThumb(boolean isEditOnly){
         
         jPanel39.setMaximumSize(new java.awt.Dimension(32767, 50));
         
@@ -158,8 +162,12 @@ public class CategoryThumb extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 System.out.println("Type: " + categoryType + ", Brand: " + categoryBrand);
+                selectedCategoryType = categoryType;
+                selectedCategoryBrand = categoryBrand;
+                
                 jProgressBar1.setVisible(true);
                 jPanel30.removeAll();
+                jPanel165.removeAll();
                 
                 CategoryService categoryService = new CategoryService();
                 List<Category> categories = categoryService.getAllCategory();
@@ -173,7 +181,15 @@ public class CategoryThumb extends JPanel {
                             if(element2.getId() == element.getId()){
                                 ProductThumb productThumb = new ProductThumb();
                                 productThumb.setProductDetails(element2);
-                                jPanel30.add(productThumb);
+                                
+                                ProductThumb2 productThumb2 = new ProductThumb2();
+                                productThumb2.setProductDetails(element2);
+                                
+                                if(isEditOnly){
+                                    jPanel165.add(productThumb2);
+                                }else{
+                                    jPanel30.add(productThumb);
+                                }
                                 System.out.println(element2.getName() + " Added");
                             }
                         });
@@ -181,7 +197,7 @@ public class CategoryThumb extends JPanel {
                 });
                 
                 jProgressBar1.setVisible(false);
-
+                updateGraphics();
 //                ProductService productsService = new ProductService();
 //                List<Product>products = productsService.getAllProductDetails();
 //

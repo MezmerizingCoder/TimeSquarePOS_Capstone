@@ -9,17 +9,26 @@ import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import static pos_timesquare.view.MainFrame.checkoutProduct;
 import static pos_timesquare.view.MainFrame.darkRB;
+import static pos_timesquare.view.MainFrame.productImage;
 
 /**
  *
@@ -42,12 +51,17 @@ public class CheckoutProductThumbPanel extends JPanel{
     //        g2.setStroke(new BasicStroke(1));
     //        g2.drawRoundRect(0, 0, this.getWidth()-1, this.getHeight()-1, 25, 25);
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            if(darkRB.isSelected()){
-                g2.setColor(new Color(38, 42, 48));
-            }else{
-                g2.setColor(new Color(232,232,232));
+//            if(darkRB.isSelected()){
+//                g2.setColor(new Color(38, 42, 48));
+//            }else{
+//                g2.setColor(new Color(232,232,232));
+//            }
+////            g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 25, 25);
+
+            g2.setColor(this.getParent().getBackground());
+            for(int i = 25; i >= 0; i--){
+                g2.drawRoundRect(0, 0, this.getWidth()-1, this.getHeight()-1, i, i);
             }
-            g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 25, 25);
 
             if(darkRB.isSelected()){
                 g2.setColor(new Color(70, 70, 80));
@@ -73,6 +87,30 @@ public class CheckoutProductThumbPanel extends JPanel{
     private int items;
     private String variants;
     private String productName;
+    private String image;
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+        if(image != "" && image != null){
+            BufferedImage bufferedImage = null;
+            try {
+                bufferedImage = ImageIO.read(this.getClass().getResource(image));
+                if(bufferedImage != null){
+                    Image scaledImage = bufferedImage.getScaledInstance(-1, 108, Image.SCALE_SMOOTH);
+                    ImageIcon imageIcon = new ImageIcon(scaledImage);
+                    jLabel21.setIcon(imageIcon);
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.println("width: " + jLabel21.getWidth());
+            System.out.println("height: " + jLabel21.getHeight());
+        }
+    }
 
     public String getProductName() {
         return productName;
@@ -113,9 +151,11 @@ public class CheckoutProductThumbPanel extends JPanel{
     CheckoutProductThumbPanel(int key){
         
         //jLabel21.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
-
+        jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel20.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel20.setText("Product Name");
+        
+        jLabel21.setPreferredSize(new Dimension(130, 108));
 
         jLabel22.setText("Items");
 

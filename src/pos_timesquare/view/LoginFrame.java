@@ -5,9 +5,11 @@
  */
 package pos_timesquare.view;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMaterialLighterIJTheme;
 import com.formdev.flatlaf.ui.FlatLineBorder;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
@@ -16,7 +18,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import pos_timesquare.controller.LoginFunctionService;
@@ -82,6 +86,7 @@ public class LoginFrame extends javax.swing.JFrame {
         adminButton = new javax.swing.JButton();
         employeeButton = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
+        errorLog = new javax.swing.JPanel();
 
         jDialog1.setTitle("Authentication Failed");
         jDialog1.setAlwaysOnTop(true);
@@ -165,8 +170,18 @@ public class LoginFrame extends javax.swing.JFrame {
         jLabel1.setText("Create new account");
 
         adminButton.setText("Admin");
+        adminButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                adminButtonActionPerformed(evt);
+            }
+        });
 
         employeeButton.setText("Employee");
+        employeeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                employeeButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -195,6 +210,8 @@ public class LoginFrame extends javax.swing.JFrame {
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("TIME SQUARE");
 
+        errorLog.setLayout(new javax.swing.BoxLayout(errorLog, javax.swing.BoxLayout.LINE_AXIS));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -206,7 +223,8 @@ public class LoginFrame extends javax.swing.JFrame {
                     .addComponent(loginButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(errorLog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(269, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -218,11 +236,13 @@ public class LoginFrame extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(errorLog, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(3, 3, 3)
                 .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addContainerGap(72, Short.MAX_VALUE))
         );
 
         pack();
@@ -247,14 +267,61 @@ public class LoginFrame extends javax.swing.JFrame {
 //            System.out.println(user.getRole());
            
         }else{
-            JOptionPane.showMessageDialog(this, "Username and Password doesn't match!", "Authentication Error",
-            JOptionPane.ERROR_MESSAGE);
+//            JOptionPane.showMessageDialog(this, "Username and Password doesn't match!", "Authentication Error",
+//            JOptionPane.ERROR_MESSAGE);
+
+            errorLog.removeAll();
+            errorLog.add(errorPanel("User & Pass doesn't match!"));
             
             usernameField.setText("");
             passwordField.setText("");
+            
+            loginButton.putClientProperty("JComponent.outline", "error");
+            
+            repaint();
+            revalidate();
         }
     }//GEN-LAST:event_loginButtonActionPerformed
 
+    private void employeeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employeeButtonActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+            
+        SignupAccount frame = new SignupAccount("Employee Account");
+        frame.setVisible(true);
+    }//GEN-LAST:event_employeeButtonActionPerformed
+
+    private void adminButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminButtonActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+            
+        SignupAccount frame = new SignupAccount("Admin Account");
+        frame.setVisible(true);
+    }//GEN-LAST:event_adminButtonActionPerformed
+
+    
+    public JPanel errorPanel(String value){
+        JPanel panel = new JPanel();
+        
+        panel.setPreferredSize(new Dimension(120, 35));
+        panel.setBackground(new Color(255, 132, 132));
+        
+//        panel.setBorder( new FlatLineBorder( new Insets( 0, 0, 0, 0 ), new Color(203, 203, 203), 1, 25 ) );
+        panel.putClientProperty( FlatClientProperties.STYLE, "arc: 10" );
+        
+        JLabel label = new JLabel(value);
+        label.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
+        label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        label.setForeground(Color.white);
+//        label.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        label.setPreferredSize(new Dimension(150, 25));
+        
+//        panel.setLayout(new javax.swing.BoxLayout(panel, javax.swing.BoxLayout.LINE_AXIS));
+        panel.add(label);
+        
+        return panel;
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -308,6 +375,7 @@ public class LoginFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton adminButton;
     private javax.swing.JButton employeeButton;
+    private javax.swing.JPanel errorLog;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;

@@ -53,6 +53,7 @@
                   <Component id="jPanel2" alignment="1" max="32767" attributes="0"/>
                   <Component id="jLabel4" max="32767" attributes="0"/>
                   <Component id="jPanel3" alignment="0" max="32767" attributes="0"/>
+                  <Component id="errorLog" max="32767" attributes="0"/>
               </Group>
               <EmptySpace pref="269" max="32767" attributes="0"/>
           </Group>
@@ -67,11 +68,13 @@
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
               <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="errorLog" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
               <Component id="loginButton" min="-2" pref="40" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
               <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="71" max="32767" attributes="0"/>
+              <EmptySpace pref="72" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -232,11 +235,17 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Admin"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="adminButtonActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="employeeButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Employee"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="employeeButtonActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -249,5 +258,9 @@
         <Property name="text" type="java.lang.String" value="TIME SQUARE"/>
       </Properties>
     </Component>
+    <Container class="javax.swing.JPanel" name="errorLog">
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
+    </Container>
   </SubComponents>
 </Form>

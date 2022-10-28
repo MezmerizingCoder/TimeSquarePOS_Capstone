@@ -5,30 +5,59 @@
  */
 package pos_timesquare.view;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMaterialLighterIJTheme;
+import com.formdev.flatlaf.ui.FlatLineBorder;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.border.LineBorder;
+import pos_timesquare.controller.UserService;
+import pos_timesquare.model.User;
+import static pos_timesquare.view.MainFrame.updateGraphics;
 
 /**
  *
  * @author Acer
  */
-public class SignupEmployeeAccount extends javax.swing.JFrame {
+public class SignupAccount extends javax.swing.JFrame {
 
     /**
      * Creates new form SignupEmployeeAccount
      */
-    public SignupEmployeeAccount() {
+    String accountType = "Employee Account";
+    public SignupAccount() {
         initComponents();
         
         nameInput.putClientProperty("JTextField.placeholderText", "Full Name");
+        addressField.putClientProperty("JTextField.placeholderText", "Address");
         usernameInput.putClientProperty("JTextField.placeholderText", "Username");
         passwordInput.putClientProperty("JTextField.placeholderText", "Password");
         confirmPasswordInput.putClientProperty("JTextField.placeholderText", "Confirm Password");
+    }
+    public SignupAccount(String accountType) {
+        initComponents();
+        
+        nameInput.putClientProperty("JTextField.placeholderText", "Full Name");
+        addressField.putClientProperty("JTextField.placeholderText", "Address");
+        usernameInput.putClientProperty("JTextField.placeholderText", "Username");
+        passwordInput.putClientProperty("JTextField.placeholderText", "Password");
+        confirmPasswordInput.putClientProperty("JTextField.placeholderText", "Confirm Password");
+        
+        jLabel2.setText("Create New "+accountType);
+        this.accountType = accountType;
     }
 
     /**
@@ -49,11 +78,18 @@ public class SignupEmployeeAccount extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         passwordInput = new javax.swing.JPasswordField();
         confirmPasswordInput = new javax.swing.JPasswordField();
+        addressField = new javax.swing.JTextField();
+        errorLog = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Create Account - Time Square");
 
         jButton1.setText("Create Account");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jSeparator1.setForeground(new java.awt.Color(204, 204, 204));
 
@@ -64,6 +100,8 @@ public class SignupEmployeeAccount extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setText("Create Employee Account");
+
+        errorLog.setLayout(new javax.swing.BoxLayout(errorLog, javax.swing.BoxLayout.LINE_AXIS));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -76,35 +114,41 @@ public class SignupEmployeeAccount extends javax.swing.JFrame {
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(usernameInput)
                     .addComponent(passwordInput)
+                    .addComponent(confirmPasswordInput)
+                    .addComponent(addressField)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
                             .addComponent(nameInput, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(confirmPasswordInput))
+                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(errorLog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(93, 93, 93)
+                .addContainerGap(81, Short.MAX_VALUE)
                 .addComponent(jLabel2)
-                .addGap(33, 33, 33)
+                .addGap(18, 18, 18)
                 .addComponent(nameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(usernameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(addressField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(usernameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(passwordInput, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(confirmPasswordInput, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(errorLog, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addContainerGap(80, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -125,6 +169,105 @@ public class SignupEmployeeAccount extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        UserService us = new UserService();
+        User user = new User();
+        boolean error = false;
+        
+        errorLog.removeAll();
+        
+        if(us.isUsernameExist(usernameInput.getText())){
+            System.out.println("Username already exist!");
+            error = true;
+            errorLog.add(errorPanel("Username already exist!"));
+            usernameInput.putClientProperty("JComponent.outline", "error");
+        }
+        
+        if(nameInput.getText().replaceAll("\\s+","").equals("")){
+            System.out.println("No input");
+            nameInput.putClientProperty("JComponent.outline", "error");
+        }
+        if(addressField.getText().replaceAll("\\s+","").equals("")){
+            System.out.println("No input");
+            addressField.putClientProperty("JComponent.outline", "error");
+        }
+        if(usernameInput.getText().replaceAll("\\s+","").equals("")){
+            System.out.println("No input");
+            usernameInput.putClientProperty("JComponent.outline", "error");
+        }
+        if(passwordInput.getText().replaceAll("\\s+","").equals("")){
+            System.out.println("No input");
+            passwordInput.putClientProperty("JComponent.outline", "error");
+        }
+        if(confirmPasswordInput.getText().replaceAll("\\s+","").equals("")){
+            System.out.println("No input");
+            passwordInput.putClientProperty("JComponent.outline", "error");
+        }
+        
+        if(!passwordInput.getText().equals(confirmPasswordInput.getText())){
+            System.out.println("Password doesn't match!");
+            System.out.println(passwordInput.getText() + " : " + confirmPasswordInput);
+            error = true;
+            errorLog.add(errorPanel("Password doesn't match!"));
+            
+            passwordInput.putClientProperty("JComponent.outline", "warning");
+            confirmPasswordInput.putClientProperty("JComponent.outline", "warning");
+        }
+        
+        if(!error){
+            user.setName(nameInput.getText());
+            user.setAddress(addressField.getText());
+            user.setUsername(usernameInput.getText());
+            user.setPassword(passwordInput.getText());
+            user.setHourWorked(0);
+            
+            if(accountType.equals("Employee Account")){
+                user.setRole("employee");
+            }else{
+                user.setRole("admin");
+
+            }
+            
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            Date date = new Date();
+            user.setMembershipDate(dateFormat.format(date));
+            
+            us.addUser(user);
+            
+            JOptionPane.showMessageDialog (null, "New "+ accountType +" Added!", "Account Created", JOptionPane.INFORMATION_MESSAGE);
+            
+            this.dispose();
+            
+            LoginFrame frame = new LoginFrame();
+            frame.setVisible(true);
+        }
+        repaint();
+        revalidate();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    
+    public JPanel errorPanel(String value){
+        JPanel panel = new JPanel();
+        
+        panel.setPreferredSize(new Dimension(120, 35));
+        panel.setBackground(new Color(255, 132, 132));
+        
+//        panel.setBorder( new FlatLineBorder( new Insets( 0, 0, 0, 0 ), new Color(203, 203, 203), 1, 25 ) );
+        panel.putClientProperty( FlatClientProperties.STYLE, "arc: 10" );
+        
+        JLabel label = new JLabel(value);
+        label.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
+        label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        label.setForeground(Color.white);
+//        label.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        label.setPreferredSize(new Dimension(140, 25));
+        
+//        panel.setLayout(new javax.swing.BoxLayout(panel, javax.swing.BoxLayout.LINE_AXIS));
+        panel.add(label);
+        
+        return panel;
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -142,13 +285,13 @@ public class SignupEmployeeAccount extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SignupEmployeeAccount.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SignupAccount.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SignupEmployeeAccount.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SignupAccount.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SignupEmployeeAccount.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SignupAccount.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SignupEmployeeAccount.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SignupAccount.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         
         try {
@@ -169,13 +312,15 @@ public class SignupEmployeeAccount extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SignupEmployeeAccount().setVisible(true);
+                new SignupAccount().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField addressField;
     private javax.swing.JPasswordField confirmPasswordInput;
+    private javax.swing.JPanel errorLog;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

@@ -34,10 +34,12 @@ public class TestServiceTickets {
        st.setWalkInDate("September-20-2022");
        st.setEstimateFinish("September-27-2022");
       st.setStatus("Done");
-        
-     sts.addServiceTickets(st);
-     sts.deleteServiceTicketsById(1);
-     sts.UpdateServiceTickets(2, "PaulJustineFaustino", "sfddgdgda", 2340, "August-20-2020", "August-25-2020", "Done");
+//        
+//     sts.addServiceTickets(st);
+//     sts.deleteServiceTicketsById(1);
+//     sts.UpdateServiceTickets(2, "PaulJustineFaustino", "sfddgdgda", 2340, "August-20-2020", "August-25-2020", "Done");
+
+        sts.addServiceTickets(st);
 
         
     }
