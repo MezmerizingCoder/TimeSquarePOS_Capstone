@@ -55,5 +55,6 @@ public class TestCategory {
         System.out.println(brands);
         System.out.println(type);
 
+    
     }
 }
