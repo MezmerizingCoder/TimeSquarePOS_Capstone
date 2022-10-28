@@ -6944,7 +6944,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel136, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel134, javax.swing.GroupLayout.PREFERRED_SIZE, 155, Short.MAX_VALUE))
+                .addComponent(jPanel134, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE))
         );
         jPanel133Layout.setVerticalGroup(
             jPanel133Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -7539,13 +7539,13 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel191.setText("Total Price");
 
         confirmTotalPrice.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        confirmTotalPrice.setText("20000.00");
+        confirmTotalPrice.setText("0");
 
         jLabel193.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel193.setText("Change");
 
         jLabel194.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel194.setText("243.00");
+        jLabel194.setText("0");
 
         jButton27.setBackground(new java.awt.Color(0, 144, 228));
         jButton27.setForeground(new java.awt.Color(255, 255, 255));
@@ -9323,6 +9323,7 @@ public class MainFrame extends javax.swing.JFrame {
                 }
             });
         });
+        
         confirmTotalPrice.setText(String.valueOf(checkoutTotalPrice));
         
         try{
@@ -9335,6 +9336,7 @@ public class MainFrame extends javax.swing.JFrame {
             
             double payment = Float.parseFloat(jTextField24.getText());
             
+            param.put("logo", new File("src/img/icon/receiptLogo.jpg").getAbsolutePath());
             param.put("totalPrice", (double) checkoutTotalPrice);
             param.put("payment", (double) payment);
             param.put("change", (double) payment - checkoutTotalPrice);
