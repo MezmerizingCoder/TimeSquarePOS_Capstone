@@ -67,6 +67,10 @@ public class SalesCateogryThumb extends JPanel{
         updateGraphics();
     }
     
+    public void setPercentage(String percent){
+        jLabel115.setText(percent);
+    }
+    
     public void setTypeName(String name){
         typeName = name;
         jLabel114.setText(typeName);
@@ -96,6 +100,10 @@ public class SalesCateogryThumb extends JPanel{
         jLabel117.setText("₱"+String.valueOf(totalRevenue));
 //        System.out.println(totalRevenue);
         
+    }
+    
+    public void removePrice(){
+        jLabel117.setVisible(false);
     }
     
     public SalesCateogryThumb(){

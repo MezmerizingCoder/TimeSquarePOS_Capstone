@@ -18,8 +18,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JPanel;
+import static pos_timesquare.view.MainFrame.archiveMainMenu;
+import static pos_timesquare.view.MainFrame.customerMainMenu;
 import static pos_timesquare.view.MainFrame.darkRB;
 import static pos_timesquare.view.MainFrame.dashboardMainMenu;
+import static pos_timesquare.view.MainFrame.personnelMainMenu;
 import static pos_timesquare.view.MainFrame.productMainMenu;
 import static pos_timesquare.view.MainFrame.salesMainMenu;
 import static pos_timesquare.view.MainFrame.selectedMenu;
@@ -84,6 +87,9 @@ public class MainMenuThumb extends JPanel{
                 resetStyle(salesMainMenu);
                 resetStyle(productMainMenu);
                 resetStyle(dashboardMainMenu);
+                resetStyle(personnelMainMenu);
+                resetStyle(customerMainMenu);
+                resetStyle(archiveMainMenu);
                 selectedMenu = thisPanel;
                 
 //                selected = true;

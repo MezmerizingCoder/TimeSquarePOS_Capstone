@@ -12,13 +12,33 @@ package pos_timesquare.model;
 public class Product {
     
     private int id;
-    private int barcode;
+    private String barcode;
     private int stocks;
     private float price;
     private String name;
     private String size;
     private String color;
     private String image;
+    private int favorite;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    
+    
+
+    public int getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(int favorite) {
+        this.favorite = favorite;
+    }
 
     public String getImage() {
         return image;
@@ -36,11 +56,11 @@ public class Product {
         this.id = id;
     }
 
-    public int getBarcode() {
+    public String getBarcode() {
         return barcode;
     }
 
-    public void setBarcode(int barcode) {
+    public void setBarcode(String barcode) {
         this.barcode = barcode;
     }
 

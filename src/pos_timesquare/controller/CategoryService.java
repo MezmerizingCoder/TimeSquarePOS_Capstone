@@ -107,6 +107,59 @@ public class CategoryService {
         }
     }
     
+    public List<Category> getCategoryByProductId(int id){
+        Connection conn = getConnection();
+        List<Category> categories = new ArrayList<>();
+       
+        try{
+            System.out.println("Getting data");
+            pst = conn.prepareStatement("SELECT * FROM Category WHERE product_id ==" + id);
+            rs = pst.executeQuery();
+
+             while(rs.next()){
+
+                Category category = new Category();
+
+                category.setId(Integer.parseInt(rs.getString("id")));
+                category.setProduct_id(Integer.parseInt(rs.getString("product_id")));
+                category.setType(rs.getString("type"));
+                category.setBrand(rs.getString("brand"));
+                categories.add(category);
+            }
+            return categories;
+
+        }catch (SQLException ex) {
+                Logger.getLogger(CategoryService.class.getName()).log(Level.SEVERE, null, ex);
+                return null;
+        }
+    }
+    
+    public void addCategory(Category category){
+        try {
+            Connection conn = getConnection();
+            
+            pst = conn.prepareStatement("INSERT INTO Category VALUES(?, ?, ?, ?)");
+            
+            pst.setString(1, null);
+            pst.setInt(2, category.getProduct_id());
+            pst.setString(3, category.getType());
+            pst.setString(4, category.getBrand());
+            
+            pst.executeUpdate();
+            
+            ResultSet rs = pst.getGeneratedKeys();
+            long id = rs.getLong(1);
+            
+            System.out.println("Add Success");
+            
+            conn.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(CategoryService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
     public void updateCategory(int productId, Category category){
         try {
             Connection conn = getConnection();
@@ -160,5 +213,27 @@ public class CategoryService {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
+    }
+    
+    public void deleteCategoryByProductId(int product_id){
+        try {
+            Connection conn = getConnection();
+            
+            pst = conn.prepareStatement("DELETE FROM Category WHERE product_id = ?");
+            
+            pst.setInt(1, product_id);
+            
+            pst.executeUpdate();
+            
+            System.out.println("Delete Success");
+            
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CategoryService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void getCategoryByTypeAndBrand(){
+        
     }
 }

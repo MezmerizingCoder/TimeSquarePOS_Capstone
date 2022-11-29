@@ -7,6 +7,7 @@ package pos_timesquare.controller;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -52,12 +53,12 @@ public class ServiceTicketsService {
                 }
                 if(!dbmd.getColumns(null, null, "ServiceTickets", "WalkInDate").next()){
                     Statement stmt = conn.createStatement();
-                    String sql = "ALTER TABLE ServiceTickets ADD WalkInDate TEXT"; 
+                    String sql = "ALTER TABLE ServiceTickets ADD WalkInDate DATE"; 
                     stmt.executeUpdate(sql);
                 }
                 if(!dbmd.getColumns(null, null, "ServiceTickets", "EstimateFinish").next()){
                     Statement stmt = conn.createStatement();
-                    String sql = "ALTER TABLE ServiceTickets ADD EstimateFinish TEXT"; 
+                    String sql = "ALTER TABLE ServiceTickets ADD EstimateFinish DATE"; 
                     stmt.executeUpdate(sql);
                 }
                 if(!dbmd.getColumns(null, null, "ServiceTickets", "Status").next()){
@@ -74,8 +75,8 @@ public class ServiceTicketsService {
                    " CustomerName TEXT, " + 
                    " Defects TEXT, " + 
                    " Price REAL, " +
-                   " WalkInDate TEXT, " +
-                   " EstimateFinish TEXT, " +
+                   " WalkInDate DATE, " +
+                   " EstimateFinish DATE, " +
                    " Status TEXT, " +
                    "PRIMARY KEY(id AUTOINCREMENT))"; 
 
@@ -106,8 +107,8 @@ public class ServiceTicketsService {
                 st.setCustomerName(rs.getString("CustomerName"));
                 st.setDefects(rs.getString("Defects"));
                 st.setPrice(Float.parseFloat(rs.getString("Price")));
-                st.setWalkInDate(rs.getString("WalkInDate"));
-                st.setEstimateFinish(rs.getString("EstimateFinish"));
+                st.setWalkInDate(rs.getDate("WalkInDate"));
+                st.setEstimateFinish(rs.getDate("EstimateFinish"));
                 st.setStatus(rs.getString("Status"));
 
                 s.add(st);
@@ -129,8 +130,8 @@ public class ServiceTicketsService {
             pst.setString(2, st.getCustomerName());
             pst.setString(3, st.getDefects());
             pst.setFloat(4, st.getPrice());
-            pst.setString(5, st.getWalkInDate());
-            pst.setString(6, st.getEstimateFinish());
+            pst.setDate(5, (Date) st.getWalkInDate());
+            pst.setDate(6, (Date) st.getEstimateFinish());
             pst.setString(7, st.getStatus());
             
             pst.executeUpdate();
@@ -173,7 +174,7 @@ public class ServiceTicketsService {
         }
     }
     
-    public void UpdateServiceTickets(int id, String customerName, String defects, float price, String walkInDate, String estimateFinish, String status){
+    public void UpdateServiceTickets(int id, String customerName, String defects, float price, Date walkInDate, Date estimateFinish, String status){
         try {
             Connection conn = getConnection();
             ServiceTickets st = new ServiceTickets();
@@ -182,8 +183,8 @@ public class ServiceTicketsService {
             pst.setString(1, customerName);
             pst.setString(2, defects);
             pst.setFloat(3, price);
-            pst.setString(4, walkInDate);
-            pst.setString(5, estimateFinish);
+            pst.setDate(4, walkInDate);
+            pst.setDate(5, estimateFinish);
             pst.setString(6, status);
             pst.setInt(7, id);
             

@@ -14,9 +14,46 @@ public class Receipt {
     int id;
     String product;
     int stocks;
+    float price;
+    int salesPersonId;
+    String date;
+    int customerId;
+    String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
+    public int getSalesPersonId() {
+        return salesPersonId;
+    }
+
+    public void setSalesPersonId(int salesPersonId) {
+        this.salesPersonId = salesPersonId;
+    }
 
     
-    float price;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+    
     
     public Receipt(){}
 

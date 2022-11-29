@@ -27,9 +27,13 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import pos_timesquare.model.Variants;
 import static pos_timesquare.view.MainFrame.addProductVariants;
+import static pos_timesquare.view.MainFrame.jPanel196;
 import static pos_timesquare.view.MainFrame.jPanel45;
 import static pos_timesquare.view.MainFrame.jPanel47;
+import static pos_timesquare.view.MainFrame.productMainMenu;
 import static pos_timesquare.view.MainFrame.productVariants;
+import static pos_timesquare.view.MainFrame.selectedMenu;
+import static pos_timesquare.view.MainFrame.ticketMainMenu;
 import static pos_timesquare.view.MainFrame.variantCombination;
 
 /**
@@ -315,7 +319,12 @@ public class AddProductOptionPanel extends JPanel {
                 
 //                lists.add(l3);
 
-                jPanel47.removeAll();
+                if(selectedMenu == ticketMainMenu){
+                    jPanel47.removeAll();
+                }else if (selectedMenu == productMainMenu){
+                    jPanel196.removeAll();
+                }
+                
                 variantCombination = getCombinations(lists);
                 List<Variants> tempProductVariants = new ArrayList<>();
                 for (List<String> list : variantCombination) {
@@ -331,7 +340,12 @@ public class AddProductOptionPanel extends JPanel {
                             tableRow.setVariantPrice(productVariants.get(j).getPrice());
                             tableRow.setVariantStocks(productVariants.get(j).getStocks());
                             tableRow.setVariantBarcode(productVariants.get(j).getBarcode());
-                            jPanel47.add(tableRow);
+//                            jPanel47.add(tableRow);
+                            if(selectedMenu == ticketMainMenu){
+                                jPanel47.add(tableRow);
+                            }else if (selectedMenu == productMainMenu){
+                                jPanel196.add(tableRow);
+                            }
                             
                             tempVariant.setName(str);
                             tempVariant.setPrice(productVariants.get(j).getPrice());
@@ -348,7 +362,12 @@ public class AddProductOptionPanel extends JPanel {
                             tableRow.setVariantPrice(productVariants.get(j).getPrice());
                             tableRow.setVariantStocks(productVariants.get(j).getStocks());
                             tableRow.setVariantBarcode(productVariants.get(j).getBarcode());
-                            jPanel47.add(tableRow);
+//                            jPanel47.add(tableRow);
+                            if(selectedMenu == ticketMainMenu){
+                                jPanel47.add(tableRow);
+                            }else if (selectedMenu == productMainMenu){
+                                jPanel196.add(tableRow);
+                            }
                             
                             tempVariant.setName(str);
                             tempVariant.setPrice(productVariants.get(j).getPrice());
@@ -366,7 +385,12 @@ public class AddProductOptionPanel extends JPanel {
                         
                         EditProductTableRow tableRow = new EditProductTableRow();
                         tableRow.setVariantName(str);
-                        jPanel47.add(tableRow);
+//                        jPanel47.add(tableRow);
+                        if(selectedMenu == ticketMainMenu){
+                            jPanel47.add(tableRow);
+                        }else if (selectedMenu == productMainMenu){
+                            jPanel196.add(tableRow);
+                        }
                         
                         Variants tempVariant = new Variants();
                         tempVariant.setName(str);
@@ -406,7 +430,12 @@ public class AddProductOptionPanel extends JPanel {
                             }
                         }
                         
-                        jPanel47.removeAll();
+                        if(selectedMenu == ticketMainMenu){
+                            jPanel47.removeAll();
+                        }else if (selectedMenu == productMainMenu){
+                            jPanel196.removeAll();
+                        }
+                        
                         if(!lists.isEmpty()){
                             variantCombination = getCombinations(lists);
                         

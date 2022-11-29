@@ -73,10 +73,58 @@ public class SalesComputationController {
             }
     }
     
-    public void getSumofAnnuallySales(String date){
+    public float getSumofAnnuallySales(String date){
         Connection conn = getConnection();
+        float total = 0;
         try {
-         
+            
+            System.out.println("Getting data");
+            pst = conn.prepareStatement("SELECT transactionDate, sum(totalprice) FROM TransactionHistory " + 
+                                        "WHERE strftime('%Y', transactionDate/1000, 'unixepoch') == ?" );
+                   
+            pst.setString(1,date);
+            
+            rs = pst.executeQuery();
+ 
+            while(rs.next()){
+//                System.out.println(rs.getString("transactionDate"));
+                total += rs.getFloat("sum(totalprice)");
+            }
+        
+        }catch (SQLException ex) {
+            System.out.print(ex.getMessage());
+        }
+        return total;
+    }
+    
+    public float getSumofAnnuallySales2(String date){
+        Connection conn = getConnection();
+        float total = 0;
+        try {
+            
+            System.out.println("Getting data");
+            pst = conn.prepareStatement("SELECT * FROM TransactionHistory WHERE strftime('%Y', transactionDate) = '"+ date + "'");
+                   
+            pst.setString(1,date);
+            
+            rs = pst.executeQuery();
+ 
+            while(rs.next()){
+//                System.out.println(rs.getString("transactionDate"));
+                total += rs.getFloat("sum(totalprice)");
+            }
+        
+        }catch (SQLException ex) {
+            System.out.print(ex.getMessage());
+        }
+        return total;
+    }
+    
+    public float getSumofAnnuallySales3(String date){
+        Connection conn = getConnection();
+        float total = 0;
+        try {
+            
             System.out.println("Getting data");
             pst = conn.prepareStatement("SELECT transactionDate, strftime('%Y-%m-%d',transactionDate, 'start of year', '+1 year', '-1 day'), sum(totalprice) " + " FROM TransactionHistory " + 
                                         "WHERE transactionDate >= ? GROUP BY strftime('%Y-%m-%d',transactionDate, 'start of year', '+1 year', '-1 day')" );
@@ -86,13 +134,14 @@ public class SalesComputationController {
             rs = pst.executeQuery();
  
             while(rs.next()){
-                System.out.println(rs.getString("transactionDate"));
-                System.out.println(rs.getFloat("sum(totalprice)"));
+//                System.out.println(rs.getString("transactionDate"));
+                total += rs.getFloat("sum(totalprice)");
             }
         
         }catch (SQLException ex) {
-              System.out.print(ex.getMessage());
-            }
+            System.out.print(ex.getMessage());
+        }
+        return total;
     }
     
 }

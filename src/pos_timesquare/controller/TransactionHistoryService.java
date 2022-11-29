@@ -7,6 +7,7 @@ package pos_timesquare.controller;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -42,7 +43,7 @@ public class TransactionHistoryService {
                 }
                 if(!dbmd.getColumns(null, null, "TransactionHistory", "transactionDate").next()){
                     Statement stmt = conn.createStatement();
-                    String sql = "ALTER TABLE TransactionHistory ADD transactionDate TEXT"; 
+                    String sql = "ALTER TABLE TransactionHistory ADD transactionDate DATE"; 
                     stmt.executeUpdate(sql);
                 }
                 if(!dbmd.getColumns(null, null, "TransactionHistory", "orders").next()){
@@ -59,7 +60,17 @@ public class TransactionHistoryService {
                     Statement stmt = conn.createStatement();
                     String sql = "ALTER TABLE TransactionHistory ADD receiptId Integer"; 
                     stmt.executeUpdate(sql);
-                }   
+                }  
+                if(!dbmd.getColumns(null, null, "TransactionHistory", "status").next()){
+                    Statement stmt = conn.createStatement();
+                    String sql = "ALTER TABLE TransactionHistory ADD status TEXT"; 
+                    stmt.executeUpdate(sql);
+                }  
+                if(!dbmd.getColumns(null, null, "TransactionHistory", "variantsId").next()){
+                    Statement stmt = conn.createStatement();
+                    String sql = "ALTER TABLE TransactionHistory ADD variantsId TEXT"; 
+                    stmt.executeUpdate(sql);
+                }  
             }
             else {
                 System.out.println("Not exist");
@@ -67,10 +78,12 @@ public class TransactionHistoryService {
                 String sql = "CREATE TABLE TransactionHistory(" +
                    "id INTEGER NOT NULL UNIQUE," +
                    " productId INTEGER, " + 
-                   " transactionDate TEXT, " + 
+                   " transactionDate DATE, " + 
                    " orders INTEGER, " +
                    " totalPrice REAL, " +
                    " receiptId Integer, "+
+                   " status TEXT, "+
+                   " variantsId TEXT, "+
                    "PRIMARY KEY(id AUTOINCREMENT))"; 
 
                 stmt.executeUpdate(sql);
@@ -90,7 +103,7 @@ public class TransactionHistoryService {
         
         try {
             System.out.println("Getting data");
-            pst = conn.prepareStatement("SELECT id, productid, transactiondate, orders, totalprice, receiptId FROM TransactionHistory");
+            pst = conn.prepareStatement("SELECT id, productid, transactiondate, orders, totalprice, receiptId, status, variantsId FROM TransactionHistory");
             rs = pst.executeQuery();
             
             
@@ -98,12 +111,15 @@ public class TransactionHistoryService {
                 TransactionHistory th = new TransactionHistory();
                 th.setId(Integer.parseInt(rs.getString("id")));
                 th.setProductId(Integer.parseInt(rs.getString("productid")));
-                th.setTransactionDate(rs.getString("transactiondate"));
+                th.setTransactionDate(rs.getDate("transactiondate"));
                 th.setOrders(Integer.parseInt(rs.getString("orders")));
-                th.setTotalPrice(Float.parseFloat(rs.getString("totalprice")));
+                th.setTotalPrice(rs.getFloat("totalprice"));
                 th.setReceiptId(rs.getInt("receiptId"));
+                th.setStatus(rs.getString("status"));
+                th.setVariantId(rs.getString("variantsId"));
                 t.add(th);
             }
+            conn.close();
             return t;
             
         } catch (SQLException ex) {
@@ -115,14 +131,16 @@ public class TransactionHistoryService {
         try {
             Connection conn = getConnection();
             
-            pst = conn.prepareStatement("INSERT INTO TransactionHistory VALUES(?, ?, ?, ?, ?, ?)");
+            pst = conn.prepareStatement("INSERT INTO TransactionHistory VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
             
             pst.setString(1, null);
             pst.setInt(2, th.getProductId());
-            pst.setString(3, th.getTransactionDate());
+            pst.setDate(3, (Date) th.getTransactionDate());
             pst.setInt(4, th.getOrders());
             pst.setFloat(5, th.getTotalPrice());
-            pst.setInt(5, th.getReceiptId());
+            pst.setInt(6, th.getReceiptId());
+            pst.setString(7, th.getStatus());
+            pst.setString(8, th.getVariantId());
             
             pst.executeUpdate();
             
@@ -152,18 +170,19 @@ public class TransactionHistoryService {
             Logger.getLogger(TransactionHistoryService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public void UpdateTransactionHistory(int id, int productid, String transactiondate, int orders, float totalprice, int receiptId){
+    public void UpdateTransactionHistory(int id, int productid, Date transactiondate, int orders, float totalprice, int receiptId, String status, String variantsId){
         try {
             Connection conn = getConnection();
             TransactionHistory th = new TransactionHistory();
-            pst = conn.prepareStatement("UPDATE TransactionHistory SET productid =?, transactiondate =?, orders =?, totalprice =?, receiptId=?  WHERE id =?");
+            pst = conn.prepareStatement("UPDATE TransactionHistory SET productid =?, transactiondate =?, orders =?, totalprice =?, receiptId=?, status=?, variantsId=?  WHERE id =" + String.valueOf(id));
             
             pst.setInt(1, productid);
-            pst.setString(2, transactiondate);
+            pst.setDate(2, transactiondate);
             pst.setInt(3, orders);
             pst.setFloat(4, totalprice);
-            pst.setInt(5, id);
-            pst.setInt(6, receiptId);
+            pst.setInt(5, receiptId);
+            pst.setString(6, status);
+            pst.setString(7, variantsId);
             
             pst.executeUpdate();
             
@@ -172,6 +191,99 @@ public class TransactionHistoryService {
             conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(TransactionHistoryService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void updateTransactionHistory(int id, TransactionHistory transaction){
+        try {
+            Connection conn = getConnection();
+//            TransactionHistory th = new TransactionHistory();
+            pst = conn.prepareStatement("UPDATE TransactionHistory SET productid =?, transactiondate =?, orders =?, totalprice =?, receiptId=?, status=?, variantsId=?  WHERE id =" + String.valueOf(id));
+            
+            pst.setInt(1, transaction.getProductId());
+            pst.setDate(2, (Date) transaction.getTransactionDate());
+            pst.setInt(3, transaction.getOrders());
+            pst.setFloat(4, transaction.getTotalPrice());
+            pst.setInt(5, transaction.getReceiptId());
+            pst.setString(6, transaction.getStatus());
+            pst.setString(7, transaction.getVariantId());
+            
+            pst.executeUpdate();
+            
+            System.out.println("Update Success");
+            
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(TransactionHistoryService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public List<TransactionHistory> getTransactionByDate(Date date){
+        Connection conn = getConnection();
+        List<TransactionHistory> t = new ArrayList<>();
+        try {
+         
+            System.out.println("Getting data");
+            pst = conn.prepareStatement("SELECT * FROM TransactionHistory WHERE transactionDate =" + date);
+              
+            
+            rs = pst.executeQuery();
+ 
+            while(rs.next()){
+                System.out.println(rs.getString("productid"));
+                System.out.println(rs.getString("orders"));
+                TransactionHistory th = new TransactionHistory();
+                th.setId(Integer.parseInt(rs.getString("id")));
+                th.setProductId(Integer.parseInt(rs.getString("productid")));
+                th.setTransactionDate(rs.getDate("transactiondate"));
+                th.setOrders(Integer.parseInt(rs.getString("orders")));
+                th.setTotalPrice(rs.getFloat("totalprice"));
+                th.setReceiptId(rs.getInt("receiptId"));
+                th.setStatus(rs.getString("status"));
+                th.setVariantId(rs.getString("variantsId"));
+                t.add(th);
+            }
+            
+            conn.close();
+            return t;
+        }catch (SQLException ex) {
+            System.out.print(ex.getMessage());
+            return null;  
+        }
+    }
+    
+    
+    public List<TransactionHistory> getTransactionByReceiptId(int receiptId){
+        Connection conn = getConnection();
+        List<TransactionHistory> t = new ArrayList<>();
+        try {
+         
+            System.out.println("Getting data");
+            pst = conn.prepareStatement("SELECT * FROM TransactionHistory WHERE receiptId =" + receiptId);
+              
+            
+            rs = pst.executeQuery();
+ 
+            while(rs.next()){
+                System.out.println(rs.getString("productid"));
+                System.out.println(rs.getString("orders"));
+                TransactionHistory th = new TransactionHistory();
+                th.setId(Integer.parseInt(rs.getString("id")));
+                th.setProductId(Integer.parseInt(rs.getString("productid")));
+                th.setTransactionDate(rs.getDate("transactiondate"));
+                th.setOrders(Integer.parseInt(rs.getString("orders")));
+                th.setTotalPrice(rs.getFloat("totalprice"));
+                th.setReceiptId(rs.getInt("receiptId"));
+                th.setStatus(rs.getString("status"));
+                th.setVariantId(rs.getString("variantsId"));
+                t.add(th);
+            }
+            
+            conn.close();
+            return t;
+        }catch (SQLException ex) {
+            System.out.print(ex.getMessage());
+            return null;  
         }
     }
 }

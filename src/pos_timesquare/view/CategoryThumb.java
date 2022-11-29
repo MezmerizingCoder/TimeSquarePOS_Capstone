@@ -24,9 +24,14 @@ import pos_timesquare.model.Product;
 import static pos_timesquare.view.MainFrame.darkRB;
 import static pos_timesquare.view.MainFrame.jPanel30;
 import static pos_timesquare.view.MainFrame.jPanel165;
+import static pos_timesquare.view.MainFrame.jPanel196;
+import static pos_timesquare.view.MainFrame.jPanel47;
 import static pos_timesquare.view.MainFrame.jProgressBar1;
+import static pos_timesquare.view.MainFrame.productMainMenu;
 import static pos_timesquare.view.MainFrame.selectedCategoryBrand;
 import static pos_timesquare.view.MainFrame.selectedCategoryType;
+import static pos_timesquare.view.MainFrame.selectedMenu;
+import static pos_timesquare.view.MainFrame.ticketMainMenu;
 import static pos_timesquare.view.MainFrame.updateGraphics;
 
 /**
@@ -166,8 +171,14 @@ public class CategoryThumb extends JPanel {
                 selectedCategoryBrand = categoryBrand;
                 
                 jProgressBar1.setVisible(true);
-                jPanel30.removeAll();
-                jPanel165.removeAll();
+//                jPanel30.removeAll();
+//                jPanel165.removeAll();
+                if(selectedMenu == ticketMainMenu){
+                    jPanel30.removeAll();
+                }else if (selectedMenu == productMainMenu){
+                    jPanel165.removeAll();
+                }
+
                 
                 CategoryService categoryService = new CategoryService();
                 List<Category> categories = categoryService.getAllCategory();
@@ -178,17 +189,23 @@ public class CategoryThumb extends JPanel {
                 categories.forEach(element -> {
                     if(element.getBrand().equals(categoryBrand) && element.getType().equals(categoryType)){
                         products.forEach(element2 -> {
-                            if(element2.getId() == element.getId()){
+                            if(element2.getId() == element.getProduct_id() && element2.getStatus().equals("active")){
                                 ProductThumb productThumb = new ProductThumb();
                                 productThumb.setProductDetails(element2);
                                 
                                 ProductThumb2 productThumb2 = new ProductThumb2();
                                 productThumb2.setProductDetails(element2);
                                 
-                                if(isEditOnly){
-                                    jPanel165.add(productThumb2);
-                                }else{
+//                                if(isEditOnly){
+//                                    jPanel165.add(productThumb2);
+//                                }else{
+//                                    jPanel30.add(productThumb);
+//                                }
+                                
+                                if(selectedMenu == ticketMainMenu){
                                     jPanel30.add(productThumb);
+                                }else if (selectedMenu == productMainMenu){
+                                    jPanel165.add(productThumb2);
                                 }
                                 System.out.println(element2.getName() + " Added");
                             }
@@ -207,6 +224,7 @@ public class CategoryThumb extends JPanel {
 //                    productThumb.setProductDetails(elements);
 //                    jPanel30.add(productThumb);
 //                });
+                
             }
         });
         

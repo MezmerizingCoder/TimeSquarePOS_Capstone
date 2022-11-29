@@ -5,6 +5,8 @@
  */
 package pos_timesquare.model;
 
+import java.util.Date;
+
 /**
  *
  * @author Administrator
@@ -14,8 +16,8 @@ public class ServiceTickets {
     private String customerName;
     private String defects;
     private float price;
-    private String walkInDate;
-    private String estimateFinish;
+    private Date walkInDate;
+    private Date estimateFinish;
     private String status;
     
     public int getId() {
@@ -50,19 +52,19 @@ public class ServiceTickets {
         this.price = price;
     }
 
-    public String getWalkInDate() {
+    public Date getWalkInDate() {
         return walkInDate;
     }
 
-    public void setWalkInDate(String walkInDate) {
+    public void setWalkInDate(Date walkInDate) {
         this.walkInDate = walkInDate;
     }
     
-    public String getEstimateFinish() {
+    public Date getEstimateFinish() {
         return estimateFinish;
     }
 
-    public void setEstimateFinish(String estimateFinish) {
+    public void setEstimateFinish(Date estimateFinish) {
         this.estimateFinish = estimateFinish;
     }
     

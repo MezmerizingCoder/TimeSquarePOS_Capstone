@@ -25,75 +25,112 @@ public class NotificationService {
     ResultSet rs;
     
      public NotificationService(){
-//        Connection conn = getConnection();
-//        try {
-//            DatabaseMetaData dbmd = conn.getMetaData();
-//            ResultSet tables = dbmd.getTables(null, null, "Notification", null);
-//            if (tables.next()) {
-//                System.out.println("Exist");
-//                
-//                if(!dbmd.getColumns(null, null, "Notification", "productId").next()){
-//                    Statement stmt = conn.createStatement();
-//                    String sql = "ALTER TABLE Notification ADD productId INTEGER"; 
-//                    stmt.executeUpdate(sql);
-//                }
-//                if(!dbmd.getColumns(null, null, "Notification", "date").next()){
-//                    Statement stmt = conn.createStatement();
-//                    String sql = "ALTER TABLE Notification ADD date DATE"; 
-//                    stmt.executeUpdate(sql);
-//                }
-//                if(!dbmd.getColumns(null, null, "Notification", "time").next()){
-//                    Statement stmt = conn.createStatement();
-//                    String sql = "ALTER TABLE Notification ADD time DATETIME"; 
-//                    stmt.executeUpdate(sql);
-//                }
-//                
-//            }
-//            else {
-//                System.out.println("Not exist");
-//                Statement stmt = conn.createStatement();
-//                String sql = "CREATE TABLE Notification (" +
-//                   "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-//                   " productId INTEGER      NOT NULL\n" +
-//"                       REFERENCES Product ( productid ) MATCH FULL, " + 
-//                   " date      DATE     NOT NULL, " + 
-//                   " time      DATETIME NOT NULL, "; 
-//
-//                stmt.executeUpdate(sql);
-//                System.out.println("Created table in given database...");  
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(NotificationService.class.getName()).log(Level.SEVERE, null, ex);
-//        }     
+        Connection conn = getConnection();
+        try {
+            DatabaseMetaData dbmd = conn.getMetaData();
+            ResultSet tables = dbmd.getTables(null, null, "Notification", null);
+            if (tables.next()) {
+                System.out.println("Exist");
+                
+                if(!dbmd.getColumns(null, null, "Notification", "productId").next()){
+                    Statement stmt = conn.createStatement();
+                    String sql = "ALTER TABLE Notification ADD productId INTEGER"; 
+                    stmt.executeUpdate(sql);
+                }
+                if(!dbmd.getColumns(null, null, "Notification", "date").next()){
+                    Statement stmt = conn.createStatement();
+                    String sql = "ALTER TABLE Notification ADD date TEXT"; 
+                    stmt.executeUpdate(sql);
+                }
+                if(!dbmd.getColumns(null, null, "Notification", "title").next()){
+                    Statement stmt = conn.createStatement();
+                    String sql = "ALTER TABLE Notification ADD title TEXT"; 
+                    stmt.executeUpdate(sql);
+                }
+                
+                
+            }
+            else {
+                System.out.println("Not exist");
+                Statement stmt = conn.createStatement();
+                String sql = "CREATE TABLE Notification(" +
+                   "id INTEGER NOT NULL UNIQUE," +
+                   " productId INTEGER, " +
+                   " date TEXT, " +
+                   " title TEXT, " +
+                   "PRIMARY KEY(id AUTOINCREMENT))"; 
+
+                stmt.executeUpdate(sql);
+                System.out.println("Created table in given database...");  
+                conn.close();
+            }
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        }  
     }
+     
+     
     public List<Notification> getAllNotificationDetails(){
     
-    Connection conn = getConnection();
-    List<Notification> notifications = new ArrayList<>();
-    
-    try{
-     
-        System.out.println("Getting data");
-        pst = conn.prepareStatement("SELECT id, productId, date, time FROM Notification");
-        rs = pst.executeQuery();
-        
-         while(rs.next()){
-             
-               Notification notification = new Notification();
-                notification.setId(Integer.parseInt(rs.getString("id")));
-                notification.setProductId(Integer.parseInt(rs.getString("productId")));
-                notification.setDate(rs.getString("date"));
-                notification.setTime(rs.getString("time"));
-                
-                notifications.add(notification);
-            }
-            return notifications;
-            
-    }catch (SQLException ex) {
-            Logger.getLogger(NotificationService.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
+        Connection conn = getConnection();
+        List<Notification> notifications = new ArrayList<>();
+
+        try{
+
+            System.out.println("Getting data");
+            pst = conn.prepareStatement("SELECT * FROM Notification");
+            rs = pst.executeQuery();
+
+             while(rs.next()){
+
+                   Notification notification = new Notification();
+                    notification.setId(Integer.parseInt(rs.getString("id")));
+                    notification.setProductId(Integer.parseInt(rs.getString("productId")));
+                    notification.setDate(rs.getString("date"));
+                    notification.setTitle(rs.getString("title"));
+
+                    notifications.add(notification);
+                }
+                conn.close();
+                return notifications;
+
+        }catch (SQLException ex) {
+                Logger.getLogger(NotificationService.class.getName()).log(Level.SEVERE, null, ex);
+                return null;
+        }
     }
-}
+    
+    public List<Notification> getLimitedNotification(int num){
+    
+        Connection conn = getConnection();
+        List<Notification> notifications = new ArrayList<>();
+
+        try{
+
+            System.out.println("Getting data");
+            pst = conn.prepareStatement("SELECT * FROM Notification ORDER BY id DESC LIMIT "+num);
+            rs = pst.executeQuery();
+
+             while(rs.next()){
+
+                   Notification notification = new Notification();
+                    notification.setId(Integer.parseInt(rs.getString("id")));
+                    notification.setProductId(Integer.parseInt(rs.getString("productId")));
+                    notification.setDate(rs.getString("date"));
+                    notification.setTitle(rs.getString("title"));
+
+                    notifications.add(notification);
+                }
+                conn.close();
+                return notifications;
+
+        }catch (SQLException ex) {
+                Logger.getLogger(NotificationService.class.getName()).log(Level.SEVERE, null, ex);
+                return null;
+        }
+    }
+    
     public Notification getNotificationById(int id){
         Connection conn = getConnection();
         Notification notification = new Notification();
@@ -101,16 +138,16 @@ public class NotificationService {
         try {
          
             System.out.println("Getting data");
-            pst = conn.prepareStatement("SELECT id, productId, date, time FROM Notification WHERE id ==" + id);
+            pst = conn.prepareStatement("SELECT id, productId, date, title FROM Notification WHERE id ==" + id);
             rs = pst.executeQuery();
             
             while(rs.next()){
                 notification.setId(Integer.parseInt(rs.getString("id")));
                 notification.setProductId(Integer.parseInt(rs.getString("productId")));
                 notification.setDate(rs.getString("date"));
-                notification.setTime(rs.getString("time"));
-               
+                notification.setTitle(rs.getString("title"));
             }
+            conn.close();
             
             return notification;  
             
@@ -127,7 +164,7 @@ public class NotificationService {
             pst.setString(1, null);
             pst.setInt(2, notification.getProductId());
             pst.setString(3, notification.getDate());
-            pst.setString(4, notification.getTime());
+            pst.setString(4, notification.getTitle());
             
             pst.executeUpdate();
             
@@ -135,7 +172,8 @@ public class NotificationService {
             
             conn.close();
         } catch (SQLException ex) {
-            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);} 
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        } 
         
     }
     
@@ -156,15 +194,15 @@ public class NotificationService {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);}
 
     }
-    public void UpdateNotification(int id, int productid, String date, String time){
+    public void UpdateNotification(int id, int productid, String date, String title){
         try {
             Connection conn = getConnection();
             Notification nf = new Notification();
-            pst = conn.prepareStatement("UPDATE Notification SET productid =?, date =?, time =? WHERE id =?");
+            pst = conn.prepareStatement("UPDATE Notification SET productid =?, date =?, title=? WHERE id =?");
             
             pst.setInt(1, productid);
             pst.setString(2, date);
-            pst.setString(3, time);
+            pst.setString(3, title);
             pst.setInt(4, id);
             
             pst.executeUpdate();

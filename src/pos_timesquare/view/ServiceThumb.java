@@ -5,6 +5,7 @@
  */
 package pos_timesquare.view;
 
+import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -72,13 +73,15 @@ public class ServiceThumb extends JPanel{
     
     JScrollPane jScrollPane10 = new JScrollPane();
     
-    JTextField jTextField5 = new JTextField();
-    JTextField jTextField14 = new JTextField();
+    JDateChooser jTextField5 = new JDateChooser();
+    JDateChooser jTextField14 = new JDateChooser();
     JTextField jTextField12 = new JTextField();
     JTextField jTextField13 = new JTextField();
     
     boolean expanded = false;
     boolean isHover = false;
+    
+    boolean isRequiredAdmin = false;
     
     ServiceTickets serviceTicket = new ServiceTickets();
 
@@ -89,7 +92,7 @@ public class ServiceThumb extends JPanel{
     public void setServiceTicket(ServiceTickets serviceTicket) {
         this.serviceTicket = serviceTicket;
         jLabel105.setText(serviceTicket.getCustomerName());
-        jLabel106.setText(serviceTicket.getWalkInDate());
+        jLabel106.setText(serviceTicket.getWalkInDate().toString());
         jLabel108.setText("Order# " + String.valueOf(serviceTicket.getId()));
         
         if(serviceTicket.getStatus().equals("On Progress")){
@@ -104,13 +107,14 @@ public class ServiceThumb extends JPanel{
         
         //inputs
         jTextField12.setText(serviceTicket.getCustomerName());
-        jTextField5.setText(serviceTicket.getWalkInDate());
-        jTextField14.setText(serviceTicket.getEstimateFinish());
+        jTextField5.setDate(serviceTicket.getWalkInDate());
+        jTextField14.setDate(serviceTicket.getEstimateFinish());
         jTextArea2.setText(serviceTicket.getDefects());
         jTextField13.setText(String.valueOf(serviceTicket.getPrice()));
         
-        
-        updateGraphics();
+        repaint();
+        revalidate();
+//        updateGraphics();
     }
     
     public void paintComponent(Graphics g){
@@ -146,6 +150,10 @@ public class ServiceThumb extends JPanel{
             }
         }
         
+    }
+    
+    void setRequiredAdmin(boolean data){
+        isRequiredAdmin = data;
     }
 
     
@@ -347,14 +355,16 @@ public class ServiceThumb extends JPanel{
             public void mouseEntered(MouseEvent e){
                 if(!expanded){
                     isHover = true;
-                    updateGraphics();
+//                    updateGraphics();
+                    repaint();
                 }
                 System.out.println("is hover");
             }
             public void mouseExited(MouseEvent e){
                 if(!expanded){
                     isHover = false;
-                    updateGraphics();
+//                    updateGraphics();
+                    repaint();
                 }
                 
             }
@@ -366,14 +376,16 @@ public class ServiceThumb extends JPanel{
             public void mouseEntered(MouseEvent e){
                 if(!expanded){
                     isHover = true;
-                    updateGraphics();
+//                    updateGraphics();
+                    repaint();
                 }
                 System.out.println("is hover");
             }
             public void mouseExited(MouseEvent e){
                 if(!expanded){
                     isHover = false;
-                    updateGraphics();
+//                    updateGraphics();
+                    repaint();
                 }
             }
         });
@@ -417,15 +429,28 @@ public class ServiceThumb extends JPanel{
         this.getParent().remove(this);
     }
     public void thumbClicked(){
-        System.out.println("Expand this panel");
-        if(expanded){
-            this.remove(serviceThumbExpand);
-            expanded = false;
+        if(isRequiredAdmin == false){
+            System.out.println("Expand this panel");
+            if(expanded){
+                this.remove(serviceThumbExpand);
+                expanded = false;
+            }else{
+                this.add(serviceThumbExpand);
+                expanded = true;
+            }
+            updateGraphics();
         }else{
-            this.add(serviceThumbExpand);
-            expanded = true;
+            if(MainFrame.user.getRole().equals("admin")){
+                if(expanded){
+                    this.remove(serviceThumbExpand);
+                    expanded = false;
+                }else{
+                    this.add(serviceThumbExpand);
+                    expanded = true;
+                }
+                updateGraphics();
+            }
         }
-        updateGraphics();
     }
     
     public void updateThumb(){
@@ -435,8 +460,8 @@ public class ServiceThumb extends JPanel{
                 jTextField12.getText(), 
                 jTextArea2.getText(), 
                 Float.parseFloat(jTextField13.getText()), 
-                jTextField5.getText(), 
-                jTextField14.getText(), 
+                new java.sql.Date(jTextField5.getDate().getTime()),
+                new java.sql.Date(jTextField14.getDate().getTime()),
                 jComboBox5.getSelectedItem().toString());
         
         if(jComboBox5.getSelectedItem().toString().equals("Done")){
@@ -446,7 +471,7 @@ public class ServiceThumb extends JPanel{
         }
         jLabel107.setText(jComboBox5.getSelectedItem().toString());
         jLabel105.setText(jTextField12.getText());
-        jLabel106.setText(jTextField5.getText());
+        jLabel106.setText(new java.sql.Date(jTextField5.getDate().getTime()).toString());
 
         this.remove(serviceThumbExpand);
         expanded = false;

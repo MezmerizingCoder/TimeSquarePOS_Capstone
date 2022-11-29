@@ -626,6 +626,7 @@
  */
 package pos_timesquare.view;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -637,12 +638,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Function;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -653,6 +656,7 @@ import javax.swing.JSpinner;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import pos_timesquare.controller.CategoryService;
+import pos_timesquare.controller.ProductService;
 import pos_timesquare.controller.VariantService;
 import pos_timesquare.model.Product;
 import pos_timesquare.model.Variants;
@@ -667,12 +671,20 @@ import static pos_timesquare.view.MainFrame.editProductPanel;
 import static pos_timesquare.view.MainFrame.editProductPriceField;
 import static pos_timesquare.view.MainFrame.editProductStockField;
 import static pos_timesquare.view.MainFrame.editProductType;
+import static pos_timesquare.view.MainFrame.favoriteCount;
+import static pos_timesquare.view.MainFrame.jButton36;
+import static pos_timesquare.view.MainFrame.jButton41;
 import static pos_timesquare.view.MainFrame.jCheckBoxMenuItem1;
+import static pos_timesquare.view.MainFrame.jLabel12;
+import static pos_timesquare.view.MainFrame.jLabel199;
+import static pos_timesquare.view.MainFrame.jLabel215;
+import static pos_timesquare.view.MainFrame.jLabel65;
 import static pos_timesquare.view.MainFrame.jPanel11;
 import static pos_timesquare.view.MainFrame.jPanel46;
 import static pos_timesquare.view.MainFrame.jPanel47;
 import static pos_timesquare.view.MainFrame.jProgressBar1;
 import static pos_timesquare.view.MainFrame.jSpinner4;
+import static pos_timesquare.view.MainFrame.jTextField17;
 import static pos_timesquare.view.MainFrame.popupContentPanel;
 import static pos_timesquare.view.MainFrame.popupPanel;
 import static pos_timesquare.view.MainFrame.productImage;
@@ -685,8 +697,11 @@ import static pos_timesquare.view.MainFrame.ticketMainPanelHeader;
 import static pos_timesquare.view.MainFrame.updateGraphics;
 import static pos_timesquare.view.MainFrame.viewProductName;
 import static pos_timesquare.view.MainFrame.viewProductPanel;
+import static pos_timesquare.view.MainFrame.viewProductPrice;
+import static pos_timesquare.view.MainFrame.viewProductSelectedVariants;
 import static pos_timesquare.view.MainFrame.viewProductVariantTable;
 import static pos_timesquare.view.MainFrame.viewSelectedVariant;
+import static pos_timesquare.view.MainFrame.selectedProductPrice;
 
 /**
  *
@@ -757,6 +772,8 @@ public class ProductThumb extends JPanel{
     
     String currentType;
     String currentBrand;
+    
+    int totalStocks = 0;
 
     public String getImage() {
         return image;
@@ -764,11 +781,14 @@ public class ProductThumb extends JPanel{
 
     public void setImage(String image) {
         this.image = image;
+        
         Thread t = new Thread(new Runnable() {
             public void run() {
                 BufferedImage bufferedImage = null;
                 try {
-                    bufferedImage = ImageIO.read(getClass().getResource(image));
+                    String cwd = System.getProperty("user.dir");
+                    bufferedImage = ImageIO.read(new File(cwd + image));
+//                    bufferedImage = ImageIO.read(getClass().getResource(image));
                 } catch (IOException ex) {
 
                 }
@@ -815,8 +835,44 @@ public class ProductThumb extends JPanel{
     public void setProductDetails(Product productDetails) {
         this.productDetails = productDetails;
         jLabel125.setText(productDetails.getName());
-        jLabel128.setText(String.valueOf(productDetails.getStocks()));
+        
+        VariantService vs = new VariantService();
+        List<Variants> variant  = vs.getProductVariants(productDetails.getId());
+        
+        totalStocks = 0;
+        if(variant.size() > 0){
+            variant.forEach(e -> {
+                if(e.getStatus() == 1){
+                    totalStocks += e.getStocks();
+                }
+            });
+            jLabel128.setText(String.valueOf(totalStocks));
+        }else{
+            jLabel128.setText(String.valueOf(productDetails.getStocks()));
+        }
+        
         setImage(productDetails.getImage());
+        
+        if(productDetails.getFavorite() == 0){
+            FlatSVGIcon favicon = new FlatSVGIcon("img/icon/heart-regular.svg", 16, 16);
+            favicon.setColorFilter(new FlatSVGIcon.ColorFilter(new Function<Color, Color>(){
+                public Color apply(Color t){
+                    return new Color(84, 84, 84);
+                }
+            }));
+            jLabel129.setIcon(favicon);
+        }else{
+            FlatSVGIcon favicon = new FlatSVGIcon("img/icon/heart-solid.svg", 16, 16);
+            favicon.setColorFilter(new FlatSVGIcon.ColorFilter(new Function<Color, Color>(){
+                public Color apply(Color t){
+                    return new Color(255, 79, 79);
+                }
+            }));
+            jLabel129.setIcon(favicon);
+        }
+        
+        
+        
     }
 
     public String getProductName() {
@@ -874,10 +930,24 @@ public class ProductThumb extends JPanel{
         );
 
         jLabel129.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel129.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icon/favorite-icon-gray.png"))); // NOI18N
+//        jLabel129.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icon/favorite-icon-gray.png"))); // NOI18N
+        FlatSVGIcon favicon = new FlatSVGIcon("img/icon/heart-regular.svg", 16, 16);
+        favicon.setColorFilter(new FlatSVGIcon.ColorFilter(new Function<Color, Color>(){
+            public Color apply(Color t){
+                return new Color(84, 84, 84);
+            }
+        }));
+        jLabel129.setIcon(favicon);
 
         jLabel130.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel130.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icon/pencil-icon-gray.png"))); // NOI18N
+//        jLabel130.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icon/pencil-icon-gray.png"))); // NOI18N
+        FlatSVGIcon editicon = new FlatSVGIcon("img/icon/pencil-solid.svg", 13, 13);
+        editicon.setColorFilter(new FlatSVGIcon.ColorFilter(new Function<Color, Color>(){
+            public Color apply(Color t){
+                return new Color(84, 84, 84);
+            }
+        }));
+        jLabel130.setIcon(editicon);
 
         jLabel131.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel131.setPreferredSize(new java.awt.Dimension(220, 120));
@@ -964,7 +1034,9 @@ public class ProductThumb extends JPanel{
                         if(productDetails.getImage() != "" && productDetails.getImage() != null){
                             BufferedImage bufferedImage = null;
                             try {
-                                bufferedImage = ImageIO.read(this.getClass().getResource(productDetails.getImage()));
+                                String cwd = System.getProperty("user.dir");
+                                bufferedImage = ImageIO.read(new File(cwd + productDetails.getImage()));
+//                                bufferedImage = ImageIO.read(this.getClass().getResource(productDetails.getImage()));
                                 if(bufferedImage != null){
 //                                    Image scaledImage = bufferedImage.getScaledInstance(productImage.getWidth(), productImage.getHeight(), Image.SCALE_SMOOTH);
                                     Image scaledImage = bufferedImage.getScaledInstance(-1, productImage.getHeight(), Image.SCALE_SMOOTH);
@@ -981,13 +1053,19 @@ public class ProductThumb extends JPanel{
                 
                 
                 viewProductName.setText(productDetails.getName());
-                jSpinner4.setValue(0);
-                checkoutProduct.forEach((k, e)->{
-                    if(k == productDetails.getId()){
-                        jSpinner4.setValue(e.getStocks());
-                    }
-                });
+                jSpinner4.setValue(1);
+//                checkoutProduct.forEach((k, e)->{
+//                    if(k == productDetails.getId()){
+//                        jSpinner4.setValue(e.getStocks());
+//                    }
+//                });
                 
+                jLabel65.setText(productDetails.getName());
+                viewProductPrice.setText(String.valueOf(productDetails.getPrice()));
+                
+                jLabel12.setText(String.valueOf(productDetails.getPrice()));
+                viewProductSelectedVariants.setText("");
+                selectedProductPrice = productDetails.getPrice();
                 
                 jPanel11.removeAll();
                 
@@ -1023,7 +1101,12 @@ public class ProductThumb extends JPanel{
                         if(e2.getMainVariant() == 0){
                             rowData[0] = e2.getName();
                             rowData[1] = e2.getPrice();
-                            rowData[2] = "In stock: "+ e2.getStocks();
+                            
+                            if(e2.getStatus() == 1){
+                                rowData[2] = "In Stock: "+ e2.getStocks();
+                            }else{
+                                rowData[2] = "Not Available";
+                            }
 
                             model.addRow(rowData);
                         }
@@ -1042,6 +1125,7 @@ public class ProductThumb extends JPanel{
             }
         });
         
+        jLabel130.setVisible(false);
         jLabel130.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 showPopup();
@@ -1101,6 +1185,8 @@ public class ProductThumb extends JPanel{
                     tableRow.setVariantStocks(e.getStocks());
                     tableRow.setVariantBarcode(e.getBarcode());
                     tableRow.setVariantId(e.getId());
+                    tableRow.setVariantStatus(e.getStatus());
+                    
                     jPanel47.add(tableRow);
                             
 //                    updateGraphics();
@@ -1114,13 +1200,16 @@ public class ProductThumb extends JPanel{
                 editProductNameTextField.setText(productDetails.getName());
                 editProductPriceField.setText(String.valueOf(productDetails.getPrice()));
                 editProductStockField.setValue(productDetails.getStocks());
+                jTextField17.setText(productDetails.getBarcode());
                 
                 productImage.setIcon(null);
                 productImage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
                 if(productDetails.getImage() != "" && productDetails.getImage() != null){
                     BufferedImage bufferedImage = null;
                     try {
-                        bufferedImage = ImageIO.read(this.getClass().getResource(productDetails.getImage()));
+                        String cwd = System.getProperty("user.dir");
+                        bufferedImage = ImageIO.read(new File(cwd + productDetails.getImage()));
+//                        bufferedImage = ImageIO.read(this.getClass().getResource(productDetails.getImage()));
                         if(bufferedImage != null){
 //                            Image scaledImage = bufferedImage.getScaledInstance(productImage.getWidth(), productImage.getHeight(), Image.SCALE_SMOOTH);
                             Image scaledImage = bufferedImage.getScaledInstance(-1, productImage.getHeight(), Image.SCALE_SMOOTH);
@@ -1172,8 +1261,50 @@ public class ProductThumb extends JPanel{
                 
                 jProgressBar1.setVisible(false);
                 
+                
+                if(productDetails.getStatus().equals("active")){
+                    jButton41.setVisible(false);
+                    jButton36.setVisible(true);
+                }else{
+                    jButton41.setVisible(true);
+                    jButton36.setVisible(false);
+                }
+                
                 updateGraphics();
                 
+            }
+        });
+        
+        jLabel129.addMouseListener(new MouseAdapter(){
+            public void mouseClicked(MouseEvent e){
+                ProductService ps = new ProductService();
+                if(productDetails.getFavorite() == 0){
+                    FlatSVGIcon favicon = new FlatSVGIcon("img/icon/heart-solid.svg", 16, 16);
+                    favicon.setColorFilter(new FlatSVGIcon.ColorFilter(new Function<Color, Color>(){
+                        public Color apply(Color t){
+                            return new Color(255, 79, 79);
+                        }
+                    }));
+                    jLabel129.setIcon(favicon);
+                    favoriteCount++;
+
+                    productDetails.setFavorite(1);
+                    ps.updateProduct(productDetails.getId(), productDetails);
+                }else{
+                    FlatSVGIcon favicon = new FlatSVGIcon("img/icon/heart-regular.svg", 16, 16);
+                    favicon.setColorFilter(new FlatSVGIcon.ColorFilter(new Function<Color, Color>(){
+                        public Color apply(Color t){
+                            return new Color(84, 84, 84);
+                        }
+                    }));
+                    jLabel129.setIcon(favicon);
+                    favoriteCount--;
+                    
+                    productDetails.setFavorite(0);
+                    ps.updateProduct(productDetails.getId(), productDetails);
+                }
+                jLabel215.setText( String.valueOf(favoriteCount) + " item");
+                jLabel199.setText( String.valueOf(favoriteCount) + " item");
             }
         });
         
@@ -1222,7 +1353,17 @@ public class ProductThumb extends JPanel{
                 tempVariants.setId(productDetails.getId());
 //                tempVariants.setName(str);
                 tempVariants.setStocks((int) jSpinner5.getValue());
-                checkoutProduct.put(productDetails.getId(), tempVariants);
+                if(checkoutProduct.containsKey(productDetails.getId())){
+                    List<Variants> tempVar = new ArrayList<>();
+                    tempVar = checkoutProduct.get(productDetails.getId());
+                    tempVar.add(tempVariants);
+                    checkoutProduct.put(productDetails.getId(), tempVar);
+                }else{
+                    List<Variants> tempVar = new ArrayList<>();
+                    tempVar.add(tempVariants);
+                    checkoutProduct.put(productDetails.getId(), tempVar);
+                }
+                
                 System.out.println(checkoutProduct);
             }
             

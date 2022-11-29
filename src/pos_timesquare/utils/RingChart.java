@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import static java.lang.Math.random;
 import static java.lang.StrictMath.random;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import javax.swing.JPanel;
 import org.jfree.chart.ChartFactory;
@@ -35,18 +36,26 @@ public class RingChart extends JPanel {
     JFreeChart chart = ChartFactory.createRingChart("", dataset, false, true, false);
     RingPlot pie = (RingPlot) chart.getPlot();
     HashMap<String, Float> data;
-    
+    float total;
     public void setData(HashMap<String, Float> data){
         dataset.clear();
         this.data = data;
 //        SalesCateogryThumb sct = new SalesCateogryThumb();
         jPanel117.removeAll();
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
+        total= 0;
+        data.forEach((k, e)->{
+            total += (float) e;
+        });
         data.forEach((k, e)->{
             dataset.setValue(k, e);
             
 //            new Color((int)(Math.random() * 0x1000000));
             SalesCateogryThumb sct = new SalesCateogryThumb();
             sct.setTypeName(k);
+            
+            sct.setPercentage(String.valueOf(df.format(((float)e / (float)total) * 100)) + "%");
             pie.setSectionPaint(k, new Color((int)(Math.random() * 0x1000000)));
             sct.setColor((Color) pie.getSectionPaint(k));
             System.out.println("Ring color: " + pie.getSectionPaint(k));

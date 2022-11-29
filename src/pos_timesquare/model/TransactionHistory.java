@@ -5,6 +5,8 @@
  */
 package pos_timesquare.model;
 
+import java.util.Date;
+
 /**
  *
  * @author Cassandra
@@ -13,10 +15,28 @@ public class TransactionHistory {
     
     private int id;
     private int productId;
-    private String transactionDate;
+    private Date transactionDate;
     private int orders;
     private float totalPrice;
     private int receiptId;
+    private String status;
+    private String variantId;
+
+    public String getVariantId() {
+        return variantId;
+    }
+
+    public void setVariantId(String variantId) {
+        this.variantId = variantId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public int getReceiptId() {
         return receiptId;
@@ -42,11 +62,11 @@ public class TransactionHistory {
         this.productId = productid;
     }
 
-    public String getTransactionDate() {
+    public Date getTransactionDate() {
         return transactionDate;
     }
 
-    public void setTransactionDate(String transactionDate) {
+    public void setTransactionDate(Date transactionDate) {
         this.transactionDate = transactionDate;
     }
 

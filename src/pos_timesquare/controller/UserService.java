@@ -74,6 +74,26 @@ public class UserService {
                     String sql = "ALTER TABLE User ADD hourWorked INTEGER"; 
                     stmt.executeUpdate(sql);
                 }
+                if(!dbmd.getColumns(null, null, "User", "gender").next()){
+                    Statement stmt = conn.createStatement();
+                    String sql = "ALTER TABLE User ADD gender TEXT"; 
+                    stmt.executeUpdate(sql);
+                }
+                if(!dbmd.getColumns(null, null, "User", "birthdate").next()){
+                    Statement stmt = conn.createStatement();
+                    String sql = "ALTER TABLE User ADD birthdate DATE"; 
+                    stmt.executeUpdate(sql);
+                }
+                if(!dbmd.getColumns(null, null, "User", "status").next()){
+                    Statement stmt = conn.createStatement();
+                    String sql = "ALTER TABLE User ADD status INTEGER"; 
+                    stmt.executeUpdate(sql);
+                }
+                if(!dbmd.getColumns(null, null, "User", "contactNum").next()){
+                    Statement stmt = conn.createStatement();
+                    String sql = "ALTER TABLE User ADD contactNum TEXT"; 
+                    stmt.executeUpdate(sql);
+                }
                 
             }
             else {
@@ -89,6 +109,10 @@ public class UserService {
                    " membershipDate TEXT, " +
                    " image TEXT, " +
                    " hourWorked INTEGER, " +
+                   " gender TEXT, " +
+                   " birthdate DATE, " +
+                   " status Integer, " +
+                   " contactNum TEXT, " +
                    "PRIMARY KEY(id AUTOINCREMENT))"; 
 
                 stmt.executeUpdate(sql);
@@ -110,7 +134,7 @@ public class UserService {
         
         try {
             System.out.println("Getting data");
-            pst = conn.prepareStatement("SELECT id, username, password FROM User");
+            pst = conn.prepareStatement("SELECT * FROM User");
             rs = pst.executeQuery();
             
             
@@ -119,6 +143,90 @@ public class UserService {
                 user.setId(Integer.parseInt(rs.getString("id")));
                 user.setUsername(rs.getString("username"));
                 user.setPassword(rs.getString("password"));
+                user.setName(rs.getString("name"));
+                user.setRole(rs.getString("role"));
+                user.setAddress(rs.getString("address"));
+                user.setMembershipDate(rs.getString("membershipDate"));
+                user.setImage(rs.getString("image"));
+                user.setHourWorked(rs.getInt("hourWorked"));
+                user.setGender(rs.getString("gender"));
+                user.setBirthdate(rs.getDate("birthdate"));
+                user.setStatus(rs.getInt("status"));
+                user.setContactNum(rs.getString("contactNum"));
+                
+                users.add(user);
+            }
+            conn.close();
+            return users;
+            
+        } catch (SQLException ex) {
+            return null;
+        }
+    }
+    
+    public List<User> getUserByName(String name){
+        
+        Connection conn = getConnection();
+        List<User> users = new ArrayList<>();
+        
+        try {
+            System.out.println("Getting data");
+            pst = conn.prepareStatement("SELECT * FROM User WHERE name LIKE '" + name + "%' AND status == 1");
+            rs = pst.executeQuery();
+            
+            
+            while(rs.next()){
+                User user = new User();
+                user.setId(Integer.parseInt(rs.getString("id")));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setName(rs.getString("name"));
+                user.setRole(rs.getString("role"));
+                user.setAddress(rs.getString("address"));
+                user.setMembershipDate(rs.getString("membershipDate"));
+                user.setImage(rs.getString("image"));
+                user.setHourWorked(rs.getInt("hourWorked"));
+                user.setGender(rs.getString("gender"));
+                user.setBirthdate(rs.getDate("birthdate"));
+                user.setStatus(rs.getInt("status"));
+                user.setContactNum(rs.getString("contactNum"));
+                
+                users.add(user);
+            }
+            conn.close();
+            return users;
+            
+        } catch (SQLException ex) {
+            return null;
+        }
+    }
+    
+    public List<User> getAllUserDeleted(){
+        
+        Connection conn = getConnection();
+        List<User> users = new ArrayList<>();
+        
+        try {
+            System.out.println("Getting data");
+            pst = conn.prepareStatement("SELECT * FROM User WHERE status == 2");
+            rs = pst.executeQuery();
+            
+            
+            while(rs.next()){
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setName(rs.getString("name"));
+                user.setRole(rs.getString("role"));
+                user.setAddress(rs.getString("address"));
+                user.setMembershipDate(rs.getString("membershipDate"));
+                user.setImage(rs.getString("image"));
+                user.setHourWorked(rs.getInt("hourWorked"));
+                user.setGender(rs.getString("gender"));
+                user.setBirthdate(rs.getDate("birthdate"));
+                user.setStatus(rs.getInt("status"));
+                user.setContactNum(rs.getString("contactNum"));
                 
                 users.add(user);
             }
@@ -136,7 +244,7 @@ public class UserService {
         
         try {
             System.out.println("Getting data");
-            pst = conn.prepareStatement("SELECT id, username, password, name, role, address, membershipDate, image, hourWorked FROM User WHERE id ==" + id);
+            pst = conn.prepareStatement("SELECT id, username, password, name, role, address, membershipDate, image, hourWorked, gender, birthdate, status, contactNum FROM User WHERE id ==" + id);
             rs = pst.executeQuery();
             
             
@@ -150,6 +258,10 @@ public class UserService {
                 user.setMembershipDate(rs.getString("membershipDate"));
                 user.setImage(rs.getString("image"));
                 user.setHourWorked(rs.getInt("hourWorked"));
+                user.setGender(rs.getString("gender"));
+                user.setBirthdate(rs.getDate("birthdate"));
+                user.setStatus(rs.getInt("status"));
+                user.setContactNum(rs.getString("contactNum"));
             }
             conn.close();
             return user;
@@ -183,7 +295,7 @@ public class UserService {
         try {
             Connection conn = getConnection();
             
-            pst = conn.prepareStatement("INSERT INTO User VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            pst = conn.prepareStatement("INSERT INTO User VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             
             pst.setString(1, null);
             pst.setString(2, user.getUsername());
@@ -194,6 +306,10 @@ public class UserService {
             pst.setString(7, user.getMembershipDate());
             pst.setString(8, user.getImage());
             pst.setInt(9, user.getHourWorked());
+            pst.setString(10, user.getGender());
+            pst.setDate(11, (Date) user.getBirthdate());
+            pst.setInt(12, user.getStatus());
+            pst.setString(13, user.getContactNum());
             
             pst.executeUpdate();
             
@@ -209,7 +325,7 @@ public class UserService {
     public void updateUser(int id, User user){
         try {
             Connection conn = getConnection();
-            pst = conn.prepareStatement("UPDATE User SET username=?, password=?, name=?, role=?, address=?, membershipDate=?, image=?, hourWorked=? WHERE id = " + id);
+            pst = conn.prepareStatement("UPDATE User SET username=?, password=?, name=?, role=?, address=?, membershipDate=?, image=?, hourWorked=?, gender=?, birthdate=?, status=?, contactNum =?  WHERE id = " + id);
             
             pst.setString(1, user.getUsername());
             pst.setString(2, user.getPassword());
@@ -219,6 +335,10 @@ public class UserService {
             pst.setString(6, user.getMembershipDate());
             pst.setString(7, user.getImage());
             pst.setInt(8, user.getHourWorked());
+            pst.setString(9, user.getGender());
+            pst.setDate(10, (Date) user.getBirthdate());
+            pst.setInt(11, user.getStatus());
+            pst.setString(12, user.getContactNum());
             
             pst.executeUpdate();
             

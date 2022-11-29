@@ -41,8 +41,20 @@ public User getMatchAccount(String username, String password){
                 user.setPassword(rs.getString("password"));
                 user.setName(rs.getString("name"));
                 user.setRole(rs.getString("role"));    
+                user.setAddress(rs.getString("address"));
+                user.setMembershipDate(rs.getString("membershipDate"));
+                user.setImage(rs.getString("image"));
+                user.setHourWorked(rs.getInt("hourWorked"));
+                user.setGender(rs.getString("gender"));
+                user.setBirthdate(rs.getDate("birthdate"));
+                user.setContactNum(rs.getString("contactNum"));
+                user.setStatus(rs.getInt("status"));
                 
                 System.out.println("Username and password are match. You logged " + rs.getString("name")+ " as an "+ rs.getString("role"));
+            
+                conn.close();
+            
+                return user;
             }
             else if(username.isEmpty() && password.isEmpty()){
                 System.out.println("Please enter username and password");
@@ -50,8 +62,10 @@ public User getMatchAccount(String username, String password){
             else{
                 System.out.println("Username and password are not match. Can't log you in.");
             }
-           return user;
-           
+            
+            
+           return null;
+          
         } catch (SQLException ex) {
             return null;
         }

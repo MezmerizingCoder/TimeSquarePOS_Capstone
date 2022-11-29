@@ -18,7 +18,16 @@ public class Variants {
     private int main_variant;
     private float price;
     private int stocks;
-    private int barcode;
+    private String barcode;
+    private int status;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public int getMainVariant() {
         return main_variant;
@@ -44,11 +53,11 @@ public class Variants {
         this.stocks = stocks;
     }
 
-    public int getBarcode() {
+    public String getBarcode() {
         return barcode;
     }
 
-    public void setBarcode(int barcode) {
+    public void setBarcode(String barcode) {
         this.barcode = barcode;
     }
 

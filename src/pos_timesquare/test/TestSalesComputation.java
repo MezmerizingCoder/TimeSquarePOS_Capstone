@@ -21,6 +21,6 @@ public class TestSalesComputation {
           
 //          scom.getSumofDailySales("2022-09-01");
 //          scom.getSumofMonthlySales("2022-09-01");  //Set value when the computation start
-          scom.getSumofAnnuallySales("2022-09-01"); //Set value when the computation start  
+          System.out.println(scom.getSumofAnnuallySales("2015")); //Set value when the computation start  
 }
 }

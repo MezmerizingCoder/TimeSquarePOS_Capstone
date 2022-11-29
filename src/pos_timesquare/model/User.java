@@ -5,6 +5,8 @@
  */
 package pos_timesquare.model;
 
+import java.util.Date;
+
 /**
  *
  * @author Acer
@@ -19,6 +21,47 @@ public class User {
     private String membershipDate;
     private String image;
     private int hourWorked; 
+    private String gender;
+    private int status;
+    private String contactNum;
+
+    public String getContactNum() {
+        return contactNum;
+    }
+
+    public void setContactNum(String contactNum) {
+        this.contactNum = contactNum;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", username=" + username + ", password=" + password + ", name=" + name + ", role=" + role + ", address=" + address + ", membershipDate=" + membershipDate + ", image=" + image + ", hourWorked=" + hourWorked + ", gender=" + gender + ", birthdate=" + birthdate + '}';
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public Date getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(Date birthdate) {
+        this.birthdate = birthdate;
+    }
+    private Date birthdate;
 
     public int getHourWorked() {
         return hourWorked;

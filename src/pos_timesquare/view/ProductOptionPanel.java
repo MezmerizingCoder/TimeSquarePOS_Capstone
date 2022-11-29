@@ -61,8 +61,8 @@ public class ProductOptionPanel extends JPanel{
             JLabel jLabel = new JLabel();
             jLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             jLabel.setText(e);
-            jLabel.setMinimumSize(new java.awt.Dimension(70, 30));
-            jLabel.setPreferredSize(new java.awt.Dimension(70, 30));
+            jLabel.setMinimumSize(new java.awt.Dimension(e.length() * 2 + 80, 30));
+            jLabel.setPreferredSize(new java.awt.Dimension(e.length() * 2 + 80, 30));
             jLabel.setBorder( new FlatLineBorder( new Insets( 0, 0, 0, 0 ), new Color(203, 203, 203), 1, 30 ) );
             jPanel51.add(jLabel);
         });

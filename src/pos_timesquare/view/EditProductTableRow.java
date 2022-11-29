@@ -5,6 +5,8 @@
  */
 package pos_timesquare.view;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -43,8 +45,23 @@ public class EditProductTableRow extends JPanel{
     String variantName;
     float variantPrice;
     int variantStocks;
-    int variantBarcode;
+    String variantBarcode;
     int variantId;
+    int variantStatus;
+
+    public int getVariantStatus() {
+        return variantStatus;
+    }
+
+    public void setVariantStatus(int variantStatus) {
+        this.variantStatus = variantStatus;
+        
+        if(variantStatus == 1){
+            jCheckBox2.setSelected(true);
+        }else{
+            jCheckBox2.setSelected(false);
+        }
+    }
 
     public int getVariantId() {
         return variantId;
@@ -73,11 +90,11 @@ public class EditProductTableRow extends JPanel{
         jSpinner3.setValue(variantStocks);
     }
 
-    public int getVariantBarcode() {
+    public String getVariantBarcode() {
         return variantBarcode;
     }
 
-    public void setVariantBarcode(int variantBarcode) {
+    public void setVariantBarcode(String variantBarcode) {
         this.variantBarcode = variantBarcode;
         jTextField4.setText(String.valueOf(variantBarcode));
     }
@@ -238,7 +255,7 @@ public class EditProductTableRow extends JPanel{
 //                    if(productVariants.get(i).getId() == variantId){
                     if(productVariants.get(i).getName().equals(variantName)){
                         variant = productVariants.get(i);
-                        variant.setBarcode(Integer.parseInt(jTextField4.getText()));
+                        variant.setBarcode(jTextField4.getText());
                         productVariants.set(i, variant);
                     }
                 }
@@ -266,6 +283,35 @@ public class EditProductTableRow extends JPanel{
                     System.out.println(e.getStocks());
                 });
             }
+        });
+        
+        jCheckBox2.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(jCheckBox2.isSelected()){
+                    variantStatus = 1;
+                }else{
+                    variantStatus = 0;
+                }
+                
+                Variants variant = new Variants();
+                for(int i = 0; i < productVariants.size(); i++){
+//                    if(productVariants.get(i).getId() == variantId){
+                    if(productVariants.get(i).getName().equals(variantName)){
+                        variant = productVariants.get(i);
+                        variant.setStatus(variantStatus);
+                        productVariants.set(i, variant);
+                    }
+                }
+                productVariants.forEach(e2 -> {
+                    System.out.println(e2.getStocks());
+                });
+                
+                
+                
+
+            }
+            
         });
         
 

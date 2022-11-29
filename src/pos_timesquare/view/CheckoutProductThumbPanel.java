@@ -17,18 +17,28 @@ import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import pos_timesquare.controller.ProductService;
+import pos_timesquare.controller.VariantService;
+import pos_timesquare.model.Variants;
 import static pos_timesquare.view.MainFrame.checkoutProduct;
 import static pos_timesquare.view.MainFrame.darkRB;
+import static pos_timesquare.view.MainFrame.jSpinner4;
 import static pos_timesquare.view.MainFrame.productImage;
+import static pos_timesquare.view.MainFrame.selectedProduct;
+import static pos_timesquare.view.MainFrame.viewSelectedVariant;
 
 /**
  *
@@ -88,6 +98,32 @@ public class CheckoutProductThumbPanel extends JPanel{
     private String variants;
     private String productName;
     private String image;
+    private int productId;
+    private int variantId;
+
+    public int getVariantId() {
+        return variantId;
+    }
+
+    public void setVariantId(int variantId) {
+        this.variantId = variantId;
+//        spinnerListener();
+    }
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+        jSpinner2.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spinnerListener();
+                
+            }
+        });
+        spinnerListener();
+    }
 
     public String getImage() {
         return image;
@@ -98,7 +134,9 @@ public class CheckoutProductThumbPanel extends JPanel{
         if(image != "" && image != null){
             BufferedImage bufferedImage = null;
             try {
-                bufferedImage = ImageIO.read(this.getClass().getResource(image));
+                String cwd = System.getProperty("user.dir");
+                bufferedImage = ImageIO.read(new File(cwd + image));
+//                bufferedImage = ImageIO.read(this.getClass().getResource(image));
                 if(bufferedImage != null){
                     Image scaledImage = bufferedImage.getScaledInstance(-1, 108, Image.SCALE_SMOOTH);
                     ImageIcon imageIcon = new ImageIcon(scaledImage);
@@ -233,10 +271,22 @@ public class CheckoutProductThumbPanel extends JPanel{
                 .addContainerGap())
         );
         
+        
+        
+        
         jButton9.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                checkoutProduct.remove(key);
+                
+                for(int i = 0; i < checkoutProduct.get(key).size(); i++){
+                    if(checkoutProduct.get(key).get(i).getId() == variantId){
+                        checkoutProduct.get(key).remove(i);
+                    }
+                }
+                if(checkoutProduct.get(key).size() == 0){
+                    checkoutProduct.remove(key);
+                }
+//                checkoutProduct.remove(key);
                 removeThumb();
                 repaint();
                 revalidate();
@@ -248,5 +298,76 @@ public class CheckoutProductThumbPanel extends JPanel{
     }
     public void removeThumb(){
         this.getParent().remove(this);
+    }
+    public void spinnerListener(){
+        List<String> tempList = new ArrayList<>();
+        VariantService vService = new VariantService();
+        Variants tempVariants = new Variants();
+
+        List<Variants> variants = vService.getProductVariants(productId);
+        
+        if((int) jSpinner2.getValue() < 1){
+            jSpinner2.setValue(1);
+        }
+
+        if(variantId == 0){
+            ProductService ps = new ProductService();
+
+            if(ps.getProductById(productId).getStocks() >= (int) jSpinner2.getValue() && ps.getProductById(productId).getStocks() != 0){
+                tempVariants.setStocks((int) jSpinner2.getValue());
+                List<Variants> listvar = checkoutProduct.get(productId);
+                for(int i = 0; i < listvar.size(); i++){
+                    if(listvar.get(i).getId() == variantId){
+                        listvar.get(i).setStocks((int) jSpinner2.getValue());
+                    }
+                }
+                checkoutProduct.put(productId, listvar);
+                jSpinner2.putClientProperty("JComponent.outline", "default");
+            }else{
+                jSpinner2.putClientProperty("JComponent.outline", "warning");
+//                        JOptionPane.showMessageDialog(this, selectedProduct.getName() + " not enough Stock! \nStock Available: " + selectedProduct.getStocks(), " Insuficient Stock",
+//                            JOptionPane.WARNING_MESSAGE);
+                System.out.println("Product id: " + productId);
+                System.out.println("Available stocks: " + ps.getProductById(productId).getStocks());
+            }
+        }else{
+
+//            viewSelectedVariant.forEach((k,e2)->{
+//                tempList.add(e2);
+//            });
+//
+//            String str = String.join("/", tempList);
+//            variants.forEach(e->{
+//                if(e.getMainVariant() == 0){
+//                    if(e.getName().equals(str)){
+//                        tempVariants.setPrice(e.getPrice());
+//                        tempVariants.setId(e.getId());
+//                    }
+//                }
+//            });
+
+            Variants variant = vService.getVariantsById(variantId);
+//            tempVariants.setId(selectedProduct.getId());
+//            tempVariants.setName(str);
+//            tempVariants.setStocks((int) jSpinner2.getValue());
+
+            if(variant.getStocks() >= (int) jSpinner2.getValue() && variant.getStocks() != 0){
+                for(int i = 0; i < checkoutProduct.get(productId).size(); i++){
+                    if(checkoutProduct.get(productId).get(i).getId() == variantId){
+                        checkoutProduct.get(productId).get(i).setStocks((int) jSpinner2.getValue());
+                    }
+                }
+                
+//                tempVariants.setStocks((int) jSpinner2.getValue());
+                jSpinner2.putClientProperty("JComponent.outline", "default");
+//                checkoutProduct.put(productId, tempVariants);
+            }else{
+                jSpinner2.putClientProperty("JComponent.outline", "warning");
+//                JOptionPane.showMessageDialog(this, selectedProduct.getName()+ "(" + tempVariants.getId()+ ") not enough Stock! \nStock Available: " + variant.getStocks(), " Insuficient Stock",
+//                    JOptionPane.WARNING_MESSAGE);
+            }
+
+        }
+        System.out.println(checkoutProduct.toString());
     }
 }

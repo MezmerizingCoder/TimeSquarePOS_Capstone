@@ -22,6 +22,8 @@
 	<parameter name="payment" class="java.lang.Double"/>
 	<parameter name="change" class="java.lang.Double"/>
 	<parameter name="salesPersonName" class="java.lang.String"/>
+	<parameter name="logo" class="java.lang.String"/>
+	<parameter name="branchAddress" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -34,14 +36,9 @@
 	<title>
 		<band height="116" splitType="Stretch">
 			<image hAlign="Center" vAlign="Middle">
-				<reportElement x="0" y="5" width="186" height="29" uuid="0856b669-a417-4e8f-ae5c-67fffc32f479"/>
-				<imageExpression><![CDATA["C:/Users/Acer/Downloads/TIME SQUARE logo 2 (1).jpg"]]></imageExpression>
+				<reportElement x="16" y="0" width="154" height="38" uuid="62d62476-dd8c-4940-8dee-01b7c4e0bb0a"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
-			<staticText>
-				<reportElement x="0" y="40" width="186" height="30" uuid="1383a2fe-a7e6-49ec-b8b6-9b036b3fb9b2"/>
-				<textElement textAlignment="Center"/>
-				<text><![CDATA[McArthur Hi-way, Robinson, City of Malolos, Bulacan.]]></text>
-			</staticText>
 			<staticText>
 				<reportElement x="5" y="71" width="75" height="14" uuid="ea9656d3-62f3-42f6-8d17-e98d1b5ef968">
 					<property name="com.jaspersoft.studio.unit.height" value="mm"/>
@@ -57,6 +54,11 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[ITEMS RECEIPT]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="0" y="38" width="186" height="30" uuid="d5ec2aeb-6587-4110-b02b-513d0866ce47"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{branchAddress}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>

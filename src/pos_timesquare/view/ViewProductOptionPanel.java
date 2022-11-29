@@ -14,14 +14,16 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
+import javax.swing.border.EmptyBorder;
 import pos_timesquare.controller.VariantService;
 import pos_timesquare.model.Variants;
+import static pos_timesquare.view.MainFrame.jLabel12;
 import static pos_timesquare.view.MainFrame.jLabel65;
 import static pos_timesquare.view.MainFrame.selectedProduct;
 import static pos_timesquare.view.MainFrame.viewProductPrice;
 import static pos_timesquare.view.MainFrame.viewSelectedVariant;
 import static pos_timesquare.view.MainFrame.viewProductSelectedVariants;
-
+import static pos_timesquare.view.MainFrame.selectedProductPrice;
 /**
  *
  * @author Acer
@@ -67,7 +69,8 @@ public class ViewProductOptionPanel extends JPanel{
         value.forEach(e -> {
             JToggleButton jToggleButton = new JToggleButton();
             jToggleButton.setText(e.getName());
-            jToggleButton.setPreferredSize(new java.awt.Dimension(80, 40));
+//            jToggleButton.setBorder(new EmptyBorder(10, 15, 10, 15));
+            jToggleButton.setPreferredSize(new java.awt.Dimension(e.getName().length()*2 + 80, 40));
             jToggleButton.setActionCommand(e.getName());
             
             if(!firstElementSelected){
@@ -82,6 +85,7 @@ public class ViewProductOptionPanel extends JPanel{
             jToggleButton.addActionListener(new ActionListener(){
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    
                     System.out.println("Selected: " + buttonGroup.getSelection().getActionCommand());
                     
                     viewSelectedVariant.put(type, buttonGroup.getSelection().getActionCommand());
@@ -98,6 +102,9 @@ public class ViewProductOptionPanel extends JPanel{
                     vService.getProductVariants(selectedProduct.getId()).forEach(e2->{
                         if(e2.getName().equals(str)){
                             viewProductPrice.setText(String.valueOf(e2.getPrice()));
+                            jLabel12.setText(String.valueOf(e2.getPrice()));
+                            selectedProductPrice = e2.getPrice();
+                            
                         }
                     });
                     
@@ -120,6 +127,8 @@ public class ViewProductOptionPanel extends JPanel{
         vService.getProductVariants(selectedProduct.getId()).forEach(e2->{
             if(e2.getName().equals(str)){
                 viewProductPrice.setText(String.valueOf(e2.getPrice()));
+                jLabel12.setText(String.valueOf(e2.getPrice()));
+                selectedProductPrice = e2.getPrice();
             }
         });
 

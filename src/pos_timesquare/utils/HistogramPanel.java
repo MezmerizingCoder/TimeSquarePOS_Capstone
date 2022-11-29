@@ -10,17 +10,23 @@ package pos_timesquare.utils;
  * @author Acer
  */
 import java.awt.*;
+import java.text.DateFormatSymbols;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 import javax.swing.*;
 import javax.swing.border.*;
+import pos_timesquare.controller.TransactionHistoryService;
+import pos_timesquare.model.TransactionHistory;
 import static pos_timesquare.view.MainFrame.darkRB;
+import static pos_timesquare.view.MainFrame.jYearChooser1;
 
 public class HistogramPanel extends JPanel
 {
     private int histogramHeight = 200;
-    private int barWidth = 50;
-    private int barGap = 10;
+    private int barWidth = 70;
+    private int barGap = 6;
 
     private JPanel barPanel;
     private JPanel labelPanel;
@@ -73,7 +79,7 @@ public class HistogramPanel extends JPanel
         barPanel.removeAll();
         labelPanel.removeAll();
 
-        int maxValue = 0;
+        int maxValue = 1;
 
         for (Bar bar: bars)
             maxValue = Math.max(maxValue, bar.getValue());
@@ -137,7 +143,9 @@ public class HistogramPanel extends JPanel
         {
             this.color = color;
             this.width = width;
-            this.height = height;
+//            this.height = height;
+            this.height = height + 2;
+
         }
 
         public int getIconWidth()
@@ -167,23 +175,115 @@ public class HistogramPanel extends JPanel
         }
     }
 
-    public static JPanel createAndShowGUI()
-    {
+    public static JPanel createAndShowGUI(int type){
+        TransactionHistoryService ths = new TransactionHistoryService();
+        List<TransactionHistory> transactions = ths.getAllTransactionHistoryDetails();
+        
+        
+        
+        
         HistogramPanel panel = new HistogramPanel();
         panel.setOpaque(false);
-        panel.addHistogramColumn("January", 350, new Color(0, 34, 171));
-        panel.addHistogramColumn("February", 690, new Color(0, 34, 171));
-        panel.addHistogramColumn("March", 510, new Color(0, 34, 171));
-        panel.addHistogramColumn("April", 570, new Color(0, 34, 171));
-        panel.addHistogramColumn("June", 180, new Color(0, 34, 171));
-        panel.addHistogramColumn("July", 504, new Color(0, 34, 171));
-        panel.addHistogramColumn("August", 504, new Color(0, 34, 171));
-        panel.addHistogramColumn("September", 504, new Color(0, 34, 171));
-        panel.addHistogramColumn("October", 504, new Color(0, 34, 171));
-        panel.addHistogramColumn("November", 504, new Color(0, 34, 171));
-        panel.addHistogramColumn("December", 504, new Color(0, 34, 171));
+//        panel.addHistogramColumn("January", 0, new Color(0, 34, 171));
+//        panel.addHistogramColumn("February", 0, new Color(0, 34, 171));
+//        panel.addHistogramColumn("March", 510, new Color(0, 34, 171));
+//        panel.addHistogramColumn("April", 570, new Color(0, 34, 171));
+//        panel.addHistogramColumn("June", 180, new Color(0, 34, 171));
+//        panel.addHistogramColumn("July", 504, new Color(0, 34, 171));
+//        panel.addHistogramColumn("August", 504, new Color(0, 34, 171));
+//        panel.addHistogramColumn("September", 504, new Color(0, 34, 171));
+//        panel.addHistogramColumn("October", 504, new Color(0, 34, 171));
+//        panel.addHistogramColumn("November", 504, new Color(0, 34, 171));
+//        panel.addHistogramColumn("December", 504, new Color(0, 34, 171));
 
 
+        if(type == 1){
+            HashMap<String, Integer> sales = new HashMap<>();
+
+            transactions.forEach(e -> {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(e.getTransactionDate());
+        //            int month = cal.get(Calendar.MONTH);
+        //            int day = cal.get(Calendar.DAY_OF_MONTH);
+                int year = cal.get(Calendar.YEAR);
+                if(jYearChooser1.getYear() == year){
+                    System.out.println("Month: " + e.getTransactionDate().getMonth());
+                    String month = new DateFormatSymbols().getMonths()[e.getTransactionDate().getMonth()];
+                    if(sales.isEmpty()){
+                        sales.put(month, e.getOrders());
+                    }else{
+                        if(sales.get(month) != null){
+                            sales.put(month, sales.get(month) + e.getOrders());
+                        }else{
+                            sales.put(month, e.getOrders());
+                        }
+                    }
+                }
+                System.out.println("Current year: " + jYearChooser1.getYear());
+                System.out.println("Transaction year: " + year);
+            });
+
+            for(int i = 0; i < 12; i++){
+                String month = new DateFormatSymbols().getMonths()[i];
+                boolean exist = false;
+                for (String j : sales.keySet()) {
+                    if(j.equals(month)){
+                        exist = true;
+                    }
+                }
+                if(exist){
+                    panel.addHistogramColumn(month, sales.get(month), new Color(0, 34, 171));
+                }else{
+                    panel.addHistogramColumn(month, 0, new Color(0, 34, 171));
+                }
+            }
+        }else if(type == 0){
+            HashMap<String, Integer> sales = new HashMap<>();
+
+            transactions.forEach(e -> {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(e.getTransactionDate());
+        //            int month = cal.get(Calendar.MONTH);
+        //            int day = cal.get(Calendar.DAY_OF_MONTH);
+                int year = cal.get(Calendar.YEAR);
+                if(jYearChooser1.getYear() == year){
+                    System.out.println("Month: " + e.getTransactionDate().getMonth());
+                    String month = new DateFormatSymbols().getMonths()[e.getTransactionDate().getMonth()];
+                    if(sales.isEmpty()){
+                        sales.put(month, Math.round(e.getTotalPrice()));
+                    }else{
+                        if(sales.get(month) != null){
+                            sales.put(month, sales.get(month) + Math.round(e.getTotalPrice()));
+                        }else{
+                            sales.put(month, Math.round(e.getTotalPrice()));
+                        }
+                    }
+                }
+                System.out.println("Current year: " + jYearChooser1.getYear());
+                System.out.println("Transaction year: " + year);
+            });
+
+            for(int i = 0; i < 12; i++){
+                String month = new DateFormatSymbols().getMonths()[i];
+                boolean exist = false;
+                for (String j : sales.keySet()) {
+                    if(j.equals(month)){
+                        exist = true;
+                    }
+                }
+                if(exist){
+                    panel.addHistogramColumn(month, sales.get(month), new Color(0, 34, 171));
+                }else{
+                    panel.addHistogramColumn(month, 0, new Color(0, 34, 171));
+                }
+            }
+        }
+//        for (String i : sales.keySet()) {
+//            panel.addHistogramColumn(String.valueOf(i), sales.get(i), new Color(0, 34, 171));
+////            System.out.println(new DateFormatSymbols().getMonths()[i]);
+//            
+//        }
+        
         panel.layoutHistogram();
         
         return panel;
