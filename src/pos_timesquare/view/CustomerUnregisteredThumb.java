@@ -109,7 +109,7 @@ public class CustomerUnregisteredThumb extends javax.swing.JPanel {
             
             System.out.println(timestamp);
         } catch (ParseException ex) {
-            Logger.getLogger(NotificationThumb.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(NotificationThumb.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }

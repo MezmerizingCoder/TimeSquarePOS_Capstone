@@ -91,11 +91,12 @@ public class ReceiptDataThumb extends JPanel{
 
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-            if(darkRB.isSelected()){
-                g2.setColor(new Color(38, 41, 48));
-            }else{
-                g2.setColor(new Color(255, 255, 255));
-            }
+//            if(darkRB.isSelected()){
+//                g2.setColor(new Color(38, 41, 48));
+//            }else{
+//                g2.setColor(new Color(255, 255, 255));
+//            }
+            g2.setColor(this.getBackground());
             for(int i = 52; i >= 0; i--){
                 g2.drawRoundRect(0, 0, this.getWidth()-1, this.getHeight()-1, i, i);
             }
@@ -154,6 +155,7 @@ public class ReceiptDataThumb extends JPanel{
     
     Receipt receiptData = new Receipt();
     float totalPrice;
+    float totalRefunded;
     int totalItems;
     List<Integer> totalProducts = new ArrayList<>();
     
@@ -163,6 +165,14 @@ public class ReceiptDataThumb extends JPanel{
     HashMap<Integer, TransactionHistory> selectedTransaction = new HashMap<>();
     
 
+    public float getTotalPrice(){
+        return totalPrice - totalRefunded;
+    }
+    
+    public float getTotalRefunded(){
+        return totalRefunded;
+    }
+    
     public Receipt getReceiptData() {
         return receiptData;
     }
@@ -182,10 +192,14 @@ public class ReceiptDataThumb extends JPanel{
         
         totalItems = 0;
         totalPrice = 0;
+        totalRefunded = 0;
         TransactionHistoryService ths = new TransactionHistoryService();
         ths.getTransactionByReceiptId(receiptData.getId()).forEach(e -> {
             totalPrice += e.getTotalPrice();
             totalItems += e.getOrders();
+            if(e.getStatus().equals("Refund")){
+                totalRefunded += e.getTotalPrice();
+            }
             if(totalProducts.isEmpty()){
                 totalProducts.add(e.getProductId());
             }else{
@@ -197,8 +211,8 @@ public class ReceiptDataThumb extends JPanel{
             receiptOrderListThumb.setTransaction(e);
             jPanel63.add(receiptOrderListThumb);
         });
-        
-        jLabel70.setText("Total Price: " + totalPrice);
+        float price = (float)totalPrice - (float)totalRefunded;
+        jLabel70.setText("Total Price: " + price);
         
         jLabel71.setText(totalProducts.size() + " products, " + totalItems + " items");
         
@@ -220,7 +234,7 @@ public class ReceiptDataThumb extends JPanel{
             
             System.out.println(timestamp);
         } catch (ParseException ex) {
-            Logger.getLogger(NotificationThumb.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(NotificationThumb.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         if(!isForCustomer){

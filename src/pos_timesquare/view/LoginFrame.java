@@ -12,13 +12,18 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -58,6 +63,27 @@ public class LoginFrame extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(LoginFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        
+        
+        BufferedImage bufferedImage = null;
+        try {
+            String cwd = System.getProperty("user.dir");
+//            bufferedImage = ImageIO.read(new File(cwd + image));
+                    bufferedImage = ImageIO.read(getClass().getResource("/img/icon/T.jpg"));
+        } catch (IOException ex) {
+
+        }
+        Image scaledImage;
+        if(bufferedImage.getWidth() > bufferedImage.getHeight()){
+            scaledImage = bufferedImage.getScaledInstance(jLabel4.getWidth(), -1, Image.SCALE_SMOOTH);
+        }else{
+            scaledImage = bufferedImage.getScaledInstance(-1, jLabel4.getHeight(), Image.SCALE_SMOOTH);
+        }
+
+        ImageIcon imageIcon = new ImageIcon(scaledImage);
+
+        jLabel4.setIcon(imageIcon);
 
     }
 
@@ -333,7 +359,6 @@ public class LoginFrame extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("TIME SQUARE");
 
         errorLog.setLayout(new javax.swing.BoxLayout(errorLog, javax.swing.BoxLayout.LINE_AXIS));
 
@@ -347,17 +372,17 @@ public class LoginFrame extends javax.swing.JFrame {
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(loginButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(errorLog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(errorLog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(251, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(69, Short.MAX_VALUE)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -367,7 +392,7 @@ public class LoginFrame extends javax.swing.JFrame {
                 .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(69, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();
@@ -546,10 +571,19 @@ public class LoginFrame extends javax.swing.JFrame {
         JFrame.setDefaultLookAndFeelDecorated( true );
         JDialog.setDefaultLookAndFeelDecorated( true );
         
-        UIManager.put( "TextComponent.arc", 20 );
-        UIManager.put( "Button.arc", 20 );
+//        UIManager.put( "TextComponent.arc", 20 );
+//        UIManager.put( "Button.arc", 20 );
+//        UIManager.put("ScrollBar.thumbArc", 999);
+//        UIManager.put("ScrollBar.thumbInsets", new Insets(3, 3, 3, 3));
+        
+        UIManager.put("Button.arc", 18);
+        UIManager.put("ProgressBar.arc", 999);
+        UIManager.put("TextComponent.arc", 20);
+        UIManager.put("Component.arc", 18);
         UIManager.put("ScrollBar.thumbArc", 999);
+        UIManager.put("ScrollBar.trackArc", 999);
         UIManager.put("ScrollBar.thumbInsets", new Insets(3, 3, 3, 3));
+        
         //</editor-fold>
         
         

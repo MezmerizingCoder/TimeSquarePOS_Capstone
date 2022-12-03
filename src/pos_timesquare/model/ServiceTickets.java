@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class ServiceTickets {
     private int id;
-    private String customerName;
+    private int customerId;
     private String defects;
     private float price;
     private Date walkInDate;
@@ -28,12 +28,12 @@ public class ServiceTickets {
         this.id = id;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public int getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
     }
 
     public String getDefects() {

@@ -56,7 +56,7 @@ import static pos_timesquare.view.MainFrame.jPanel64;
 import static pos_timesquare.view.MainFrame.jYearChooser2;
 import static pos_timesquare.view.MainFrame.totalNewCustomer;
 import static pos_timesquare.view.MainFrame.totalRegisteredCustomer;
-import pos_timesquare.view.NotificationThumb;
+//import pos_timesquare.view.NotificationThumb;
 
 /**
  *

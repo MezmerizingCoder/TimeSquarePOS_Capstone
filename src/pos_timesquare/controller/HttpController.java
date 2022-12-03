@@ -342,7 +342,6 @@ public class HttpController {
             jsonInputString.put("totalRefund", totalRefund);
             jsonInputString.put("chartURL", doughnutChart(category));
 
-            jsonInputString.put("apiKey", "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");
 
             jsonInputString.put("orderHistory", orderHistory);
 

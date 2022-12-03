@@ -47,7 +47,11 @@ public class NotificationService {
                     String sql = "ALTER TABLE Notification ADD title TEXT"; 
                     stmt.executeUpdate(sql);
                 }
-                
+                if(!dbmd.getColumns(null, null, "Notification", "status").next()){
+                    Statement stmt = conn.createStatement();
+                    String sql = "ALTER TABLE Notification ADD status INTEGER"; 
+                    stmt.executeUpdate(sql);
+                }
                 
             }
             else {
@@ -58,6 +62,7 @@ public class NotificationService {
                    " productId INTEGER, " +
                    " date TEXT, " +
                    " title TEXT, " +
+                   " status TEXT, " +
                    "PRIMARY KEY(id AUTOINCREMENT))"; 
 
                 stmt.executeUpdate(sql);
@@ -89,6 +94,7 @@ public class NotificationService {
                     notification.setProductId(Integer.parseInt(rs.getString("productId")));
                     notification.setDate(rs.getString("date"));
                     notification.setTitle(rs.getString("title"));
+                    notification.setStatus(rs.getInt("status"));
 
                     notifications.add(notification);
                 }
@@ -100,6 +106,7 @@ public class NotificationService {
                 return null;
         }
     }
+    
     
     public List<Notification> getLimitedNotification(int num){
     
@@ -119,6 +126,7 @@ public class NotificationService {
                     notification.setProductId(Integer.parseInt(rs.getString("productId")));
                     notification.setDate(rs.getString("date"));
                     notification.setTitle(rs.getString("title"));
+                    notification.setStatus(rs.getInt("status"));
 
                     notifications.add(notification);
                 }
@@ -146,6 +154,7 @@ public class NotificationService {
                 notification.setProductId(Integer.parseInt(rs.getString("productId")));
                 notification.setDate(rs.getString("date"));
                 notification.setTitle(rs.getString("title"));
+                notification.setStatus(rs.getInt("status"));
             }
             conn.close();
             
@@ -159,12 +168,13 @@ public class NotificationService {
         try {
             Connection conn = getConnection();
             
-            pst = conn.prepareStatement("INSERT INTO Notification VALUES(?, ?, ?, ?)");
+            pst = conn.prepareStatement("INSERT INTO Notification VALUES(?, ?, ?, ?, ?)");
             
             pst.setString(1, null);
             pst.setInt(2, notification.getProductId());
             pst.setString(3, notification.getDate());
             pst.setString(4, notification.getTitle());
+            pst.setInt(5, notification.getStatus());
             
             pst.executeUpdate();
             
@@ -194,16 +204,18 @@ public class NotificationService {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);}
 
     }
-    public void UpdateNotification(int id, int productid, String date, String title){
+    public void UpdateNotification(int id, int productid, String date, String title, int status){
         try {
             Connection conn = getConnection();
             Notification nf = new Notification();
-            pst = conn.prepareStatement("UPDATE Notification SET productid =?, date =?, title=? WHERE id =?");
+            pst = conn.prepareStatement("UPDATE Notification SET productid =?, date =?, title=?, status=? WHERE id =?");
             
             pst.setInt(1, productid);
             pst.setString(2, date);
             pst.setString(3, title);
-            pst.setInt(4, id);
+            
+            pst.setInt(4, status);
+            pst.setInt(5, id);
             
             pst.executeUpdate();
             

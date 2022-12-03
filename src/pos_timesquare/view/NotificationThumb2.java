@@ -6,6 +6,7 @@ package pos_timesquare.view;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -78,6 +79,18 @@ public class NotificationThumb2 extends javax.swing.JPanel {
     
     JFrame mainFrame;
     
+    public void setLimitedSize(){
+        this.setPreferredSize(new Dimension(238, 51));
+        this.setMaximumSize(new Dimension(238, 51));
+        jLabel189.setPreferredSize(new Dimension(100, 25));
+        jLabel189.setMaximumSize(new Dimension(50, 25));
+        jLabel189.setMinimumSize(new Dimension(50, 25));
+        
+        jLabel188.setPreferredSize(new Dimension(100, 14));
+        jLabel188.setMaximumSize(new Dimension(100, 14));
+        jLabel188.setMinimumSize(new Dimension(100, 14));
+    }
+    
     public Notification getNotification() {
         return notification;
     }
@@ -87,6 +100,12 @@ public class NotificationThumb2 extends javax.swing.JPanel {
         mainFrame= frame;
         
         jLabel188.setText(notification.getTitle());
+        
+        if(notification.getStatus() == 0){
+            jPanel1.setVisible(true);
+        }else{
+            jPanel1.setVisible(false);
+        }
         
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
         Date parsedDate;
@@ -104,7 +123,7 @@ public class NotificationThumb2 extends javax.swing.JPanel {
             
             System.out.println(timestamp);
         } catch (ParseException ex) {
-            Logger.getLogger(NotificationThumb.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(NotificationThumb2.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -142,8 +161,27 @@ public class NotificationThumb2 extends javax.swing.JPanel {
 
         jLabel189 = new javax.swing.JLabel();
         jLabel188 = new javax.swing.JLabel();
+        jPanel1 =
+        new javax.swing.JPanel(){
+
+            public void paintComponent(Graphics g){
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g.create();
+
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                if(darkRB.isSelected()){
+                    g2.setColor(new Color(25, 151, 203));
+                }else{
+                    g2.setColor(new Color(25, 151, 203));
+                }
+                g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 25, 25);
+            }
+
+        };
+        jLabel1 = new javax.swing.JLabel();
 
         setMaximumSize(new java.awt.Dimension(32767, 53));
+        setPreferredSize(new java.awt.Dimension(261, 51));
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 formMouseClicked(evt);
@@ -156,26 +194,54 @@ public class NotificationThumb2 extends javax.swing.JPanel {
         jLabel188.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel188.setText("Product out of stocks!");
 
+        jPanel1.setPreferredSize(new java.awt.Dimension(35, 0));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("new");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel188, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addComponent(jLabel189, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(0, 0, 0)
+                        .addComponent(jLabel189, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel188, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+                        .addGap(0, 0, 0)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel188, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel188, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE))
                 .addGap(0, 0, 0)
                 .addComponent(jLabel189)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -359,7 +425,9 @@ public class NotificationThumb2 extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel188;
     private javax.swing.JLabel jLabel189;
+    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

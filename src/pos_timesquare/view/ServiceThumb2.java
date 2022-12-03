@@ -1,83 +1,35 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package pos_timesquare.view;
 
-import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import javax.swing.JLayeredPane;
 import pos_timesquare.controller.CustomerService;
 import pos_timesquare.controller.ServiceTicketsService;
+import pos_timesquare.model.Customer;
 import pos_timesquare.model.ServiceTickets;
 import static pos_timesquare.view.MainFrame.darkRB;
+import static pos_timesquare.view.MainFrame.glassPanel;
+import static pos_timesquare.view.MainFrame.jLayeredPane1;
+import static pos_timesquare.view.MainFrame.selectCustomerPopupPanel;
 import static pos_timesquare.view.MainFrame.updateGraphics;
 
 /**
  *
  * @author Acer
  */
-public class ServiceThumb extends JPanel{
-    
-    JPanel serviceThumb = new JPanel();
-    JPanel jPanel114 = new JPanel();
-    JPanel jPanel120 = new JPanel();
-    JPanel jPanel121 = new JPanel();
-    JPanel serviceThumbExpand = new JPanel(){
-        public void paintComponent(Graphics g){
-            super.paintComponent(g);
-            Graphics2D g2 = (Graphics2D) g.create();
+public class ServiceThumb2 extends javax.swing.JPanel {
 
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            if(darkRB.isSelected()){
-                g2.setColor(new Color(58, 61, 68));
-                g2.drawLine(1, 1, this.getWidth()-2, 1);
-            }else{
-                g2.setColor(new Color(225, 225, 225));
-                g2.drawLine(1, 1, this.getWidth()-2, 1);
-            }
-        }
-    };
-    
-    JLabel jLabel107 = new JLabel();
-    JLabel jLabel105 = new JLabel();
-    JLabel jLabel106 = new JLabel();
-    JLabel jLabel108 = new JLabel();
-    JLabel jLabel118 = new JLabel();
-    JLabel jLabel119 = new JLabel();
-    JLabel jLabel120 = new JLabel();
-    JLabel jLabel121 = new JLabel();
-    JLabel jLabel122 = new JLabel();
-    JLabel jLabel123 = new JLabel();
-    
-    JButton jButton17 = new JButton();
-    JButton jButton18 = new JButton();
-    JButton jButton19 = new JButton();
-    
-    JComboBox jComboBox5 = new JComboBox();
-    
-    JTextArea jTextArea2 = new JTextArea();
-    
-    JScrollPane jScrollPane10 = new JScrollPane();
-    
-    JDateChooser jTextField5 = new JDateChooser();
-    JDateChooser jTextField14 = new JDateChooser();
-    JTextField jTextField12 = new JTextField();
-    JTextField jTextField13 = new JTextField();
+    /**
+     * Creates new form ServiceThumb2
+     */
     
     boolean expanded = false;
     boolean isHover = false;
@@ -85,6 +37,14 @@ public class ServiceThumb extends JPanel{
     boolean isRequiredAdmin = false;
     
     ServiceTickets serviceTicket = new ServiceTickets();
+    
+    Customer customer;
+    
+    public void setCustomer(Customer customer){
+        this.customer = customer;
+        jTextField12.setText(customer.getName());
+        jLabel105.setText(customer.getName());
+    }
 
     public ServiceTickets getServiceTicket() {
         return serviceTicket;
@@ -94,7 +54,14 @@ public class ServiceThumb extends JPanel{
         this.serviceTicket = serviceTicket;
         CustomerService cs = new CustomerService();
         
-        jLabel105.setText(cs.getCustomerById(serviceTicket.getCustomerId()).getName());
+        customer = cs.getCustomerById(serviceTicket.getCustomerId());
+        
+        if(customer.getName().replaceAll("\\s+","").equals("")){
+            jLabel105.setText("Customer #" + customer.getId());
+        }else{
+        
+            jLabel105.setText(customer.getName());
+        }
         jLabel106.setText(serviceTicket.getWalkInDate().toString());
         jLabel108.setText("Order# " + String.valueOf(serviceTicket.getId()));
         
@@ -109,11 +76,13 @@ public class ServiceThumb extends JPanel{
         
         
         //inputs
-        jTextField12.setText(cs.getCustomerById(serviceTicket.getCustomerId()).getName());
-        jTextField5.setDate(serviceTicket.getWalkInDate());
-        jTextField14.setDate(serviceTicket.getEstimateFinish());
+        jTextField12.setText(customer.getName());
+        jDateChooser1.setDate(serviceTicket.getWalkInDate());
+        jDateChooser2.setDate(serviceTicket.getEstimateFinish());
         jTextArea2.setText(serviceTicket.getDefects());
         jTextField13.setText(String.valueOf(serviceTicket.getPrice()));
+        
+        
         
         repaint();
         revalidate();
@@ -158,12 +127,73 @@ public class ServiceThumb extends JPanel{
     void setRequiredAdmin(boolean data){
         isRequiredAdmin = data;
     }
-
     
-    ServiceThumb(){
-        this.setPreferredSize(null);
-        this.setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.PAGE_AXIS));
-        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 5, 1));
+    
+    public ServiceThumb2() {
+        initComponents();
+        this.remove(serviceThumbExpand);
+    }
+    
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel114 = new javax.swing.JPanel();
+        jPanel120 = new javax.swing.JPanel();
+        jButton17 = new javax.swing.JButton();
+        jLabel107 = new javax.swing.JLabel();
+        jPanel121 = new javax.swing.JPanel();
+        jLabel105 = new javax.swing.JLabel();
+        jLabel106 = new javax.swing.JLabel();
+        jLabel108 = new javax.swing.JLabel();
+        serviceThumbExpand = new javax.swing.JPanel(){
+
+            public void paintComponent(Graphics g){
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g.create();
+
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                if(darkRB.isSelected()){
+                    g2.setColor(new Color(58, 61, 68));
+                    g2.drawLine(1, 1, this.getWidth()-2, 1);
+                }else{
+                    g2.setColor(new Color(225, 225, 225));
+                    g2.drawLine(1, 1, this.getWidth()-2, 1);
+                }
+            }
+
+        };
+        jLabel118 = new javax.swing.JLabel();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        jTextArea2 = new javax.swing.JTextArea();
+        jButton18 = new javax.swing.JButton();
+        jLabel119 = new javax.swing.JLabel();
+        jComboBox5 = new javax.swing.JComboBox<>();
+        jLabel120 = new javax.swing.JLabel();
+        jLabel121 = new javax.swing.JLabel();
+        jTextField12 = new javax.swing.JTextField();
+        jLabel122 = new javax.swing.JLabel();
+        jTextField13 = new javax.swing.JTextField();
+        jLabel123 = new javax.swing.JLabel();
+        jButton19 = new javax.swing.JButton();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        jButton1 = new javax.swing.JButton();
+
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                formMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                formMouseExited(evt);
+            }
+        });
+        setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.PAGE_AXIS));
 
         jPanel114.setMaximumSize(new java.awt.Dimension(32767, 71));
         jPanel114.setMinimumSize(new java.awt.Dimension(100, 71));
@@ -173,22 +203,27 @@ public class ServiceThumb extends JPanel{
         jPanel120.setOpaque(false);
 
         jButton17.setText("Set to Done");
+        jButton17.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton17ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel120Layout = new javax.swing.GroupLayout(jPanel120);
         jPanel120.setLayout(jPanel120Layout);
         jPanel120Layout.setHorizontalGroup(
             jPanel120Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel120Layout.createSequentialGroup()
-                .addContainerGap(30, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton17)
                 .addGap(15, 15, 15))
         );
         jPanel120Layout.setVerticalGroup(
             jPanel120Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel120Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(18, Short.MAX_VALUE)
                 .addComponent(jButton17, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         jLabel107.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -197,15 +232,24 @@ public class ServiceThumb extends JPanel{
         jLabel107.setText("On Progress");
 
         jPanel121.setOpaque(false);
+        jPanel121.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel121MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jPanel121MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jPanel121MouseExited(evt);
+            }
+        });
 
         jLabel105.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel105.setText("Paul Justine");
 
         jLabel106.setText("Oct 20 2022");
 
-        jLabel108.setText("Order# 1");
-        
-        jTextArea2.setLineWrap(true);
+        jLabel108.setText("Service Ticket# 1");
 
         javax.swing.GroupLayout jPanel121Layout = new javax.swing.GroupLayout(jPanel121);
         jPanel121.setLayout(jPanel121Layout);
@@ -214,10 +258,10 @@ public class ServiceThumb extends JPanel{
             .addGroup(jPanel121Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(jPanel121Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel105, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
+                    .addComponent(jLabel105, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel106, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel108, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(133, Short.MAX_VALUE))
+                    .addComponent(jLabel108, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
         jPanel121Layout.setVerticalGroup(
             jPanel121Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -236,7 +280,7 @@ public class ServiceThumb extends JPanel{
         jPanel114Layout.setHorizontalGroup(
             jPanel114Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel114Layout.createSequentialGroup()
-                .addComponent(jPanel121, javax.swing.GroupLayout.DEFAULT_SIZE, 310, Short.MAX_VALUE)
+                .addComponent(jPanel121, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(0, 0, 0)
                 .addComponent(jLabel107, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
@@ -249,7 +293,7 @@ public class ServiceThumb extends JPanel{
             .addComponent(jPanel121, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        this.add(jPanel114);
+        add(jPanel114);
 
         serviceThumbExpand.setOpaque(false);
         serviceThumbExpand.setPreferredSize(new java.awt.Dimension(400, 400));
@@ -261,14 +305,27 @@ public class ServiceThumb extends JPanel{
         jScrollPane10.setViewportView(jTextArea2);
 
         jButton18.setText("Delete");
+        jButton18.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton18ActionPerformed(evt);
+            }
+        });
 
         jLabel119.setText("Walk-in Date");
 
         jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "On Progress", "Done" }));
+        jComboBox5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox5ActionPerformed(evt);
+            }
+        });
 
         jLabel120.setText("Status");
 
         jLabel121.setText("Customer name");
+
+        jTextField12.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jTextField12.setFocusable(false);
 
         jLabel122.setText("Repair cost");
 
@@ -277,6 +334,22 @@ public class ServiceThumb extends JPanel{
         jButton19.setBackground(new java.awt.Color(0, 144, 228));
         jButton19.setForeground(new java.awt.Color(255, 255, 255));
         jButton19.setText("Save changes");
+        jButton19.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton19ActionPerformed(evt);
+            }
+        });
+
+        jDateChooser1.setPreferredSize(null);
+
+        jDateChooser2.setPreferredSize(null);
+
+        jButton1.setText("Change Customer");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout serviceThumbExpandLayout = new javax.swing.GroupLayout(serviceThumbExpand);
         serviceThumbExpand.setLayout(serviceThumbExpandLayout);
@@ -285,16 +358,15 @@ public class ServiceThumb extends JPanel{
             .addGroup(serviceThumbExpandLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(serviceThumbExpandLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane10)
                     .addGroup(serviceThumbExpandLayout.createSequentialGroup()
                         .addGroup(serviceThumbExpandLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel119)
-                            .addComponent(jTextField5))
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel119))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(serviceThumbExpandLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel123)
-                            .addComponent(jTextField14)))
-                    .addComponent(jScrollPane10)
-                    .addComponent(jTextField12)
+                            .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(serviceThumbExpandLayout.createSequentialGroup()
                         .addGroup(serviceThumbExpandLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel118)
@@ -311,8 +383,12 @@ public class ServiceThumb extends JPanel{
                                 .addComponent(jButton19, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton18, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 98, Short.MAX_VALUE)))
-                .addContainerGap(162, Short.MAX_VALUE))
+                        .addGap(0, 38, Short.MAX_VALUE))
+                    .addGroup(serviceThumbExpandLayout.createSequentialGroup()
+                        .addComponent(jTextField12)
+                        .addGap(0, 0, 0)
+                        .addComponent(jButton1)))
+                .addGap(79, 79, 79))
         );
         serviceThumbExpandLayout.setVerticalGroup(
             serviceThumbExpandLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -320,16 +396,18 @@ public class ServiceThumb extends JPanel{
                 .addGap(15, 15, 15)
                 .addComponent(jLabel121)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(serviceThumbExpandLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+                    .addComponent(jTextField12))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(serviceThumbExpandLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel119)
                     .addComponent(jLabel123))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(serviceThumbExpandLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField14, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(serviceThumbExpandLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel118)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -348,76 +426,104 @@ public class ServiceThumb extends JPanel{
                     .addComponent(jButton18, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15))
         );
-        
-        jPanel121.addMouseListener(new MouseAdapter(){
-            @Override
-            public void mousePressed(MouseEvent e) {
-                thumbClicked();
-            }
-            @Override
-            public void mouseEntered(MouseEvent e){
-                if(!expanded){
-                    isHover = true;
-//                    updateGraphics();
-                    repaint();
-                }
-                System.out.println("is hover");
-            }
-            public void mouseExited(MouseEvent e){
-                if(!expanded){
-                    isHover = false;
-//                    updateGraphics();
-                    repaint();
-                }
-                
-            }
-            
-        });
-        
-        this.addMouseListener(new MouseAdapter(){
-            @Override
-            public void mouseEntered(MouseEvent e){
-                if(!expanded){
-                    isHover = true;
-//                    updateGraphics();
-                    repaint();
-                }
-                System.out.println("is hover");
-            }
-            public void mouseExited(MouseEvent e){
-                if(!expanded){
-                    isHover = false;
-//                    updateGraphics();
-                    repaint();
-                }
-            }
-        });
-        
-        jButton18.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                
-                removeThumb();
-            }
-            
-        });
-        
-        jButton19.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                updateThumb();
-            }
-        });
-        
-        jButton17.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                setToDone();
-            }
-        });
 
-//        this.add(serviceThumbExpand);
-    }
+        add(serviceThumbExpand);
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
+        // TODO add your handling code here:
+        setToDone();
+    }//GEN-LAST:event_jButton17ActionPerformed
+
+    private void formMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseEntered
+        // TODO add your handling code here:
+        if(!expanded){
+            isHover = true;
+//                    updateGraphics();
+            repaint();
+        }
+        System.out.println("is hover");
+    }//GEN-LAST:event_formMouseEntered
+
+    private void formMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseExited
+        // TODO add your handling code here:
+        if(!expanded){
+            isHover = false;
+//                    updateGraphics();
+            repaint();
+        }
+    }//GEN-LAST:event_formMouseExited
+
+    private void jPanel121MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel121MouseEntered
+        // TODO add your handling code here:
+        if(!expanded){
+            isHover = true;
+//                    updateGraphics();
+            repaint();
+        }
+        System.out.println("is hover");
+    }//GEN-LAST:event_jPanel121MouseEntered
+
+    private void jPanel121MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel121MouseExited
+        // TODO add your handling code here:
+        if(!expanded){
+            isHover = false;
+//                    updateGraphics();
+            repaint();
+        }
+    }//GEN-LAST:event_jPanel121MouseExited
+
+    private void jPanel121MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel121MouseClicked
+        // TODO add your handling code here:
+        thumbClicked();
+    }//GEN-LAST:event_jPanel121MouseClicked
+
+    private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
+        // TODO add your handling code here:
+        removeThumb();
+    }//GEN-LAST:event_jButton18ActionPerformed
+
+    private void jButton19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton19ActionPerformed
+        // TODO add your handling code here:
+        updateThumb();
+    }//GEN-LAST:event_jButton19ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+//        CheckoutSelectCustomerPanel checkoutSelectCustomer = new CheckoutSelectCustomerPanel();
+//        Point loc = jButton1.getLocationOnScreen();
+//        checkoutSelectCustomer.setBounds((int)loc.getX(), (int)loc.getY(), 300, 270);
+//        checkoutSelectCustomer.isProductCheckout(false);
+//        jLayeredPane1.add(checkoutSelectCustomer, JLayeredPane.DRAG_LAYER);
+
+//        glassPanel.setBounds(0, 0, this.getWidth(), this.getHeight());
+        glassPanel.setVisible(true);
+
+        CheckoutSelectCustomerPanel checkoutSelectCustomer = new CheckoutSelectCustomerPanel();
+        Point loc = jButton1.getLocationOnScreen();
+
+//            selectCustomerPopupPanel.setBounds((int)loc.getX(), (int)loc.getY(), 300, 270);
+        selectCustomerPopupPanel.setBounds((int)loc.getX(), (int)loc.getY(), 300, 270);
+
+        checkoutSelectCustomer.isProductCheckout(false);
+        checkoutSelectCustomer.setForEditService(true);
+//        checkoutSelectCustomer.setCallingComponent(jTextField12, jLabel105);
+        checkoutSelectCustomer.setServiceTicketComp(this);
+        checkoutSelectCustomer.setMinimumSize(new Dimension(300, 270));
+        checkoutSelectCustomer.setPreferredSize(new Dimension(300, 270));
+
+        selectCustomerPopupPanel.removeAll();
+        selectCustomerPopupPanel.add(checkoutSelectCustomer);
+        selectCustomerPopupPanel.setVisible(true);
+        updateGraphics();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jComboBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox5ActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jComboBox5ActionPerformed
+
+
     public void setToDone(){
         ServiceTicketsService sts = new ServiceTicketsService();
         sts.setToDone(serviceTicket.getId());
@@ -460,12 +566,11 @@ public class ServiceThumb extends JPanel{
         ServiceTicketsService sts = new ServiceTicketsService();
         sts.UpdateServiceTickets(
                 serviceTicket.getId(), 
-//                jTextField12.getText(), 
-                1,
+                customer.getId(), 
                 jTextArea2.getText(), 
                 Float.parseFloat(jTextField13.getText()), 
-                new java.sql.Date(jTextField5.getDate().getTime()),
-                new java.sql.Date(jTextField14.getDate().getTime()),
+                new java.sql.Date(jDateChooser1.getDate().getTime()),
+                new java.sql.Date(jDateChooser2.getDate().getTime()),
                 jComboBox5.getSelectedItem().toString());
         
         if(jComboBox5.getSelectedItem().toString().equals("Done")){
@@ -475,7 +580,7 @@ public class ServiceThumb extends JPanel{
         }
         jLabel107.setText(jComboBox5.getSelectedItem().toString());
         jLabel105.setText(jTextField12.getText());
-        jLabel106.setText(new java.sql.Date(jTextField5.getDate().getTime()).toString());
+        jLabel106.setText(new java.sql.Date(jDateChooser1.getDate().getTime()).toString());
 
         this.remove(serviceThumbExpand);
         expanded = false;
@@ -483,4 +588,32 @@ public class ServiceThumb extends JPanel{
         System.out.println("Update Success!!");
         System.out.println("ID: " + serviceTicket.getId());
     }
+    
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton17;
+    private javax.swing.JButton jButton18;
+    private javax.swing.JButton jButton19;
+    private javax.swing.JComboBox<String> jComboBox5;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private com.toedter.calendar.JDateChooser jDateChooser2;
+    private javax.swing.JLabel jLabel105;
+    private javax.swing.JLabel jLabel106;
+    private javax.swing.JLabel jLabel107;
+    private javax.swing.JLabel jLabel108;
+    private javax.swing.JLabel jLabel118;
+    private javax.swing.JLabel jLabel119;
+    private javax.swing.JLabel jLabel120;
+    private javax.swing.JLabel jLabel121;
+    private javax.swing.JLabel jLabel122;
+    private javax.swing.JLabel jLabel123;
+    private javax.swing.JPanel jPanel114;
+    private javax.swing.JPanel jPanel120;
+    private javax.swing.JPanel jPanel121;
+    private javax.swing.JScrollPane jScrollPane10;
+    private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JTextField jTextField12;
+    private javax.swing.JTextField jTextField13;
+    private javax.swing.JPanel serviceThumbExpand;
+    // End of variables declaration//GEN-END:variables
 }

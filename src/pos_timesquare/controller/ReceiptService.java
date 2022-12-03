@@ -255,4 +255,68 @@ public class ReceiptService {
             return 0;
         }
     }
+    
+    public List<Receipt> getReceiptByDateRange(String from, String to){
+        Connection conn = getConnection();
+        List<Receipt> receipts = new ArrayList<>();
+        
+        try {
+            System.out.println("Getting data");
+            pst = conn.prepareStatement("SELECT * FROM Receipt WHERE date BETWEEN date('" + from +"') AND date('"+ to +"')");
+            rs = pst.executeQuery();
+            
+            
+            while(rs.next()){
+                Receipt receipt = new Receipt();
+                receipt.setId(rs.getInt("id"));
+                receipt.setProduct(rs.getString("product"));
+                receipt.setStocks(rs.getInt("stocks"));
+                receipt.setPrice(rs.getFloat("price"));
+                receipt.setSalesPersonId(rs.getInt("salesPersonId"));
+                receipt.setDate(rs.getString("date"));
+                receipt.setCustomerId(rs.getInt("customerId"));
+                receipt.setType(rs.getString("type"));
+                
+                receipts.add(receipt);
+                
+            }
+            conn.close();
+            return receipts;
+            
+        } catch (SQLException ex) {
+            return null;
+        }
+    }
+    
+    public List<Receipt> getReceiptByDate(String date){
+        Connection conn = getConnection();
+        List<Receipt> receipts = new ArrayList<>();
+        
+        try {
+            System.out.println("Getting data");
+            pst = conn.prepareStatement("SELECT * FROM Receipt WHERE date(date) == '" + date + "'");
+            rs = pst.executeQuery();
+            
+            
+            while(rs.next()){
+                Receipt receipt = new Receipt();
+                receipt.setId(rs.getInt("id"));
+                receipt.setProduct(rs.getString("product"));
+                receipt.setStocks(rs.getInt("stocks"));
+                receipt.setPrice(rs.getFloat("price"));
+                receipt.setSalesPersonId(rs.getInt("salesPersonId"));
+                receipt.setDate(rs.getString("date"));
+                receipt.setCustomerId(rs.getInt("customerId"));
+                receipt.setType(rs.getString("type"));
+                
+                receipts.add(receipt);
+                
+            }
+            conn.close();
+            return receipts;
+            
+        } catch (SQLException ex) {
+            return null;
+        }
+    }
 }

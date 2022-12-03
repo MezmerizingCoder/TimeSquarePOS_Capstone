@@ -41,6 +41,9 @@ public class TestServiceTickets {
 
 //        sts.addServiceTickets(st);
 
+        sts.getAllServiceTicketsDetailsByDateBetween("2022-01-01", "2022-11-01").forEach(e -> {
+            System.out.println(e.getCustomerId());
+        });
         
     }
 }

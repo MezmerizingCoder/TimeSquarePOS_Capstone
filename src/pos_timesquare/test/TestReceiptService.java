@@ -14,8 +14,8 @@ public class TestReceiptService {
     public static void main(String[] args) {
         ReceiptService rs = new ReceiptService();
         
-        rs.getReceiptByCustomerId(1).forEach(e -> {
-            System.out.println(e.getSalesPersonId());
+        rs.getReceiptByDate("2022-11-29").forEach(e -> {
+            System.out.println(e.getId());
         });
         
     }

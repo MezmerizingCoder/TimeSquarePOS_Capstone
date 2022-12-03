@@ -38,7 +38,9 @@ import static pos_timesquare.view.MainFrame.jButton39;
 import static pos_timesquare.view.MainFrame.jLabel309;
 import static pos_timesquare.view.MainFrame.jPanel226;
 import static pos_timesquare.view.MainFrame.jPanel64;
+import static pos_timesquare.view.MainFrame.jTextField1;
 import static pos_timesquare.view.MainFrame.selectedFile;
+import static pos_timesquare.view.MainFrame.serviceCustomer;
 import static pos_timesquare.view.MainFrame.totalNewCustomer;
 import static pos_timesquare.view.MainFrame.totalRegisteredCustomer;
 import static pos_timesquare.view.MainFrame.updateGraphics;
@@ -54,6 +56,11 @@ public class CreateNewCustomerPanel extends javax.swing.JPanel {
      */
     
     File selectedFile;
+    
+    boolean isCustomerService = false;
+    public void isForCustomerService(boolean value){
+        isCustomerService = value;
+    }
     
     public CreateNewCustomerPanel() {
         initComponents();
@@ -325,7 +332,7 @@ public class CreateNewCustomerPanel extends javax.swing.JPanel {
         
         System.out.println(new java.sql.Timestamp(jDateChooser3.getDate().getTime()).toString());
         System.out.println(new java.sql.Timestamp(Calendar.getInstance().getTime().getTime()).toString());
-        cs.addCustomer(customer);
+        int customerId = cs.addCustomer(customer);
         
 //        createCustomerDialog.remove(this);
 
@@ -375,10 +382,14 @@ public class CreateNewCustomerPanel extends javax.swing.JPanel {
         }));
         jLabel309.setIcon(banicon);
         
-        createCustomerDialog.add(new CreateNewCustomerPanel());
+//        createCustomerDialog.add(new CreateNewCustomerPanel());
         
         updateGraphics();
         
+        if(isCustomerService){
+            serviceCustomer = cs.getCustomerById(customerId);
+            jTextField1.setText(serviceCustomer.getName());
+        }
         
         createCustomerDialog.setVisible(false);
         

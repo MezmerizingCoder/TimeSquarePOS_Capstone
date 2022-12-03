@@ -4,50 +4,32 @@
  */
 package pos_timesquare.view;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.text.DecimalFormat;
 import java.util.List;
-import pos_timesquare.controller.ReceiptService;
-import pos_timesquare.model.Receipt;
-import static pos_timesquare.view.MainFrame.darkRB;
+import pos_timesquare.controller.ServiceTicketsService;
+import pos_timesquare.model.ServiceTickets;
 import static pos_timesquare.view.MainFrame.updateGraphics;
 
 /**
  *
  * @author Acer
  */
-public class AdminSalesPanel extends javax.swing.JPanel {
+public class AdminServiceTicketPanel extends javax.swing.JPanel {
 
     /**
-     * Creates new form AdminSalesPanel
+     * Creates new form AdminServiceTicketPanel
      */
-    ReceiptService rs = new ReceiptService();
-    List<Receipt> recieptList;
     
-    float totalSales;
-    float totalRefunded;
+    List<ServiceTickets> serviceTickets;
+    ServiceTicketsService sts = new ServiceTicketsService();
+    float onProgressService = 0;
+    float doneService = 0;
     
-    public void setReceiptDatas(){
-        
-        receiptListPanel.removeAll();
-        recieptList = rs.getAllReceipt();
-        recieptList.forEach(e -> {
-            Receipt receiptData = rs.getReceiptById(e.getId());
-            ReceiptDataThumb rdt = new ReceiptDataThumb();
-
-            rdt.setReceiptData(receiptData, false);
-            totalSales += rdt.getTotalPrice();
-            totalRefunded += rdt.getTotalRefunded();
-            receiptListPanel.add(rdt);
-        });
-        
-        
-    }
-    public AdminSalesPanel() {
+    DecimalFormat df = new DecimalFormat();
+    
+    
+    public AdminServiceTicketPanel() {
         initComponents();
-        setReceiptDatas();
         selectedCalendarType();
     }
 
@@ -72,30 +54,14 @@ public class AdminSalesPanel extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         jDateChooser2 = new com.toedter.calendar.JDateChooser();
         jScrollPane1 = new javax.swing.JScrollPane();
-        receiptListPanel = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel(){
-
-            public void paintComponent(Graphics g){
-                super.paintComponent(g);
-                Graphics2D g2 = (Graphics2D) g.create();
-
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                if(darkRB.isSelected()){
-                    g2.setColor(new Color(38, 41, 48));
-                }else{
-                    g2.setColor(new Color(255, 255, 255));
-                }
-                g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 20, 20);
-            }
-
-        };
+        jPanel2 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jPanel7 = new javax.swing.JPanel();
+        jPanel8 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
 
         jPanel1.setPreferredSize(new java.awt.Dimension(240, 517));
 
@@ -181,7 +147,7 @@ public class AdminSalesPanel extends javax.swing.JPanel {
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 119, Short.MAX_VALUE))
+                .addGap(0, 87, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -212,44 +178,15 @@ public class AdminSalesPanel extends javax.swing.JPanel {
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-        receiptListPanel.setLayout(new javax.swing.BoxLayout(receiptListPanel, javax.swing.BoxLayout.PAGE_AXIS));
-        jScrollPane1.setViewportView(receiptListPanel);
+        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.PAGE_AXIS));
+        jScrollPane1.setViewportView(jPanel2);
 
-        jPanel2.setPreferredSize(new java.awt.Dimension(147, 66));
-
-        jPanel6.setOpaque(false);
+        jPanel7.setOpaque(false);
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         jLabel5.setText("P20000.00");
 
-        jLabel4.setText("Total Sales");
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(11, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addGap(0, 0, 0)
-                .addComponent(jLabel5)
-                .addContainerGap(12, Short.MAX_VALUE))
-        );
-
-        jPanel7.setOpaque(false);
-
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        jLabel6.setText("P20000.00");
-
-        jLabel7.setText("Total Refunded");
+        jLabel4.setText("Total Done");
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -258,12 +195,39 @@ public class AdminSalesPanel extends javax.swing.JPanel {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addContainerGap(11, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addGap(0, 0, 0)
+                .addComponent(jLabel5)
+                .addContainerGap(12, Short.MAX_VALUE))
+        );
+
+        jPanel8.setOpaque(false);
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jLabel6.setText("P20000.00");
+
+        jLabel7.setText("Total On Progress");
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel7)
                 .addGap(0, 0, 0)
@@ -271,31 +235,22 @@ public class AdminSalesPanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All Payments", "Cash", "Credit" }));
-        jComboBox2.setMinimumSize(new java.awt.Dimension(72, 40));
-        jComboBox2.setPreferredSize(new java.awt.Dimension(72, 40));
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -306,28 +261,21 @@ public class AdminSalesPanel extends javax.swing.JPanel {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE))
-                        .addGap(20, 20, 20))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 527, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1))
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
-    
     public void selectedCalendarType(){
         if(jComboBox1.getSelectedIndex() == 0){
             jPanel5.setVisible(false);
@@ -339,122 +287,99 @@ public class AdminSalesPanel extends javax.swing.JPanel {
             jPanel5.setVisible(false);
             jPanel4.setVisible(false);
             
-            recieptList = rs.getAllReceipt();
-            updateReceiptListThumb();
+            serviceTickets = sts.getAllServiceTicketsDetails();
+            updateServiceTicketThumb();
         }
     }
     
-    public void updateReceiptListThumb(){
-        totalSales = 0;
-        totalRefunded = 0;
-        receiptListPanel.removeAll();
-        if(jComboBox2.getSelectedIndex() == 0){
-            recieptList.forEach(e -> {
-                Receipt receiptData = rs.getReceiptById(e.getId());
-                ReceiptDataThumb rdt = new ReceiptDataThumb();
+    public void updateServiceTicketThumb(){
+        jPanel2.removeAll();
+//                recieptList= rs.getReceiptByDate(date);
+//                updateReceiptListThumb();
                 
-                rdt.setReceiptData(receiptData, false);
-                totalSales += rdt.getTotalPrice();
-                totalRefunded += rdt.getTotalRefunded();
-                receiptListPanel.add(rdt);
-            });
-        }else if(jComboBox2.getSelectedIndex() == 1){
-            recieptList.forEach(e -> {
-                if(e.getType().equals("cash")){
-                    Receipt receiptData = rs.getReceiptById(e.getId());
-                    ReceiptDataThumb rdt = new ReceiptDataThumb();
-
-                    rdt.setReceiptData(receiptData, false);
-                    totalSales += rdt.getTotalPrice();
-                totalRefunded += rdt.getTotalRefunded();
-                    receiptListPanel.add(rdt);
-                }
-            });
-        }else if(jComboBox2.getSelectedIndex() == 2){
-            recieptList.forEach(e -> {
-                if(e.getType().equals("credit")){
-                    Receipt receiptData = rs.getReceiptById(e.getId());
-                    ReceiptDataThumb rdt = new ReceiptDataThumb();
-
-                    rdt.setReceiptData(receiptData, false);
-                    totalSales += rdt.getTotalPrice();
-                    totalRefunded += rdt.getTotalRefunded();
-                    receiptListPanel.add(rdt);
-                }
-            });
-        }
-        jLabel5.setText(String.valueOf(totalSales));
-        jLabel6.setText(String.valueOf(totalRefunded));
-        updateGraphics();
+        serviceTickets.forEach(e -> {
+            if(e.getStatus().equals("Done")){
+                doneService += (float) e.getPrice();
+            }else{
+                onProgressService += (float) e.getPrice();
+            }
+            ServiceThumb2 sThumb = new ServiceThumb2();
+            sThumb.setRequiredAdmin(false);
+            sThumb.setServiceTicket(e);
+            jPanel2.add(sThumb);
+        });
+        df.setMaximumFractionDigits(2);
+        jLabel5.setText(String.valueOf(df.format(doneService)));
+        jLabel6.setText(String.valueOf(df.format(onProgressService)));
     }
     
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
         selectedCalendarType();
     }//GEN-LAST:event_jComboBox1ActionPerformed
-    
-    String currentDateRange = "";
-    private void jDateChooser2PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDateChooser2PropertyChange
-        // TODO add your handling code here:
-        ReceiptService rs = new ReceiptService();
-        if(jDateChooser1.getDate() != null && jDateChooser2.getDate() != null){
-            String dateTo = new java.sql.Date(jDateChooser1.getDate().getTime()).toString();
-            String dateFrom = new java.sql.Date(jDateChooser2.getDate().getTime()).toString();
-        
-            if(!currentDateRange.equals(dateTo+dateFrom)){
-                currentDateRange = dateTo+dateFrom;
-                receiptListPanel.removeAll();
-                recieptList = rs.getReceiptByDateRange(dateTo, dateFrom);
-                updateReceiptListThumb();
-                
-            }
-        }
-//        updateGraphics();
-    }//GEN-LAST:event_jDateChooser2PropertyChange
-
-    private void jDateChooser1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDateChooser1PropertyChange
-        // TODO add your handling code here:
-        ReceiptService rs = new ReceiptService();
-        if(jDateChooser1.getDate() != null && jDateChooser2.getDate() != null){
-            String dateTo = new java.sql.Date(jDateChooser1.getDate().getTime()).toString();
-            String dateFrom = new java.sql.Date(jDateChooser2.getDate().getTime()).toString();
-        
-            if(!currentDateRange.equals(dateTo+dateFrom)){
-                currentDateRange = dateTo+dateFrom;
-                receiptListPanel.removeAll();
-                recieptList = rs.getReceiptByDateRange(dateTo, dateFrom);
-                updateReceiptListThumb();
-                
-            }
-        }
-    }//GEN-LAST:event_jDateChooser1PropertyChange
     String currentDate = "";
     private void jCalendar1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jCalendar1PropertyChange
         // TODO add your handling code here:
-        ReceiptService rs = new ReceiptService();
+        
         if(jCalendar1.getDate() != null){
             String date = new java.sql.Date(jCalendar1.getDate().getTime()).toString();
             if(!currentDate.equals(date)){
                 currentDate = date;
-                receiptListPanel.removeAll();
-                recieptList= rs.getReceiptByDate(date);
-                updateReceiptListThumb();
+                jPanel2.removeAll();
+//                recieptList= rs.getReceiptByDate(date);
+//                updateReceiptListThumb();
                 
+                serviceTickets = sts.getAllServiceTicketsDetailsByDate(date);
+                updateServiceTicketThumb();
+//                .forEach(e -> {
+//                    ServiceThumb sThumb = new ServiceThumb();
+//                    sThumb.setRequiredAdmin(false);
+//                    sThumb.setServiceTicket(e);
+//                    jPanel2.add(sThumb);
+//                });
+
+
                 updateGraphics();
             }
         }
     }//GEN-LAST:event_jCalendar1PropertyChange
-
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+    String currentDateRange = "";
+    private void jDateChooser1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDateChooser1PropertyChange
         // TODO add your handling code here:
-        updateReceiptListThumb();
-    }//GEN-LAST:event_jComboBox2ActionPerformed
+        if(jDateChooser1.getDate() != null && jDateChooser2.getDate() != null){
+            String dateTo = new java.sql.Date(jDateChooser1.getDate().getTime()).toString();
+            String dateFrom = new java.sql.Date(jDateChooser2.getDate().getTime()).toString();
+
+            if(!currentDateRange.equals(dateTo+dateFrom)){
+                jPanel2.removeAll();
+                serviceTickets = sts.getAllServiceTicketsDetailsByDateBetween(dateTo, dateFrom);
+                updateServiceTicketThumb();
+                currentDateRange = dateTo+dateFrom;
+                updateGraphics();
+            }
+        }
+    }//GEN-LAST:event_jDateChooser1PropertyChange
+
+    private void jDateChooser2PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDateChooser2PropertyChange
+        // TODO add your handling code here:
+        if(jDateChooser1.getDate() != null && jDateChooser2.getDate() != null){
+            String dateTo = new java.sql.Date(jDateChooser1.getDate().getTime()).toString();
+            String dateFrom = new java.sql.Date(jDateChooser2.getDate().getTime()).toString();
+
+            if(!currentDateRange.equals(dateTo+dateFrom)){
+                jPanel2.removeAll();
+                serviceTickets = sts.getAllServiceTicketsDetailsByDateBetween(dateTo, dateFrom);
+                updateServiceTicketThumb();
+                currentDateRange = dateTo+dateFrom;
+                updateGraphics();
+            }
+        }
+    }//GEN-LAST:event_jDateChooser2PropertyChange
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.toedter.calendar.JCalendar jCalendar1;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
@@ -471,7 +396,7 @@ public class AdminSalesPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
-    public javax.swing.JPanel receiptListPanel;
     // End of variables declaration//GEN-END:variables
 }

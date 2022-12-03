@@ -5,15 +5,23 @@
 package pos_timesquare.view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 import pos_timesquare.controller.CustomerService;
+import pos_timesquare.model.Customer;
 import static pos_timesquare.view.MainFrame.darkRB;
 import static pos_timesquare.view.MainFrame.checkoutCustomer;
+import static pos_timesquare.view.MainFrame.serviceCustomer;
 import static pos_timesquare.view.MainFrame.checkoutCustomerSelectedPanel;
+import static pos_timesquare.view.MainFrame.glassPanel;
+import static pos_timesquare.view.MainFrame.jTextField1;
+import static pos_timesquare.view.MainFrame.selectCustomerPopupPanel;
 
 /**
  *
@@ -26,6 +34,30 @@ public class CheckoutSelectCustomerPanel extends javax.swing.JPanel {
      */
 //    boolean isExited = true;
 //    boolean isHover = false;
+    boolean forProductCheckout = true;
+    boolean forEditService = false;
+    JTextField comp;
+    JLabel comp2;
+    
+    ServiceThumb2 compCustomer;
+    
+    
+    public void setServiceTicketComp(ServiceThumb2 customer){
+        compCustomer = customer;
+    }
+    
+    public void setForEditService(boolean value){
+        forEditService = value;
+    }
+    public void isProductCheckout(boolean value){
+        forProductCheckout = value;
+    }
+    
+    public void setCallingComponent(JTextField comp, JLabel comp2){
+        this.comp = comp;
+        this.comp2 = comp2;
+    }
+    
     public CheckoutSelectCustomerPanel() {
         initComponents();
         
@@ -39,10 +71,27 @@ public class CheckoutSelectCustomerPanel extends javax.swing.JPanel {
                     checkoutCustomerThumb.addMouseListener(new MouseAdapter(){
                         @Override
                         public void mouseClicked(MouseEvent evt) {
-                            checkoutCustomer = e;
-                            checkoutCustomerSelectedPanel.removeAll();
-                            checkoutCustomerSelectedPanel.add(checkoutCustomerThumb);
-                            removeThumb();
+                            if(forProductCheckout){
+                                checkoutCustomer = e;
+                                checkoutCustomerSelectedPanel.removeAll();
+                                checkoutCustomerSelectedPanel.add(checkoutCustomerThumb);
+                                removeThumb();
+                            }else{
+                                if(forEditService){
+//                                    comp.setText(e.getName());
+//                                    comp2.setText(e.getName());
+                                    compCustomer.setCustomer(e); 
+                                    removeThumb();
+                                    selectCustomerPopupPanel.setVisible(false);
+                                    glassPanel.setVisible(false);
+                                }else{
+                                    serviceCustomer = e;
+                                    jTextField1.setText(e.getName());
+                                    removeThumb();
+                                    selectCustomerPopupPanel.setVisible(false);
+                                    glassPanel.setVisible(false);
+                                }
+                            }
                         }
 
         //                @Override

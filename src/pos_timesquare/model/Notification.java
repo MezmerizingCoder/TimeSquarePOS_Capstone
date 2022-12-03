@@ -18,6 +18,15 @@ public class Notification {
     private int productid;
     private String date;
     private String title;
+    private int status;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public String getTitle() {
         return title;

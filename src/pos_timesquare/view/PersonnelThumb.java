@@ -603,6 +603,19 @@ public class PersonnelThumb extends JPanel {
                 jLabel284.setText(String.valueOf(personSales.size()));
                 
                 
+                    
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("mm");
+                    Date dt = sdf.parse(String.valueOf(userData.getHourWorked()));
+                    sdf = new SimpleDateFormat("HH:mm");
+                    System.out.println(sdf.format(dt));
+                    jLabel283.setText(sdf.format(dt).toString() + " hrs");
+                } catch (ParseException ex) {
+                    Logger.getLogger(PersonnelThumb.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                    
+                
+                
                 try {
                     DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
                     DateFormat format2 = new SimpleDateFormat("MMMM d, yyyy");
